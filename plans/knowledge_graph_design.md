@@ -89,6 +89,9 @@ one is a graph-level assertion node (sourced from repo G).
   run_id:         RUN-44
   spec_id:        TS-017
   repo_b_sha:     d4e5f6...     # git SHA of repo B at test execution time
+                                # conservative binding — full repo, not
+                                # function level. Any repo B change requires
+                                # a new test run.
   outcome:        PASS | FAIL | ERROR | SKIPPED
   timestamp:      2024-03-15T14:32:00Z
   node_hash:      H(all of the above)
@@ -127,12 +130,18 @@ This means:
   outcome_id:     RUN-44/TS-017
   justification:  "Known timing issue in test harness, not in production code.
                    See issue tracker #4521."
-  approver:       <named FSM individual>
-  approved_at:    2024-03-15T16:00:00Z
   expiry:         2024-06-15              # optional but recommended
-  node_hash:      H(all of the above)
+  node_hash:      H(waiver_id || outcome_id || justification || expiry)
   ```
-- **Hash structure:** single `node_hash` over all content fields
+- **Provenance (from git log, not stored in content):**
+  - `approver` — extracted from git committer identity in repo G at proof
+    generation time
+  - `approved_at` — extracted from git commit timestamp in repo G
+  - Committer must appear in `fsm_authorised_committers.yaml` in repo G with
+    a valid date range covering the commit date
+- **Hash structure:** single `node_hash` over content fields only. `approver`
+  and `approved_at` are provenance metadata, not content — consistent with
+  how implementation node provenance is handled.
 - **Relationship:** `excuses` → Test Outcome (the only edge type that points
   *to* a test outcome rather than away from it)
 - **Owned by:** Functional Safety Manager exclusively — no other role can
@@ -356,22 +365,95 @@ merkle_hash(N) = H(node_hash(N) || sorted(merkle_hash(dep) for dep in strong_dep
 Only **refines**, **verifies**, and **implements** edges participate in Merkle
 hash computation. **calls**, **confirms**, **witnesses**, and **excuses** do not.
 
-### 7.3 Evidence Package Structure
+### 7.3 The Two Subgraphs
 
-For a given requirements scope R and test run T, the evidence package contains:
+The full knowledge graph contains two distinct subgraphs serving different
+purposes. This distinction is fundamental to understanding what the Merkle
+root proves.
 
-- **Header:** graph snapshot ID, test run ID, git SHAs of repos A/B/C as
-  provenance metadata
-- **Merkle root:** single hash fingerprinting the entire evidence state at
-  snapshot time
-- **Node manifest:** list of all in-scope node IDs and their `node_hash`
-  values at snapshot time
-- **Evidence chains:** one bundle per requirement — the connected path from
-  test outcomes through the V-model to the requirement, with all link states
-- **Waiver records:** all active waivers for in-scope FAIL outcomes, included
-  explicitly so the auditor sees them
-- **Coverage report:** requirements with incomplete chains explicitly flagged
-  (missing verifies, missing witnesses, suspect links, known failures)
+**The design graph** — the subgraph over which the Merkle root is computed:
+- Nodes: Requirements, Test Specifications, Implementations
+- Edges: **refines**, **verifies**, **implements**
+- Answers: "is what we said we'd build internally consistent?"
+- The Merkle root is a cryptographic fingerprint of this consistency.
+- Stable across test runs — the Merkle root does not change when tests are
+  re-run, only when design content changes.
+
+**The evidence graph** — the full graph, adding:
+- Nodes: Test Outcomes, Waivers
+- Edges: **confirms**, **witnesses**, **excuses**
+- Answers: "did we actually build and test what we said we would?"
+- Not part of the Merkle computation — captured separately in the evidence
+  manifest.
+
+The proof package combines both: the Merkle root proves design consistency;
+the evidence manifest proves execution coverage.
+
+### 7.4 Evidence Package Structure
+
+The proof package has two formally distinct parts:
+
+**Part 1 — Design proof (Merkle)**
+```
+part_1_design:
+  merkle_root:    7f2a...       # fingerprints design graph consistency
+  node_manifest:                # all in-scope node IDs + node_hashes
+    - node_id:    REQ-002
+      node_hash:  b3c1...
+    - node_id:    TS-017
+      node_hash:  a3f9...
+    - node_id:    auth_validate
+      node_hash:  c7b2...
+```
+
+Verifiable by: recomputing the Merkle root from the node manifest. An auditor
+can independently verify this part without accessing repos A or B directly.
+
+**Part 2 — Evidence manifest (test outcomes)**
+```
+part_2_evidence:
+  test_run_id:    RUN-44
+  repo_b_sha:     d4e5f6...     # implementation under test (conservative
+                                #   binding — full repo, not function level)
+  outcomes:
+    - spec_id:    TS-017
+      outcome:    PASS
+      confirms:   REQ-002 (via active verifies link)
+      witnesses:  repo B @ d4e5f6...
+    - spec_id:    TS-019
+      outcome:    FAIL
+      waiver:     WAV-001 (valid, expires 2024-06-15)
+```
+
+Verifiable by: checking test runner records in repo C and waiver records in
+repo G.
+
+**Staleness check (Gate 3):**
+```
+evidence_valid =
+  outcome == PASS (or excused FAIL with valid waiver)
+  AND outcome.repo_b_sha == current HEAD of repo B
+  AND link(ts → req).state == active
+  AND link(impl → req).state == active
+```
+
+If `repo_b_sha` does not match current HEAD of repo B, the evidence manifest
+is stale — test suite must be re-run. This is the conservative approach:
+any change to repo B requires new test runs regardless of which functions
+changed. Tests are assumed cheap enough to re-run for every new repo B state.
+
+**Complete package:**
+```
+proof_package:
+  scope:          [REQ-001, REQ-002, ...]
+  snapshot_id:    2024-03-15T14:32:00Z
+  part_1_design:  { merkle_root, node_manifest }
+  part_2_evidence:{ test_run_id, repo_b_sha, outcomes, waivers }
+  coverage_report:{ gaps, suspect_links, stale_outcomes }
+```
+
+The coverage report is as important as the chains themselves — demonstrating
+awareness of what is incomplete is itself evidence of a controlled process.
 
 ---
 
@@ -533,17 +615,27 @@ and proof generator output. Does not author content or graph structure. Is the
 
 The atomic unit of proof the graph produces, for a single requirement:
 
-> *"Requirement REQ-042 is satisfied, as evidenced by the fact that test spec
-> TS-017 was written to verify it (link: active), function `auth_validate()`
-> was written to implement it (link: active), test outcome RUN-44/TS-017
-> confirms that TS-017 passed (link: active), and RUN-44/TS-017 witnesses
-> that the test was executed against repo B @ d4e5f6... — the implementation
-> under test at that point in time. All node hashes are consistent with the
-> Merkle root 7f2a... at snapshot time."*
+> *"Requirement REQ-042 is satisfied because:*
+> *(Part 1 — design) TS-017 verifies it (link: active), auth_validate()*
+> *implements it (link: active), and the Merkle root 7f2a... fingerprints*
+> *the consistency of this design graph at snapshot time.*
+> *(Part 2 — evidence) Test outcome RUN-44/TS-017 confirms TS-017 with*
+> *result PASS, witnessed against repo B @ d4e5f6..., which matches the*
+> *current HEAD of repo B."*
 
 The full audit evidence package is the collection of such statements, one
 bundle per requirement in scope, plus waivers for any excused failures, plus
 the coverage report for any gaps.
+
+**The two-part structure means:**
+- Part 1 (Merkle root) is stable across test runs — it only changes when
+  design content changes
+- Part 2 (evidence manifest) is regenerated on every test run against a
+  new repo B state
+- An auditor can verify Part 1 independently by recomputing the Merkle root
+  from the node manifest
+- An auditor can verify Part 2 independently by checking repo C test records
+  and repo G waiver records
 
 ---
 
@@ -687,12 +779,20 @@ valid proof before attempting generation.
 
 In agreed priority order:
 
-1. **Merkle hash computation details** — shallow vs deep, which edges
-   participate, DAG cycle prevention
-2. **Repo G schema** — concrete data model for nodes, edges, hash snapshots,
-   review events, waivers
-3. **Bootstrapping process** — initial affirmation of all links when the
-   graph is first set up
+1. **Repo G schema** — concrete data model for nodes, edges, hash snapshots,
+   review events, waivers, authorised committer list
+2. **Bootstrapping process** — initial affirmation of all links when the
+   graph is first set up; what constitutes a valid first proof
+3. **Git branching workflow** — how branching conventions interact with the
+   graph; whether "on main = active" can replace explicit lifecycle states
+   (draft, active, deprecated) on node types such as Requirement and Test
+   Specification
+4. **Authorised committer list** — `fsm_authorised_committers.yaml` in repo G
+   as a versioned configuration artefact; handling of FSM role transitions;
+   whether GPG signing is needed or named committer list is sufficient
+5. **Shallow vs deep Merkle** — we agreed on deep (full transitive closure)
+   but have not yet formally specified the sort order for sibling hashes or
+   the exact hash algorithm (SHA-256 assumed)
 
 ---
 
