@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zephyrproject.org/seg/schema/test_outcome.schema.json",
+  "title": "SEG Test Outcome Node",
+  "description": "Schema for a TestOutcome node in the Safety Evidence Graph. Generated entirely by the CI pipeline from twister test runner output. Sourced from repo C. Immutable once created — a new test run produces new nodes; old nodes are retained permanently as historical record.",
+
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "name",
+    "seg:runId",
+    "seg:specId",
+    "seg:repoBSha",
+    "seg:outcome",
+    "seg:nodeHash",
+    "seg:sourceRepo",
+    "seg:sourcePath"
+  ],
+  "additionalProperties": false,
+
+  "properties": {
+
+    "id": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/]+/[^/]+/outcome/[A-Z0-9-]+/TS-[0-9]+$",
+      "description": "Globally unique IRI for this test outcome. Form: {namespaceBase}/outcome/{runId}/{testcaseId}. Derived automatically by the CI pipeline. Maps to spdxId on SPDX export."
+    },
+
+    "type": {
+      "type": "string",
+      "const": "seg:TestOutcome",
+      "description": "Fixed SEG type. Maps to spdx:Action on SPDX export."
+    },
+
+    "name": {
+      "type": "string",
+      "pattern": "^[A-Z0-9-]+/TS-[0-9]+$",
+      "description": "Human-readable identifier combining run ID and test case ID. Form: {runId}/{testcaseId}. Must be consistent with the id field."
+    },
+
+    "seg:runId": {
+      "type": "string",
+      "pattern": "^[A-Z0-9-]+$",
+      "description": "Identifier for the test run that produced this outcome. Groups all test outcomes from a single CI run. Form: RUN-{number} or equivalent CI run identifier."
+    },
+
+    "seg:specId": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/]+/[^/]+/ts/TS-[0-9]+$",
+      "description": "IRI reference to the TestSpecification node this outcome confirms. Must resolve to an existing TestSpecification node. Cross-node validation is enforced at graph level, not schema level."
+    },
+
+    "seg:repoBSha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$",
+      "description": "Full 40-character git SHA of repo B at the time this test was executed. Conservative binding — covers the full repo, not individual functions. Any change to repo B requires a new test run. This is the verification anchor for witnesses edges: at proof generation time, the implementation extractor is rerun at this SHA and resulting node hashes are confirmed to match those stored in repo G."
+    },
+
+    "seg:outcome": {
+      "type": "string",
+      "enum": ["PASS", "FAIL", "ERROR", "SKIPPED"],
+      "description": "Test execution result. FAIL, ERROR, and SKIPPED outcomes block proof generation unless excused by a valid non-expired Waiver node."
+    },
+
+    "seg:nodeHash": {
+      "type": "object",
+      "required": ["algorithm", "hashValue"],
+      "additionalProperties": false,
+      "description": "Hash of all content fields in this node: runId, specId, repoBSha, outcome. Computed by the test outcome extractor. Immutable once written.",
+      "properties": {
+        "algorithm": {
+          "type": "string",
+          "const": "SHA256"
+        },
+        "hashValue": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+
+    "seg:sourceRepo": {
+      "type": "string",
+      "const": "repoC",
+      "description": "Source repository for this node. Fixed to repoC for all TestOutcome nodes. Resolves to the concrete repo URL defined in config.json."
+    },
+
+    "seg:sourcePath": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Relative path within repo C to the twister log file from which this test outcome was extracted."
+    },
+
+    "comment": {
+      "type": "string",
+      "description": "Optional free-text note. Not part of the node content and not included in nodeHash computation."
+    }
+  }
+}

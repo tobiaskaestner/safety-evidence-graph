@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zephyrproject.org/seg/schema/review_event.schema.json",
+  "title": "SEG Review Event",
+  "description": "Schema for a ReviewEvent record in the Safety Evidence Graph. Created when a responsible engineer affirms a suspect strong-propagation edge (refines, verifies, implements). Stored in events/review_events.jsonld for queryability. Provenance — who affirmed and when — is derived from git log in repo G. The review event adds queryable structure: which edge was affirmed, in which role, and optionally which sub-hash changed and why.",
+
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "seg:affirmingEdge",
+    "seg:affirmingRole"
+  ],
+  "additionalProperties": false,
+
+  "properties": {
+
+    "id": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/]+/[^/]+/event/review/.+$",
+      "description": "Globally unique IRI for this review event. Form: {namespaceBase}/event/review/{edgeLocalId}-{isoTimestamp}."
+    },
+
+    "type": {
+      "type": "string",
+      "const": "seg:ReviewEvent",
+      "description": "Fixed SEG type. Maps to spdx:Annotation with annotationType review on SPDX export."
+    },
+
+    "seg:affirmingEdge": {
+      "type": "string",
+      "format": "uri",
+      "description": "IRI of the strong-propagation edge being affirmed. Must resolve to an existing edge in refines.jsonld, verifies.jsonld, or implements.jsonld."
+    },
+
+    "seg:affirmingRole": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Role in which the affirmer is acting. Free string — role validation is a process concern enforced by tooling and organisational policy, not the schema. Typical values: RequirementsEngineer, SoftwareEngineer, TestEngineer, FunctionalSafetyManager."
+    },
+
+    "seg:subHashChanged": {
+      "type": "string",
+      "enum": ["apiHash", "bodyHash", "specHash", "implHash", "both", "none"],
+      "description": "Optional diagnostic field indicating which sub-hash changed on the source node, triggering the suspect state. Populated by the notifier. Informs the affirmer's review focus: an apiHash or specHash change suggests intent changed; a bodyHash or implHash change suggests execution changed; both means full review required; none means the edge went suspect due to a dependency change only."
+    },
+
+    "comment": {
+      "type": "string",
+      "description": "Optional free-text reasoning behind the affirmation. Recommended when the affirmation is non-trivial — for example when affirming despite a spec_hash change without updating the test spec."
+    }
+  }
+}

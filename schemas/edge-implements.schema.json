@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zephyrproject.org/seg/schema/edge-implements.schema.json",
+  "title": "SEG Implements Edge",
+  "description": "Schema for an Implements edge in the Safety Evidence Graph. Direction: Implementation → Requirement. The implementation declares what it implements via the @implements doxygen tag. Many-to-many supported — one implementation may implement multiple requirements, one requirement may be implemented by multiple functions. Strong-propagation edge: a change to either endpoint marks this edge suspect and notifies the Software Engineer. The seg:subHashChanged field on the resulting ReviewEvent distinguishes whether api_hash or body_hash changed. Resolution requires human affirmation by the Software Engineer.",
+
+  "allOf": [
+    { "$ref": "edge-base.schema.json#/$defs/baseEdge" },
+    { "$ref": "edge-base.schema.json#/$defs/strongEdge" }
+  ],
+
+  "properties": {
+
+    "type": {
+      "const": "seg:Implements"
+    },
+
+    "id": {
+      "pattern": "^https://[^/]+/[^/]+/edge/implements/[a-zA-Z_][a-zA-Z0-9_]*-REQ-[0-9]+$",
+      "description": "Form: {namespaceBase}/edge/implements/{functionName}-{requirementId}."
+    },
+
+    "seg:from": {
+      "pattern": "^https://[^/]+/[^/]+/impl/[a-zA-Z_][a-zA-Z0-9_]*$",
+      "description": "IRI of the Implementation node — the function that implements."
+    },
+
+    "seg:to": {
+      "pattern": "^https://[^/]+/[^/]+/req/REQ-[0-9]+$",
+      "description": "IRI of the Requirement node — the one being implemented."
+    }
+  },
+
+  "additionalProperties": false
+}

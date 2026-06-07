@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zephyrproject.org/seg/schema/coverage_report.schema.json",
+  "title": "SEG Coverage Report",
+  "description": "Schema for a CoverageReport document in the Safety Evidence Graph. Not a proof — evidence of a controlled process that is aware of its own incompleteness. Accompanies every evidence package regardless of whether proof generation succeeded or was refused. A clean proof run produces a report with no gap entries and overallStatus: ready. Immutable once generated.",
+
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "seg:overallStatus"
+  ],
+  "additionalProperties": false,
+
+  "properties": {
+
+    "id": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/]+/[^/]+/proof/.+/coverage-report$",
+      "description": "Globally unique IRI for this coverage report. Form: {namespaceBase}/proof/{snapshotId}/coverage-report."
+    },
+
+    "type": {
+      "type": "string",
+      "const": "seg:CoverageReport",
+      "description": "Fixed SEG type."
+    },
+
+    "seg:overallStatus": {
+      "type": "string",
+      "enum": ["ready", "pending", "blocked"],
+      "description": "Overall proof readiness status. ready: all Gate 2 conditions met, proof was generated successfully. pending: warnings exist but no hard blockers — proof was generated with caveats. blocked: one or more hard blockers, proof generation was refused."
+    },
+
+    "seg:structuralGaps": {
+      "type": "array",
+      "uniqueItems": true,
+      "description": "In-scope requirements that are missing at least one verifies or implements edge. Each entry identifies the requirement and which edge types are absent.",
+      "items": {
+        "type": "object",
+        "required": ["seg:requirementId", "seg:missingEdgeTypes"],
+        "additionalProperties": false,
+        "properties": {
+          "seg:requirementId": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://[^/]+/[^/]+/req/REQ-[0-9]+$",
+            "description": "IRI of the requirement with incomplete coverage."
+          },
+          "seg:missingEdgeTypes": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "description": "Edge types absent for this requirement.",
+            "items": {
+              "type": "string",
+              "enum": ["seg:Verifies", "seg:Implements"]
+            }
+          }
+        }
+      }
+    },
+
+    "seg:suspectLinks": {
+      "type": "array",
+      "uniqueItems": true,
+      "description": "In-scope strong-propagation edges that are not in active state. Each entry identifies the edge, its current state, and the responsible role for resolution.",
+      "items": {
+        "type": "object",
+        "required": ["seg:edgeId", "seg:linkState", "seg:responsibleRole"],
+        "additionalProperties": false,
+        "properties": {
+          "seg:edgeId": {
+            "type": "string",
+            "format": "uri",
+            "description": "IRI of the suspect edge."
+          },
+          "seg:linkState": {
+            "type": "string",
+            "enum": ["directlyOutdated", "transitivelySuspect", "doublyOutdated"],
+            "description": "Current integrity state of this edge."
+          },
+          "seg:responsibleRole": {
+            "type": "string",
+            "description": "Role responsible for resolving this suspect link. Derived from edge type: refines → RequirementsEngineer, implements → SoftwareEngineer, verifies → RequirementsEngineer + TestEngineer."
+          },
+          "seg:subHashChanged": {
+            "type": "string",
+            "enum": ["apiHash", "bodyHash", "specHash", "implHash", "both", "none"],
+            "description": "Optional diagnostic indicating which sub-hash changed on the source node."
+          }
+        }
+      }
+    },
+
+    "seg:staleOutcomes": {
+      "type": "array",
+      "uniqueItems": true,
+      "description": "In-scope test outcomes whose seg:repoBSha does not match the current HEAD of repo B. These outcomes were produced against an older implementation state and the test suite must be rerun.",
+      "items": {
+        "type": "object",
+        "required": ["seg:outcomeId", "seg:recordedSha", "seg:currentSha"],
+        "additionalProperties": false,
+        "properties": {
+          "seg:outcomeId": {
+            "type": "string",
+            "format": "uri",
+            "description": "IRI of the stale TestOutcome node."
+          },
+          "seg:recordedSha": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{40}$",
+            "description": "The repo B SHA recorded in the TestOutcome node."
+          },
+          "seg:currentSha": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{40}$",
+            "description": "The current HEAD SHA of repo B at proof generation time."
+          }
+        }
+      }
+    },
+
+    "seg:missingOutcomes": {
+      "type": "array",
+      "uniqueItems": true,
+      "description": "In-scope test specifications that have no corresponding test outcome in the specified test run. Each entry is a gap in execution coverage.",
+      "items": {
+        "type": "object",
+        "required": ["seg:testSpecId"],
+        "additionalProperties": false,
+        "properties": {
+          "seg:testSpecId": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://[^/]+/[^/]+/ts/TS-[0-9]+$",
+            "description": "IRI of the TestSpecification node with no outcome in the test run."
+          }
+        }
+      }
+    },
+
+    "comment": {
+      "type": "string",
+      "description": "Optional free-text note."
+    }
+  }
+}

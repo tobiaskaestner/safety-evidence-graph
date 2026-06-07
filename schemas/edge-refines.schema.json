@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zephyrproject.org/seg/schema/edge-refines.schema.json",
+  "title": "SEG Refines Edge",
+  "description": "Schema for a Refines edge in the Safety Evidence Graph. Direction: child Requirement → parent Requirement. The child requirement declares what it refines via the sphinx-needs links: field. Strong-propagation edge: a change to either endpoint marks this edge suspect and notifies the Requirements Engineer. Resolution requires human affirmation by the Requirements Engineer.",
+
+  "allOf": [
+    { "$ref": "edge-base.schema.json#/$defs/baseEdge" },
+    { "$ref": "edge-base.schema.json#/$defs/strongEdge" }
+  ],
+
+  "properties": {
+
+    "type": {
+      "const": "seg:Refines"
+    },
+
+    "id": {
+      "pattern": "^https://[^/]+/[^/]+/edge/refines/REQ-[0-9]+-REQ-[0-9]+$",
+      "description": "Form: {namespaceBase}/edge/refines/{childId}-{parentId}."
+    },
+
+    "seg:from": {
+      "pattern": "^https://[^/]+/[^/]+/req/REQ-[0-9]+$",
+      "description": "IRI of the child Requirement node — the one that refines."
+    },
+
+    "seg:to": {
+      "pattern": "^https://[^/]+/[^/]+/req/REQ-[0-9]+$",
+      "description": "IRI of the parent Requirement node — the one being refined."
+    }
+  },
+
+  "additionalProperties": false
+}

@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zephyrproject.org/seg/schema/execution_coverage_record.schema.json",
+  "title": "SEG Execution Coverage Record",
+  "description": "Schema for an ExecutionCoverageRecord document in the Safety Evidence Graph. Represents Part 2 of the evidence package — proves that the test specifications declared in the design graph were actually executed against a specific implementation state, and records their outcomes. Independently verifiable against repo C (test runner records) and repo G (waiver records). Immutable once generated.",
+
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "seg:testRunId",
+    "seg:repoBSha",
+    "seg:outcomes"
+  ],
+  "additionalProperties": false,
+
+  "properties": {
+
+    "id": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/]+/[^/]+/proof/.+/execution-coverage$",
+      "description": "Globally unique IRI for this execution coverage record. Form: {namespaceBase}/proof/{snapshotId}/execution-coverage."
+    },
+
+    "type": {
+      "type": "string",
+      "const": "seg:ExecutionCoverageRecord",
+      "description": "Fixed SEG type."
+    },
+
+    "seg:testRunId": {
+      "type": "string",
+      "pattern": "^[A-Z0-9-]+$",
+      "description": "Identifier of the test run this record covers. Must match the seg:runId on all referenced TestOutcome nodes."
+    },
+
+    "seg:repoBSha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$",
+      "description": "Full 40-character git SHA of repo B at the time of the test run. All TestOutcome nodes referenced in seg:outcomes must carry this same SHA. Verification: implementation extractor is rerun at this SHA and resulting node hashes are confirmed to match those stored in repo G."
+    },
+
+    "seg:outcomes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "List of test outcome entries for all in-scope test specifications. Every in-scope TestSpecification must have an entry here — absence of an entry is a coverage gap flagged in the CoverageReport.",
+      "items": {
+        "type": "object",
+        "required": [
+          "seg:outcomeId",
+          "seg:outcome"
+        ],
+        "additionalProperties": false,
+        "properties": {
+
+          "seg:outcomeId": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://[^/]+/[^/]+/outcome/[A-Z0-9-]+/TS-[0-9]+$",
+            "description": "IRI reference to the TestOutcome node for this result."
+          },
+
+          "seg:outcome": {
+            "type": "string",
+            "enum": ["PASS", "FAIL", "ERROR", "SKIPPED"],
+            "description": "Test execution result. Copied from the referenced TestOutcome node for quick access without graph traversal."
+          },
+
+          "seg:waiverId": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://[^/]+/[^/]+/waiver/WAV-[0-9]+$",
+            "description": "IRI reference to the Waiver node excusing this outcome. Present only when outcome is FAIL, ERROR, or SKIPPED and a valid non-expired waiver exists."
+          },
+
+          "seg:waiverExpiry": {
+            "type": "string",
+            "format": "date",
+            "description": "Expiry date of the waiver, copied from the Waiver node for quick staleness checking at Gate 3 without graph traversal. Present only when seg:waiverId is present."
+          }
+        }
+      }
+    },
+
+    "comment": {
+      "type": "string",
+      "description": "Optional free-text note."
+    }
+  }
+}

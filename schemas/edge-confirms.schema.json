@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zephyrproject.org/seg/schema/edge-confirms.schema.json",
+  "title": "SEG Confirms Edge",
+  "description": "Schema for a Confirms edge in the Safety Evidence Graph. Direction: TestOutcome → TestSpecification. Created automatically by the CI pipeline when test runner output is processed by the test outcome extractor. Sink edge: no suspicion propagation, no edgeHash, no linkState. Resolution of a suspect confirms edge requires a new test run — human affirmation alone is not sufficient.",
+
+  "allOf": [
+    { "$ref": "edge-base.schema.json#/$defs/baseEdge" }
+  ],
+
+  "properties": {
+
+    "type": {
+      "const": "seg:Confirms"
+    },
+
+    "id": {
+      "pattern": "^https://[^/]+/[^/]+/edge/confirms/[A-Z0-9-]+-TS-[0-9]+$",
+      "description": "Form: {namespaceBase}/edge/confirms/{runId}-{testSpecId}."
+    },
+
+    "seg:from": {
+      "pattern": "^https://[^/]+/[^/]+/outcome/[A-Z0-9-]+/TS-[0-9]+$",
+      "description": "IRI of the TestOutcome node — the one that confirms."
+    },
+
+    "seg:to": {
+      "pattern": "^https://[^/]+/[^/]+/ts/TS-[0-9]+$",
+      "description": "IRI of the TestSpecification node — the one being confirmed."
+    }
+  },
+
+  "additionalProperties": false
+}

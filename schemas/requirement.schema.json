@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zephyrproject.org/seg/schema/requirement.schema.json",
+  "title": "SEG Requirement Node",
+  "description": "Schema for a Requirement node in the Safety Evidence Graph. Maps to spdx:Requirement. Sourced from repo A (sphinx-needs .rst files). Authored by the Requirements Engineer.",
+
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "name",
+    "description",
+    "seg:nodeHash",
+    "seg:sourceRepo",
+    "seg:sourcePath"
+  ],
+  "additionalProperties": false,
+
+  "properties": {
+
+    "id": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/]+/[^/]+/req/REQ-[0-9]+$",
+      "description": "Globally unique IRI for this requirement. Form: {namespaceBase}/req/REQ-{number}. Maps to spdxId on SPDX export."
+    },
+
+    "type": {
+      "type": "string",
+      "const": "seg:Requirement",
+      "description": "Fixed SEG type. Maps to spdx:Requirement on SPDX export."
+    },
+
+    "name": {
+      "type": "string",
+      "pattern": "^REQ-[0-9]+$",
+      "description": "Human-readable requirement identifier. Must match the ID suffix in spdxId."
+    },
+
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The full requirement text body as authored in sphinx-needs."
+    },
+
+    "seg:nodeHash": {
+      "type": "object",
+      "required": ["algorithm", "hashValue"],
+      "additionalProperties": false,
+      "description": "Cryptographic hash of this node's content. Computed by the extractor over the sphinx-needs item text body and fields. A change to this value marks all outgoing edges suspect.",
+      "properties": {
+
+        "algorithm": {
+          "type": "string",
+          "const": "SHA256",
+          "description": "Hash algorithm. Fixed to SHA256."
+        },
+
+        "hashValue": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "description": "Lowercase hex-encoded SHA256 digest. Must be exactly 64 characters."
+        }
+      }
+    },
+
+    "seg:merkleHash": {
+      "type": "object",
+      "required": ["algorithm", "hashValue"],
+      "additionalProperties": false,
+      "description": "Merkle hash for this node. Computed by the proof generator as H(nodeHash || sorted(merkleHash of dependencies via strong-propagation edges)). Absent until the first proof generation run that includes this node.",
+      "properties": {
+
+        "algorithm": {
+          "type": "string",
+          "const": "SHA256"
+        },
+
+        "hashValue": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+
+    "seg:sourceRepo": {
+      "type": "string",
+      "const": "repoA",
+      "description": "Source repository for this node. Fixed to repoA for all Requirement nodes. Resolves to the concrete repo URL defined in config.json."
+    },
+
+    "seg:sourcePath": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Relative path within repo A to the .rst file containing this requirement."
+    },
+
+    "comment": {
+      "type": "string",
+      "description": "Optional free-text note. Not part of the node content and not included in nodeHash computation."
+    }
+  }
+}
