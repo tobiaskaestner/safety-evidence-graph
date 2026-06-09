@@ -166,8 +166,100 @@ def generate_proof(graph: Graph, scope: list[str]) -> dict:
 
 # ── Workflow 3 ────────────────────────────────────────────────────────────────
 
-def detect_suspect(graph: Graph) -> dict:
-    raise NotImplementedError("detect_suspect — step 6")
+def detect_suspect(graph: Graph, patches: dict[str, dict[str, str]]) -> dict:
+    """Apply in-memory node patches and propagate link-state changes.
+
+    patches — { store_id: { to_hash_field: new_content } }
+
+    Mutates graph.edges link_states in-place so a subsequent render() call
+    sees the updated state.  Graph is assumed single-use (freshly loaded).
+    """
+    import suspect as suspect_mod
+    from hashing import compute_sub_hashes, compute_node_hash
+
+    # Recompute node hashes for patched nodes
+    changed_hashes: dict[str, str] = {}  # iri → new node_hash
+    mutation_log: list[dict] = []
+    for store_id, field_patches in patches.items():
+        iri = graph.store_to_iri.get(store_id)
+        if iri is None:
+            raise ValueError(f"Unknown store_id: {store_id!r}")
+        node = graph.nodes[iri]
+        new_to_hash = dict(node.store_item["to_hash"])
+        for field, new_val in field_patches.items():
+            old_val = new_to_hash.get(field, "")
+            new_to_hash[field] = new_val
+            mutation_log.append({
+                "storeId":    store_id,
+                "field":      field,
+                "oldContent": (old_val[:60] + "…") if len(old_val) > 60 else old_val,
+                "newContent": (new_val[:60] + "…") if len(new_val) > 60 else new_val,
+            })
+        new_sub = compute_sub_hashes(new_to_hash)
+        new_nh  = compute_node_hash(new_sub)
+        if new_nh != node.node_hash:
+            changed_hashes[iri] = new_nh
+
+    node_changes = [
+        {
+            "storeId":  graph.nodes[iri].store_id,
+            "nodeType": graph.nodes[iri].node_type,
+            "oldHash":  graph.nodes[iri].node_hash[:16],
+            "newHash":  new_hash[:16],
+        }
+        for iri, new_hash in changed_hashes.items()
+    ]
+
+    if not changed_hashes:
+        return {
+            "mutations":          mutation_log,
+            "nodeHashChanges":    [],
+            "linkStateChanges":   [],
+            "satisfactionChanges": [],
+        }
+
+    # Classify new edge link states
+    new_edge_states = suspect_mod.classify_edges(graph, changed_hashes)
+
+    # Satisfaction before applying new link states
+    sat_before = {r.store_id: r.satisfied for r in satisfaction.evaluate(graph).values()}
+
+    # Apply link states to graph edges in-place
+    for edge in graph.edges:
+        if edge.edge_type in STRONG_EDGE_TYPES and edge.iri in new_edge_states:
+            edge.link_state = new_edge_states[edge.iri]
+
+    # Satisfaction after
+    sat_after = {r.store_id: r.satisfied for r in satisfaction.evaluate(graph).values()}
+
+    edge_changes = [
+        {
+            "edgeType": edge.edge_type,
+            "from":     graph.nodes[edge.from_iri].store_id,
+            "to":       graph.nodes[edge.to_iri].store_id,
+            "newState": new_edge_states[edge.iri].value,
+        }
+        for edge in graph.edges
+        if edge.edge_type in STRONG_EDGE_TYPES
+        and new_edge_states.get(edge.iri, LinkState.ACTIVE) != LinkState.ACTIVE
+    ]
+
+    sat_changes = [
+        {
+            "requirementId": sid,
+            "wasSatisfied":  sat_before[sid],
+            "nowSatisfied":  sat_after[sid],
+        }
+        for sid in sat_before
+        if sat_before[sid] != sat_after[sid]
+    ]
+
+    return {
+        "mutations":           mutation_log,
+        "nodeHashChanges":     node_changes,
+        "linkStateChanges":    edge_changes,
+        "satisfactionChanges": sat_changes,
+    }
 
 
 # ── shared helpers ────────────────────────────────────────────────────────────
@@ -225,7 +317,11 @@ def _top_level_reqs(graph: Graph) -> list[str]:
             if n.node_type == "Requirement" and iri not in reqs_with_parent]
 
 
-def compute_dot_state(graph: Graph, scope_iris: list[str] | None = None):
+def compute_dot_state(
+    graph: Graph,
+    scope_iris: list[str] | None = None,
+    mutated_iris: set[str] | None = None,
+):
     """Compute a DotState for dot_render.render().
 
     scope_iris — requirement IRIs already resolved by the CLI; None means
@@ -265,4 +361,4 @@ def compute_dot_state(graph: Graph, scope_iris: list[str] | None = None):
         in_scope = _expand_to_impl_ts(in_scope_reqs, graph)
 
     return DotState(req_status=req_status, outcome_status=outcome_status,
-                    in_scope=in_scope)
+                    in_scope=in_scope, mutated_nodes=mutated_iris or set())

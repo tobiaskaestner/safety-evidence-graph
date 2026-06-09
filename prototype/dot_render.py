@@ -17,7 +17,8 @@ from graph_model import Edge, Graph, LinkState, Node, STRONG_EDGE_TYPES
 class DotState:
     req_status:     dict[str, str]    # iri → "satisfied"|"unsatisfied"|"orphan"
     outcome_status: dict[str, str]    # iri → "pass"|"fail_waived"|"fail"|"stale"
-    in_scope:       set[str] | None = None  # None = every node in scope
+    in_scope:       set[str] | None = None   # None = every node in scope
+    mutated_nodes:  set[str]         = None  # iris whose node_hash changed (suspect origin)
 
 
 # ── colour tables ─────────────────────────────────────────────────────────────
@@ -103,9 +104,14 @@ def _node_attrs(node: Node, state: DotState | None) -> str:
         return (f'shape={shape}, style=filled, '
                 f'fillcolor="{fill_default}", label="{label}"')
 
+    is_mutated = state.mutated_nodes and node.iri in state.mutated_nodes
+
     if state.in_scope is not None and node.iri not in state.in_scope:
+        extra = ', peripheries=2' if is_mutated else ''
         return (f'shape={shape}, style=filled, fillcolor="{_DIM_FILL}", '
-                f'fontcolor="{_DIM_FONT}", label="{label}"')
+                f'fontcolor="{_DIM_FONT}", label="{label}"{extra}')
+
+    peripheries = ', peripheries=2' if is_mutated else ''
 
     if node.node_type == "Requirement":
         fill = _REQ_FILL.get(state.req_status.get(node.iri, ""), fill_default)
@@ -114,11 +120,11 @@ def _node_attrs(node: Node, state: DotState | None) -> str:
         fill = _OUTCOME_FILL.get(status, fill_default)
         if status == "stale":
             return (f'shape={shape}, style="filled,dashed", '
-                    f'fillcolor="{fill}", label="{label}"')
+                    f'fillcolor="{fill}", label="{label}"{peripheries}')
     else:
         fill = fill_default
 
-    return f'shape={shape}, style=filled, fillcolor="{fill}", label="{label}"'
+    return f'shape={shape}, style=filled, fillcolor="{fill}", label="{label}"{peripheries}'
 
 
 # ── edge styling ──────────────────────────────────────────────────────────────

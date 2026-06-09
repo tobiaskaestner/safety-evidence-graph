@@ -4,7 +4,7 @@ Usage:
     python cli.py dump [--nodes] [--edges] [--hashes] [--dot]
     python cli.py consistency [--dot]
     python cli.py proof <pattern> [<pattern> ...] [--dot]
-    python cli.py suspect
+    python cli.py suspect --mutate STORE_ID FIELD "new content" [--mutate ...] [--dot]
 
 dump flags (no flags = show everything):
     --nodes   emitted node records as JSON
@@ -158,11 +158,32 @@ def cmd_proof(patterns: list[str], dot: bool) -> None:
         print(json.dumps(generate_proof(graph, scope), indent=2))
 
 
-def cmd_suspect() -> None:
-    from workflows import detect_suspect
+def cmd_suspect(flags: argparse.Namespace) -> None:
+    from workflows import detect_suspect, compute_dot_state
+    from dot_render import render
     graph, _ = _load()
-    result = detect_suspect(graph)
-    print(json.dumps(result, indent=2))
+
+    patches: dict[str, dict[str, str]] = {}
+    for store_id, field, new_val in (flags.mutate or []):
+        patches.setdefault(store_id, {})[field] = new_val
+
+    if not patches:
+        print("error: specify at least one --mutate STORE_ID FIELD VALUE",
+              file=sys.stderr)
+        sys.exit(1)
+
+    result = detect_suspect(graph, patches)  # mutates graph.edges link_states in-place
+
+    if flags.dot:
+        mutated_iris = {
+            graph.store_to_iri[c["storeId"]]
+            for c in result["nodeHashChanges"]
+            if c["storeId"] in graph.store_to_iri
+        }
+        state = compute_dot_state(graph, mutated_iris=mutated_iris)
+        print(render(graph, state))
+    else:
+        print(json.dumps(result, indent=2))
 
 
 # ── entry point ───────────────────────────────────────────────────────────────
@@ -194,7 +215,13 @@ def main() -> None:
             flags = p.parse_args(argv[1:])
             cmd_proof(flags.patterns, flags.dot)
         case "suspect":
-            cmd_suspect()
+            p = argparse.ArgumentParser(prog="cli.py suspect")
+            p.add_argument("--mutate", action="append", nargs=3,
+                           metavar=("STORE_ID", "FIELD", "NEW_CONTENT"),
+                           help="patch a node's to_hash field; repeatable")
+            p.add_argument("--dot", action="store_true",
+                           help="DOT graph with suspect edges highlighted instead of JSON")
+            cmd_suspect(p.parse_args(argv[1:]))
         case _:
             print(f"Unknown command: {argv[0]!r}")
             print(__doc__)
