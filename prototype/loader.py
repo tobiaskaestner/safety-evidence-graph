@@ -112,7 +112,7 @@ def load(store_path: Path) -> tuple[Graph, list[dict]]:
                 from_iri=from_iri,
                 to_iri=to_iri,
                 edge_hash=compute_edge_hash(from_iri, to_iri, "seg:Refines", from_nh, to_nh),
-                link_state=LinkState.PENDING,
+                link_state=LinkState.ACTIVE,
             ))
 
         for req_id in item.get("implements", []):
@@ -124,7 +124,7 @@ def load(store_path: Path) -> tuple[Graph, list[dict]]:
                 from_iri=from_iri,
                 to_iri=to_iri,
                 edge_hash=compute_edge_hash(from_iri, to_iri, "seg:Implements", from_nh, to_nh),
-                link_state=LinkState.PENDING,
+                link_state=LinkState.ACTIVE,
             ))
 
         for req_id in item.get("verifies", []):
@@ -136,7 +136,7 @@ def load(store_path: Path) -> tuple[Graph, list[dict]]:
                 from_iri=from_iri,
                 to_iri=to_iri,
                 edge_hash=compute_edge_hash(from_iri, to_iri, "seg:Verifies", from_nh, to_nh),
-                link_state=LinkState.PENDING,
+                link_state=LinkState.ACTIVE,
             ))
 
         if "specId" in item:
