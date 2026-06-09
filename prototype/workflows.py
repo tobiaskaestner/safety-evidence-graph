@@ -193,13 +193,19 @@ def _expand_req_scope(initial_iris: list[str], graph: Graph) -> set[str]:
 
 
 def _expand_to_impl_ts(in_scope_reqs: set[str], graph: Graph) -> set[str]:
-    """Add implementations and test specs reachable from in-scope requirements."""
+    """Add implementations, test specs, outcomes, and waivers reachable from in-scope requirements."""
     all_in_scope = set(in_scope_reqs)
     for req_iri in in_scope_reqs:
         for e in graph.incoming(req_iri, "seg:Implements"):
             all_in_scope.add(e.from_iri)
         for e in graph.incoming(req_iri, "seg:Verifies"):
-            all_in_scope.add(e.from_iri)
+            ts_iri = e.from_iri
+            all_in_scope.add(ts_iri)
+            for ce in graph.incoming(ts_iri, "seg:Confirms"):
+                outcome_iri = ce.from_iri
+                all_in_scope.add(outcome_iri)
+                for we in graph.incoming(outcome_iri, "seg:Excuses"):
+                    all_in_scope.add(we.from_iri)
     return all_in_scope
 
 

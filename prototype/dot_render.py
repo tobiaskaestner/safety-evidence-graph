@@ -38,7 +38,7 @@ _REQ_FILL: dict[str, str] = {
 
 _OUTCOME_FILL: dict[str, str] = {
     "pass":        '#ABEBC6',   # green
-    "fail_waived": '#FAD7A0',   # orange
+    "fail_waived": '#F1948A',   # red (waiver shown via Excuses edge)
     "fail":        '#F1948A',   # red
     "stale":       '#BDC3C7',   # grey
 }
