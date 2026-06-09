@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zephyrproject.org/seg/schema/test_specification.schema.json",
+  "title": "SEG Test Specification Node",
+  "description": "Schema for a TestSpecification node in the Safety Evidence Graph. Sourced from repo B (doxygen comment above test function + test function body). Authored by the Test Engineer. Discovered via @testcase doxygen tag. Node hashes (specHash, implHash, nodeHash, merkleHash) are computed transiently by the extractor and persisted only in sealed proof documents — not stored in this record.",
+
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "name",
+    "description",
+    "seg:sourceRepo",
+    "seg:sourcePath"
+  ],
+  "additionalProperties": false,
+
+  "properties": {
+
+    "id": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/]+/[^/]+/ts/TS-[0-9]+$",
+      "description": "Globally unique IRI for this test specification. Form: {namespaceBase}/ts/TS-{number}. Maps to spdxId on SPDX export."
+    },
+
+    "type": {
+      "type": "string",
+      "const": "seg:TestSpecification",
+      "description": "Fixed SEG type. Maps to spdx:Artifact on SPDX export."
+    },
+
+    "name": {
+      "type": "string",
+      "pattern": "^TS-[0-9]+$",
+      "description": "Human-readable test specification identifier. Assigned manually via @testcase-id doxygen tag. Must match the ID suffix in the id field."
+    },
+
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The test intent as authored in the doxygen comment above the test function."
+    },
+
+    "seg:sourceRepo": {
+      "type": "string",
+      "const": "repoB",
+      "description": "Source repository for this node. Fixed to repoB for all TestSpecification nodes. Resolves to the concrete repo URL defined in config.json."
+    },
+
+    "seg:sourcePath": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Relative path within repo B to the test file containing both the doxygen comment and the test function body."
+    },
+
+    "comment": {
+      "type": "string",
+      "description": "Optional free-text note. Not part of the node content and not included in nodeHash computation."
+    }
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zephyrproject.org/seg/schema/evidence_manifest.schema.json",
+  "title": "SEG Evidence Manifest",
+  "description": "Schema for an EvidenceManifest document in the Safety Evidence Graph. The top-level entry point for an evidence package. Binds Part 1 (DesignConsistencyProof) and Part 2 (ExecutionCoverageRecord) together by IRI reference, alongside the CoverageReport. Anchors the entire package to a specific point in time across all four source repositories via git SHAs. An auditor starts here and follows the IRIs to verify each component independently. Immutable once generated.",
+
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "seg:snapshotId",
+    "seg:scope",
+    "seg:designConsistencyProof",
+    "seg:executionCoverageRecord",
+    "seg:coverageReport",
+    "seg:repoASha",
+    "seg:repoBSha",
+    "seg:repoCSha",
+    "seg:repoGSha"
+  ],
+  "additionalProperties": false,
+
+  "properties": {
+
+    "id": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/]+/[^/]+/proof/.+/evidence-manifest$",
+      "description": "Globally unique IRI for this evidence manifest. Form: {namespaceBase}/proof/{snapshotId}/evidence-manifest. This is the canonical identifier for the complete evidence package."
+    },
+
+    "type": {
+      "type": "string",
+      "const": "seg:EvidenceManifest",
+      "description": "Fixed SEG type."
+    },
+
+    "seg:snapshotId": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique identifier for this proof generation run. Shared across all four component documents in the same proofs/{snapshotId}/ directory. Typically an ISO 8601 timestamp."
+    },
+
+    "seg:scope": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "The set of Requirement node IRIs in scope for this evidence package. Must match the scope declared in the referenced DesignConsistencyProof.",
+      "items": {
+        "type": "string",
+        "format": "uri",
+        "pattern": "^https://[^/]+/[^/]+/req/REQ-[0-9]+$"
+      }
+    },
+
+    "seg:designConsistencyProof": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/]+/[^/]+/proof/.+/design-consistency-proof$",
+      "description": "IRI reference to the DesignConsistencyProof document for this package. Proves design graph internal consistency for the defined scope. Independently verifiable by recomputing the Merkle root from the node manifest."
+    },
+
+    "seg:executionCoverageRecord": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/]+/[^/]+/proof/.+/execution-coverage$",
+      "description": "IRI reference to the ExecutionCoverageRecord document for this package. Proves that declared tests were executed against a specific implementation state and records their outcomes. Independently verifiable against repo C and repo G."
+    },
+
+    "seg:coverageReport": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/]+/[^/]+/proof/.+/coverage-report$",
+      "description": "IRI reference to the CoverageReport document for this package. Documents gaps, suspect links, stale outcomes, and overall proof readiness status. Present regardless of whether proof generation succeeded or was refused."
+    },
+
+    "seg:repoASha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$",
+      "description": "Full git SHA of repo A (requirements) at proof generation time. 40 hex chars for SHA-1 repos, 64 for SHA-256 repos. Anchors the requirement content to a specific point in time."
+    },
+
+    "seg:repoBSha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$",
+      "description": "Full git SHA of repo B (implementations and test specifications) at proof generation time. 40 hex chars for SHA-1 repos, 64 for SHA-256 repos. Must match seg:repoBSha on all TestOutcome nodes in the ExecutionCoverageRecord."
+    },
+
+    "seg:repoCSha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$",
+      "description": "Full git SHA of repo C (test outcomes) at proof generation time. 40 hex chars for SHA-1 repos, 64 for SHA-256 repos. Anchors the test runner output to a specific point in time."
+    },
+
+    "seg:repoGSha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$",
+      "description": "Full git SHA of repo G (graph state) at proof generation time. 40 hex chars for SHA-1 repos, 64 for SHA-256 repos. Anchors the entire graph — nodes, edges, waivers, review events — to a specific point in time. An auditor can reconstruct the complete graph state by checking out repo G at this SHA."
+    },
+
+    "comment": {
+      "type": "string",
+      "description": "Optional free-text note."
+    }
+  }
+}

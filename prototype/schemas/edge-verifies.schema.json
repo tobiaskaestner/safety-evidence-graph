@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zephyrproject.org/seg/schema/edge-verifies.schema.json",
+  "title": "SEG Verifies Edge",
+  "description": "Schema for a Verifies edge in the Safety Evidence Graph. Direction: TestSpecification → Requirement. The test specification declares what it verifies via the @verifies doxygen tag. Many-to-many supported — one test spec may verify multiple requirements, one requirement may be verified by multiple test specs. Strong-propagation edge: a change to either endpoint marks this edge suspect and notifies both the Requirements Engineer and the Test Engineer. The seg:subHashChanged field on the resulting ReviewEvent distinguishes whether specHash or implHash changed. Resolution requires human affirmation; a new test run is also required if implHash changed.",
+
+  "allOf": [
+    { "$ref": "edge-base.schema.json#/$defs/baseEdge" },
+    { "$ref": "edge-base.schema.json#/$defs/strongEdge" }
+  ],
+
+  "properties": {
+
+    "type": {
+      "const": "seg:Verifies"
+    },
+
+    "id": {
+      "pattern": "^https://[^/]+/[^/]+/edge/verifies/TS-[0-9]+-REQ-[0-9]+$",
+      "description": "Form: {namespaceBase}/edge/verifies/{testSpecId}-{requirementId}."
+    },
+
+    "seg:from": {
+      "pattern": "^https://[^/]+/[^/]+/ts/TS-[0-9]+$",
+      "description": "IRI of the TestSpecification node — the one that verifies."
+    },
+
+    "seg:to": {
+      "pattern": "^https://[^/]+/[^/]+/req/REQ-[0-9]+$",
+      "description": "IRI of the Requirement node — the one being verified."
+    }
+  },
+
+  "unevaluatedProperties": false
+}

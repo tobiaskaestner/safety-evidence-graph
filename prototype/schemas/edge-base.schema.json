@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zephyrproject.org/seg/schema/edge-base.schema.json",
+  "title": "SEG Edge Base Definitions",
+  "description": "Shared $defs referenced by all edge type schemas in the Safety Evidence Graph. Not used directly — import via $ref from individual edge schemas.",
+
+  "$defs": {
+
+    "hashObject": {
+      "type": "object",
+      "required": ["algorithm", "hashValue"],
+      "additionalProperties": false,
+      "description": "A SHA256 hash value. Used for edgeHash fields.",
+      "properties": {
+        "algorithm": {
+          "type": "string",
+          "const": "SHA256"
+        },
+        "hashValue": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "description": "Lowercase hex-encoded SHA256 digest. Must be exactly 64 characters."
+        }
+      }
+    },
+
+    "baseEdge": {
+      "type": "object",
+      "required": ["id", "type", "seg:from", "seg:to"],
+      "description": "Fields common to all edge types.",
+      "properties": {
+
+        "id": {
+          "type": "string",
+          "format": "uri",
+          "description": "Globally unique IRI for this edge record. Form: {namespaceBase}/edge/{edgeType}/{fromId}-{toId}. Maps to spdxId on SPDX export."
+        },
+
+        "type": {
+          "type": "string",
+          "description": "Fixed SEG edge type. One of: seg:Refines, seg:Verifies, seg:Implements, seg:Confirms, seg:Witnesses, seg:Excuses, seg:Calls."
+        },
+
+        "seg:from": {
+          "type": "string",
+          "format": "uri",
+          "description": "IRI of the source node. Must resolve to an existing node in the graph. Cross-node validation is enforced at graph level, not schema level."
+        },
+
+        "seg:to": {
+          "type": "string",
+          "format": "uri",
+          "description": "IRI of the target node. Must resolve to an existing node in the graph. Cross-node validation is enforced at graph level, not schema level."
+        },
+
+        "comment": {
+          "type": "string",
+          "description": "Optional free-text note."
+        }
+      }
+    },
+
+    "strongEdge": {
+      "description": "Additional fields required on strong-propagation edges (refines, verifies, implements). These edges carry suspicion propagation and require human affirmation to resolve. Provenance of affirmation (who affirmed, when) is derived from git log in repo G — not stored in the edge record.",
+      "type": "object",
+      "required": ["seg:edgeHash", "seg:linkState"],
+      "properties": {
+
+        "seg:edgeHash": {
+          "$ref": "#/$defs/hashObject",
+          "description": "Hash computed as H(from || to || type || nodeHash(from) || nodeHash(to)) at the time of last affirmation. Cryptographically binds the edge to the content of both endpoints at the moment a human affirmed the relationship. The suspect link detector recomputes this hash using current node hashes — a mismatch marks the edge suspect."
+        },
+
+        "seg:linkState": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "active",
+            "directlyOutdated",
+            "transitivelySuspect",
+            "doublyOutdated",
+            "broken"
+          ],
+          "description": "Current integrity state of this edge. pending: edge exists but has never been affirmed (initial bootstrap state). active: both endpoints unchanged since last affirmation. directlyOutdated: this node's own content changed. transitivelySuspect: a dependency changed. doublyOutdated: both this node and a dependency changed. broken: one or both endpoint nodes no longer exist in their source repository — cannot be resolved by affirmation. Only active edges contribute to a valid proof. All other states block proof generation."
+        }
+      }
+    }
+  }
+}

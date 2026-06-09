@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zephyrproject.org/seg/schema/implementation.schema.json",
+  "title": "SEG Implementation Node",
+  "description": "Schema for an Implementation node in the Safety Evidence Graph. Sourced from repo B (doxygen comment in .h + function body in .c). Authored by the Software Engineer. Discovered via @safety doxygen tag. Node hashes (apiHash, bodyHash, nodeHash, merkleHash) are computed transiently by the extractor and persisted only in sealed proof documents — not stored in this record.",
+
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "name",
+    "seg:sourceRepo",
+    "seg:sourcePath"
+  ],
+  "additionalProperties": false,
+
+  "properties": {
+
+    "id": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/]+/[^/]+/impl/[a-zA-Z_][a-zA-Z0-9_]*$",
+      "description": "Globally unique IRI for this implementation node. Form: {namespaceBase}/impl/{functionName}. Function name is the locator only — not a semantic anchor. A rename that leaves doxygen comment and @implements tags intact does not change the evidence. Maps to spdxId on SPDX export."
+    },
+
+    "type": {
+      "type": "string",
+      "const": "seg:Implementation",
+      "description": "Fixed SEG type. Maps to spdx:Artifact on SPDX export."
+    },
+
+    "name": {
+      "type": "string",
+      "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$",
+      "description": "Function name. Used as the locator for the extractor. Must match the identifier in the id field."
+    },
+
+    "seg:sourceRepo": {
+      "type": "string",
+      "const": "repoB",
+      "description": "Source repository for this node. Fixed to repoB for all Implementation nodes. Resolves to the concrete repo URL defined in config.json."
+    },
+
+    "seg:sourcePath": {
+      "type": "object",
+      "required": ["header", "body"],
+      "additionalProperties": false,
+      "description": "Relative paths within repo B to the source files for this function. Split into header (doxygen comment, feeds apiHash) and body (function implementation, feeds bodyHash).",
+      "properties": {
+        "header": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\.h$",
+          "description": "Relative path to the .h file containing the doxygen comment and @safety tag."
+        },
+        "body": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\.c$",
+          "description": "Relative path to the .c file containing the function body."
+        }
+      }
+    },
+
+    "comment": {
+      "type": "string",
+      "description": "Optional free-text note. Not part of the node content and not included in nodeHash computation."
+    }
+  }
+}

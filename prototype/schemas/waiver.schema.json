@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zephyrproject.org/seg/schema/waiver.schema.json",
+  "title": "SEG Waiver Node",
+  "description": "Schema for a Waiver node in the Safety Evidence Graph. Created exclusively by the Functional Safety Manager to excuse a FAIL, ERROR, or SKIPPED test outcome. Currently sourced from repo G — seg:sourceRepo and seg:sourcePath are retained for future portability if waivers move to a dedicated repo. Append-only and immutable once created. Approver identity and approval timestamp are provenance metadata derived from git log in repo G at proof generation time — not stored in this record.",
+
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "name",
+    "seg:outcomeId",
+    "seg:justification",
+    "seg:sourceRepo",
+    "seg:sourcePath"
+  ],
+  "additionalProperties": false,
+
+  "properties": {
+
+    "id": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/]+/[^/]+/waiver/WAV-[0-9]+$",
+      "description": "Globally unique IRI for this waiver. Form: {namespaceBase}/waiver/WAV-{number}. Maps to spdxId on SPDX export."
+    },
+
+    "type": {
+      "type": "string",
+      "const": "seg:Waiver",
+      "description": "Fixed SEG type. Maps to spdx:Annotation with annotationType review on SPDX export."
+    },
+
+    "name": {
+      "type": "string",
+      "pattern": "^WAV-[0-9]+$",
+      "description": "Human-readable waiver identifier. Must match the ID suffix in the id field."
+    },
+
+    "seg:outcomeId": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/]+/[^/]+/outcome/[A-Z0-9-]+/TS-[0-9]+$",
+      "description": "IRI reference to the TestOutcome node this waiver excuses. Must resolve to an existing TestOutcome node with outcome FAIL, ERROR, or SKIPPED."
+    },
+
+    "seg:justification": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable explanation of why this test outcome is acceptable despite not passing. Should reference supporting evidence such as issue tracker entries, hardware test results, or engineering analysis."
+    },
+
+    "seg:expiry": {
+      "type": "string",
+      "format": "date",
+      "description": "Optional ISO 8601 date after which this waiver is no longer valid. Recommended to force periodic re-examination of known failures."
+    },
+
+    "seg:sourceRepo": {
+      "type": "string",
+      "const": "repoG",
+      "description": "Source repository for this node. Currently fixed to repoG. Retained for future portability if waivers move to a dedicated repo."
+    },
+
+    "seg:sourcePath": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Relative path within repo G to the waivers file containing this record."
+    },
+
+    "comment": {
+      "type": "string",
+      "description": "Optional free-text note. Not part of the node content and not included in nodeHash computation."
+    }
+  }
+}

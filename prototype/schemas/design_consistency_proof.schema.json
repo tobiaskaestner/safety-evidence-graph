@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zephyrproject.org/seg/schema/design_consistency_proof.schema.json",
+  "title": "SEG Design Consistency Proof",
+  "description": "Schema for a DesignConsistencyProof document in the Safety Evidence Graph. Stored as design_consistency_proof.jsonld in the proofs/{snapshotId}/ directory alongside the other three sealed package documents. Represents Part 1 of the evidence package \u2014 proves that the design graph is internally consistent for a defined requirements scope at a specific point in time. Does NOT prove that tests were executed or passed \u2014 that is Part 2, captured in the ExecutionCoverageRecord. An auditor can verify this document independently by recomputing the Merkle root from the nodeManifest without accessing repos A or B directly. Immutable once generated.",
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "seg:snapshotId",
+    "seg:scope",
+    "seg:merkleRoot",
+    "seg:nodeManifest"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^/]+/[^/]+/proof/.+/design-consistency-proof$",
+      "description": "Globally unique IRI for this proof document. Form: {namespaceBase}/proof/{snapshotId}/design-consistency-proof."
+    },
+    "type": {
+      "type": "string",
+      "const": "seg:DesignConsistencyProof",
+      "description": "Fixed SEG type."
+    },
+    "seg:snapshotId": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique identifier for this proof generation run. Typically an ISO 8601 timestamp. Used as the filename in proofs/ and as part of the id IRI."
+    },
+    "seg:scope": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "The set of Requirement node IRIs in scope for this proof. Only nodes and edges reachable from these requirements via strong-propagation edges (refines, verifies, implements) are included in the Merkle computation.",
+      "items": {
+        "type": "string",
+        "format": "uri",
+        "pattern": "^https://[^/]+/[^/]+/req/REQ-[0-9]+$"
+      }
+    },
+    "seg:merkleRoot": {
+      "type": "object",
+      "required": [
+        "algorithm",
+        "hashValue"
+      ],
+      "additionalProperties": false,
+      "description": "Cryptographic fingerprint of the design graph for the defined scope. Computed as the aggregate Merkle hash over all in-scope nodes via strong-propagation edges. Stable across test runs \u2014 changes only when design content changes. An auditor verifies this by recomputing from seg:nodeManifest.",
+      "properties": {
+        "algorithm": {
+          "type": "string",
+          "const": "SHA256"
+        },
+        "hashValue": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "seg:nodeManifest": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "Ordered list of all in-scope nodes included in the Merkle computation. Contains sufficient information for an auditor to independently verify the merkleRoot without accessing the source repositories. Includes Requirements, TestSpecifications, and Implementations \u2014 not TestOutcomes or Waivers, which belong to Part 2.",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "seg:nodeHash",
+          "seg:merkleHash"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uri",
+            "description": "IRI of the node. Must resolve to an existing node in nodes/."
+          },
+          "seg:nodeHash": {
+            "type": "object",
+            "required": [
+              "algorithm",
+              "hashValue"
+            ],
+            "additionalProperties": false,
+            "description": "Content hash of this node at snapshot time. An auditor can verify this by rerunning the appropriate extractor against the source repo at the git SHA recorded in the EvidenceManifest.",
+            "properties": {
+              "algorithm": {
+                "type": "string",
+                "const": "SHA256"
+              },
+              "hashValue": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            }
+          },
+          "seg:merkleHash": {
+            "type": "object",
+            "required": [
+              "algorithm",
+              "hashValue"
+            ],
+            "additionalProperties": false,
+            "description": "Merkle hash of this node at snapshot time. Computed as H(nodeHash || sorted(merkleHash of dependencies via strong-propagation edges)). Used by the auditor to recompute and verify the merkleRoot.",
+            "properties": {
+              "algorithm": {
+                "type": "string",
+                "const": "SHA256"
+              },
+              "hashValue": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            }
+          }
+        }
+      }
+    },
+    "comment": {
+      "type": "string",
+      "description": "Optional free-text note."
+    }
+  }
+}
