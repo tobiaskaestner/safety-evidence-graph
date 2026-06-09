@@ -75,7 +75,7 @@ _DIM_EDGE = '#D5D8DC'
 def render(graph: Graph, state: DotState | None = None) -> str:
     lines = [
         "digraph seg {",
-        '  graph [rankdir=LR, fontname="Helvetica"];',
+        '  graph [rankdir=RL, fontname="Helvetica"];',
         '  node  [fontname="Helvetica", fontsize=11];',
         '  edge  [fontname="Helvetica", fontsize=9];',
         "",
