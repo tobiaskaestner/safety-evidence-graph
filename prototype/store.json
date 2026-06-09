@@ -1,1 +1,299 @@
-[]
+[
+  {
+    "_comment": "── System requirements (non-leaf: no refines, no direct coverage edges) ──────"
+  },
+  {
+    "id": "SYS-REQ-001",
+    "type": "Requirement",
+    "name": "SYS-REQ-001",
+    "to_hash": {
+      "nodeHash": "The system shall validate authentication tokens before granting access to protected resources."
+    }
+  },
+  {
+    "id": "SYS-REQ-002",
+    "type": "Requirement",
+    "name": "SYS-REQ-002",
+    "to_hash": {
+      "nodeHash": "The system shall manage user sessions, including creation, expiry, and concurrency limits."
+    }
+  },
+
+  {
+    "_comment": "── Software requirements under SYS-REQ-001 (leaves, fully satisfied) ─────────"
+  },
+  {
+    "id": "REQ-001",
+    "type": "Requirement",
+    "name": "REQ-001",
+    "to_hash": {
+      "nodeHash": "The module shall validate the cryptographic signature of every token presented for authentication."
+    },
+    "refines": ["SYS-REQ-001"]
+  },
+  {
+    "id": "REQ-002",
+    "type": "Requirement",
+    "name": "REQ-002",
+    "to_hash": {
+      "nodeHash": "The module shall reject any token whose expiry timestamp lies in the past."
+    },
+    "refines": ["SYS-REQ-001"]
+  },
+
+  {
+    "_comment": "── Software requirements under SYS-REQ-002 (mixed satisfaction) ──────────────"
+  },
+  {
+    "id": "REQ-003",
+    "type": "Requirement",
+    "name": "REQ-003",
+    "to_hash": {
+      "nodeHash": "The module shall create a new session record upon successful authentication."
+    },
+    "refines": ["SYS-REQ-002"]
+  },
+  {
+    "id": "REQ-004",
+    "type": "Requirement",
+    "name": "REQ-004",
+    "to_hash": {
+      "nodeHash": "The module shall expire and invalidate sessions that have been idle for longer than the configured timeout."
+    },
+    "refines": ["SYS-REQ-002"]
+  },
+  {
+    "id": "REQ-005",
+    "type": "Requirement",
+    "name": "REQ-005",
+    "to_hash": {
+      "nodeHash": "The module shall reject login attempts when the user already holds the maximum number of concurrent active sessions."
+    },
+    "refines": ["SYS-REQ-002"]
+  },
+
+  {
+    "_comment": "── Implementations (1:1 with software requirements) ───────────────────────────"
+  },
+  {
+    "id": "IMPL-001",
+    "type": "Implementation",
+    "name": "validate_signature",
+    "to_hash": {
+      "apiHash": "def validate_signature(token: str, public_key: bytes) -> bool:\n    \"\"\"Verify the HMAC-SHA256 signature of a token.\n\n    :implements: REQ-001\n    \"\"\"",
+      "bodyHash": "    header, payload, sig = token.split('.')\n    expected = hmac.new(public_key, f'{header}.{payload}'.encode(), sha256).hexdigest()\n    return hmac.compare_digest(sig, expected)"
+    },
+    "implements": ["REQ-001"]
+  },
+  {
+    "id": "IMPL-002",
+    "type": "Implementation",
+    "name": "validate_expiry",
+    "to_hash": {
+      "apiHash": "def validate_expiry(claims: dict) -> bool:\n    \"\"\"Return True if the token has not yet expired.\n\n    :implements: REQ-002\n    \"\"\"",
+      "bodyHash": "    exp = claims.get('exp')\n    if exp is None:\n        return False\n    return time.time() < exp"
+    },
+    "implements": ["REQ-002"]
+  },
+  {
+    "id": "IMPL-003",
+    "type": "Implementation",
+    "name": "create_session",
+    "to_hash": {
+      "apiHash": "def create_session(user_id: str, ttl: int) -> Session:\n    \"\"\"Create and persist a new session for the given user.\n\n    :implements: REQ-003\n    \"\"\"",
+      "bodyHash": "    session = Session(id=uuid4().hex, user_id=user_id, expires_at=time.time() + ttl)\n    db.sessions.insert(session)\n    return session"
+    },
+    "implements": ["REQ-003"]
+  },
+  {
+    "id": "IMPL-004",
+    "type": "Implementation",
+    "name": "expire_idle_sessions",
+    "to_hash": {
+      "apiHash": "def expire_idle_sessions(idle_threshold: int) -> int:\n    \"\"\"Expire all sessions idle for longer than idle_threshold seconds.\n\n    :implements: REQ-004\n    \"\"\"",
+      "bodyHash": "    cutoff = time.time() - idle_threshold\n    expired = db.sessions.find(last_active__lt=cutoff)\n    for s in expired:\n        s.invalidate()\n    return len(expired)"
+    },
+    "implements": ["REQ-004"]
+  },
+  {
+    "id": "IMPL-005",
+    "type": "Implementation",
+    "name": "check_session_limit",
+    "to_hash": {
+      "apiHash": "def check_session_limit(user_id: str, max_sessions: int) -> bool:\n    \"\"\"Return True if the user is below the concurrent session limit.\n\n    :implements: REQ-005\n    \"\"\"",
+      "bodyHash": "    active = db.sessions.count(user_id=user_id, active=True)\n    return active < max_sessions"
+    },
+    "implements": ["REQ-005"]
+  },
+
+  {
+    "_comment": "── Test specifications ────────────────────────────────────────────────────────"
+  },
+  {
+    "id": "TS-001",
+    "type": "TestSpecification",
+    "name": "TS-001",
+    "to_hash": {
+      "specHash": "A token carrying a valid HMAC-SHA256 signature shall be accepted by validate_signature.",
+      "implHash": "    token = mint_token(KEY)\n    assert validate_signature(token, KEY) is True"
+    },
+    "verifies": ["REQ-001"]
+  },
+  {
+    "id": "TS-002",
+    "type": "TestSpecification",
+    "name": "TS-002",
+    "to_hash": {
+      "specHash": "A token whose signature has been tampered with shall be rejected by validate_signature.",
+      "implHash": "    token = mint_token(KEY)\n    tampered = token[:-4] + 'xxxx'\n    assert validate_signature(tampered, KEY) is False"
+    },
+    "verifies": ["REQ-001"]
+  },
+  {
+    "id": "TS-003",
+    "type": "TestSpecification",
+    "name": "TS-003",
+    "to_hash": {
+      "specHash": "A token whose exp claim is set in the past shall be rejected by validate_expiry.",
+      "implHash": "    claims = {'exp': time.time() - 1}\n    assert validate_expiry(claims) is False"
+    },
+    "verifies": ["REQ-002"]
+  },
+  {
+    "id": "TS-004",
+    "type": "TestSpecification",
+    "name": "TS-004",
+    "to_hash": {
+      "specHash": "create_session shall return a Session whose expires_at is approximately now + ttl.",
+      "implHash": "    s = create_session('u1', ttl=300)\n    assert abs(s.expires_at - (time.time() + 300)) < 2"
+    },
+    "verifies": ["REQ-003"]
+  },
+  {
+    "id": "TS-005",
+    "type": "TestSpecification",
+    "name": "TS-005",
+    "to_hash": {
+      "specHash": "expire_idle_sessions shall invalidate sessions whose last_active is older than the threshold.",
+      "implHash": "    s = create_stale_session(idle_seconds=3601)\n    n = expire_idle_sessions(idle_threshold=3600)\n    assert n >= 1\n    assert not db.sessions.get(s.id).active"
+    },
+    "verifies": ["REQ-004"]
+  },
+  {
+    "id": "TS-006",
+    "type": "TestSpecification",
+    "name": "TS-006",
+    "to_hash": {
+      "specHash": "check_session_limit shall return False when the user already holds max_sessions active sessions.",
+      "implHash": "    for _ in range(MAX_SESSIONS):\n        create_session('u1', ttl=300)\n    assert check_session_limit('u1', MAX_SESSIONS) is False"
+    },
+    "verifies": ["REQ-005"]
+  },
+
+  {
+    "_comment": "── Test outcomes — run RUN-001 ────────────────────────────────────────────────"
+  },
+  {
+    "_comment": "RUN-001/TS-001..005 share repoBSha; RUN-001/TS-006 has an old SHA (stale scenario)"
+  },
+  {
+    "id": "RUN-001/TS-001",
+    "type": "TestOutcome",
+    "name": "RUN-001/TS-001",
+    "runId": "RUN-001",
+    "outcome": "PASS",
+    "repoBSha": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2",
+    "specId": "TS-001",
+    "implId": "IMPL-001",
+    "to_hash": {
+      "nodeHash": "RUN-001 TS-001 PASS a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
+    }
+  },
+  {
+    "id": "RUN-001/TS-002",
+    "type": "TestOutcome",
+    "name": "RUN-001/TS-002",
+    "runId": "RUN-001",
+    "outcome": "PASS",
+    "repoBSha": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2",
+    "specId": "TS-002",
+    "implId": "IMPL-001",
+    "to_hash": {
+      "nodeHash": "RUN-001 TS-002 PASS a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
+    }
+  },
+  {
+    "id": "RUN-001/TS-003",
+    "type": "TestOutcome",
+    "name": "RUN-001/TS-003",
+    "runId": "RUN-001",
+    "outcome": "PASS",
+    "repoBSha": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2",
+    "specId": "TS-003",
+    "implId": "IMPL-002",
+    "to_hash": {
+      "nodeHash": "RUN-001 TS-003 PASS a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
+    }
+  },
+  {
+    "id": "RUN-001/TS-004",
+    "type": "TestOutcome",
+    "name": "RUN-001/TS-004",
+    "runId": "RUN-001",
+    "outcome": "PASS",
+    "repoBSha": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2",
+    "specId": "TS-004",
+    "implId": "IMPL-003",
+    "to_hash": {
+      "nodeHash": "RUN-001 TS-004 PASS a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
+    }
+  },
+  {
+    "_comment": "FAIL outcome for REQ-004; excused by WAV-001 → REQ-004 counts as satisfied"
+  },
+  {
+    "id": "RUN-001/TS-005",
+    "type": "TestOutcome",
+    "name": "RUN-001/TS-005",
+    "runId": "RUN-001",
+    "outcome": "FAIL",
+    "repoBSha": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2",
+    "specId": "TS-005",
+    "implId": "IMPL-004",
+    "to_hash": {
+      "nodeHash": "RUN-001 TS-005 FAIL a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
+    }
+  },
+  {
+    "_comment": "PASS but repoBSha predates the current run — confirms/witnesses edges are stale → REQ-005 not satisfied → SYS-REQ-002 not satisfied"
+  },
+  {
+    "id": "RUN-001/TS-006",
+    "type": "TestOutcome",
+    "name": "RUN-001/TS-006",
+    "runId": "RUN-001",
+    "outcome": "PASS",
+    "repoBSha": "0000000000000000000000000000000000000000",
+    "specId": "TS-006",
+    "implId": "IMPL-005",
+    "to_hash": {
+      "nodeHash": "RUN-001 TS-006 PASS 0000000000000000000000000000000000000000"
+    }
+  },
+
+  {
+    "_comment": "── Waiver ────────────────────────────────────────────────────────────────────"
+  },
+  {
+    "id": "WAV-001",
+    "type": "Waiver",
+    "name": "WAV-001",
+    "excuses": "RUN-001/TS-005",
+    "approver": "tkaestner",
+    "expiry": "2026-12-31",
+    "reason": "expire_idle_sessions integration test requires a live database fixture not yet provisioned in CI; manual verification completed on 2026-06-09.",
+    "to_hash": {
+      "nodeHash": "WAV-001 tkaestner 2026-12-31 excuses:RUN-001/TS-005 expire_idle_sessions integration test requires a live database fixture not yet provisioned in CI"
+    }
+  }
+]
