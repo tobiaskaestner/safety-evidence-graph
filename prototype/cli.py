@@ -3,7 +3,7 @@
 Usage:
     python cli.py dump [--nodes] [--edges] [--hashes] [--dot]
     python cli.py consistency
-    python cli.py proof <req-id> [...]
+    python cli.py proof <pattern> [<pattern> ...]
     python cli.py suspect
 
 dump flags (no flags = show everything):
@@ -11,11 +11,20 @@ dump flags (no flags = show everything):
     --edges   emitted edge records as JSON
     --hashes  per-node sub-hashes, nodeHash, merkleHash
     --dot     graph in DOT format (pipe to: dot -Tsvg -o graph.svg)
+
+proof:
+    Each <pattern> is a Python regex matched (fullmatch) against requirement
+    store_ids. Multiple patterns are OR-ed; duplicates are removed.
+    Examples:
+        python cli.py proof 'SYS-REQ-.*'          # both system reqs
+        python cli.py proof 'REQ-00[123]'          # three leaves
+        python cli.py proof 'SYS-REQ-001' 'REQ-.*' # union
 """
 from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -27,6 +36,29 @@ def _load():
     graph, items = load(STORE)
     records = emit_all_records(graph)
     return graph, records
+
+
+# ── scope resolution ──────────────────────────────────────────────────────────
+
+def _resolve_scope(patterns: list[str], graph) -> list[str]:
+    """Match regex patterns against requirement store_ids; return deduplicated IRIs."""
+    req_nodes = [n for n in graph.nodes.values() if n.node_type == "Requirement"]
+    seen: set[str] = set()
+    result: list[str] = []
+    for raw in patterns:
+        try:
+            pat = re.compile(raw)
+        except re.error as exc:
+            print(f"error: invalid regex {raw!r}: {exc}", file=sys.stderr)
+            sys.exit(1)
+        hits = [n for n in req_nodes if pat.fullmatch(n.store_id)]
+        if not hits:
+            print(f"warning: pattern {raw!r} matched no requirements", file=sys.stderr)
+        for n in hits:
+            if n.iri not in seen:
+                seen.add(n.iri)
+                result.append(n.iri)
+    return result
 
 
 # ── dump sections ─────────────────────────────────────────────────────────────
@@ -92,14 +124,12 @@ def _dump_dot(graph) -> None:
         '  edge  [fontname="Helvetica", fontsize=9];',
         "",
     ]
-
     lines.append("  // nodes")
     for node in sorted(graph.nodes.values(), key=lambda n: n.store_id):
         dot_id = f'"{node.store_id}"'
         style = _NODE_STYLES.get(node.node_type, "")
         label = f"{node.store_id}\\n{node.node_type}"
         lines.append(f"  {dot_id} [{style}, label=\"{label}\"];")
-
     lines.append("")
     lines.append("  // edges")
     for edge in graph.edges:
@@ -107,7 +137,6 @@ def _dump_dot(graph) -> None:
         to_id = f'"{graph.nodes[edge.to_iri].store_id}"'
         style = _EDGE_STYLES.get(edge.edge_type, "")
         lines.append(f"  {from_id} -> {to_id} [{style}];")
-
     lines.append("}")
     print("\n".join(lines))
 
@@ -141,9 +170,15 @@ def cmd_consistency() -> None:
     print(json.dumps(result, indent=2))
 
 
-def cmd_proof(scope: list[str]) -> None:
+def cmd_proof(patterns: list[str]) -> None:
     from workflows import generate_proof
     graph, _ = _load()
+    scope = _resolve_scope(patterns, graph)
+    if not scope:
+        print("error: no requirements matched — nothing to prove", file=sys.stderr)
+        sys.exit(1)
+    matched_ids = [graph.nodes[iri].store_id for iri in scope]
+    print(f"scope: {matched_ids}", file=sys.stderr)
     result = generate_proof(graph, scope)
     print(json.dumps(result, indent=2))
 
@@ -175,7 +210,7 @@ def main() -> None:
             cmd_consistency()
         case "proof":
             if len(argv) < 2:
-                print("Usage: python cli.py proof <req-id> [...]")
+                print("Usage: python cli.py proof <pattern> [<pattern> ...]")
                 sys.exit(1)
             cmd_proof(argv[1:])
         case "suspect":
