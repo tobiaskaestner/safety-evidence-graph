@@ -2,23 +2,28 @@
 
 Usage:
     python cli.py dump [--nodes] [--edges] [--hashes] [--dot]
-    python cli.py consistency
-    python cli.py proof <pattern> [<pattern> ...]
+    python cli.py consistency [--dot]
+    python cli.py proof <pattern> [<pattern> ...] [--dot]
     python cli.py suspect
 
 dump flags (no flags = show everything):
     --nodes   emitted node records as JSON
     --edges   emitted edge records as JSON
     --hashes  per-node sub-hashes, nodeHash, merkleHash
-    --dot     graph in DOT format (pipe to: dot -Tsvg -o graph.svg)
+    --dot     graph in DOT format — static, type colours only
 
-proof:
-    Each <pattern> is a Python regex matched (fullmatch) against requirement
-    store_ids. Multiple patterns are OR-ed; duplicates are removed.
+consistency / proof --dot:
+    Outputs DOT instead of JSON. Nodes and edges are coloured by proof
+    state. proof --dot also dims nodes outside the resolved scope.
+
+    Pipe to graphviz:  python cli.py consistency --dot | dot -Tsvg -o out.svg
+
+proof patterns:
+    Each <pattern> is a Python regex matched (fullmatch) against
+    requirement store_ids. Multiple patterns are OR-ed; duplicates removed.
     Examples:
-        python cli.py proof 'SYS-REQ-.*'          # both system reqs
-        python cli.py proof 'REQ-00[123]'          # three leaves
-        python cli.py proof 'SYS-REQ-001' 'REQ-.*' # union
+        python cli.py proof 'SYS-REQ-.*'
+        python cli.py proof 'SYS-REQ-001' 'REQ-00[12]'
 """
 from __future__ import annotations
 
@@ -41,7 +46,7 @@ def _load():
 # ── scope resolution ──────────────────────────────────────────────────────────
 
 def _resolve_scope(patterns: list[str], graph) -> list[str]:
-    """Match regex patterns against requirement store_ids; return deduplicated IRIs."""
+    """Match regex patterns against requirement store_ids; return deduped IRIs."""
     req_nodes = [n for n in graph.nodes.values() if n.node_type == "Requirement"]
     seen: set[str] = set()
     result: list[str] = []
@@ -98,47 +103,9 @@ def _dump_hashes(graph) -> None:
         print(f"    {'merkleHash':12s}: {node.merkle_hash}")
 
 
-_NODE_STYLES: dict[str, str] = {
-    "Requirement":       'shape=box,      style=filled, fillcolor="#AED6F1"',
-    "Implementation":    'shape=ellipse,  style=filled, fillcolor="#A9DFBF"',
-    "TestSpecification": 'shape=hexagon,  style=filled, fillcolor="#FAD7A0"',
-    "TestOutcome":       'shape=note,     style=filled, fillcolor="#F9E79F"',
-    "Waiver":            'shape=octagon,  style=filled, fillcolor="#F5CBA7"',
-}
-
-_EDGE_STYLES: dict[str, str] = {
-    "seg:Refines":    'color="#2980B9", fontcolor="#2980B9", label="Refines"',
-    "seg:Implements": 'color="#27AE60", fontcolor="#27AE60", label="Implements"',
-    "seg:Verifies":   'color="#E67E22", fontcolor="#E67E22", label="Verifies"',
-    "seg:Confirms":   'style=dashed, color="#7F8C8D", fontcolor="#7F8C8D", label="Confirms"',
-    "seg:Witnesses":  'style=dashed, color="#7F8C8D", fontcolor="#7F8C8D", label="Witnesses"',
-    "seg:Excuses":    'style=dashed, color="#C0392B", fontcolor="#C0392B", label="Excuses"',
-}
-
-
 def _dump_dot(graph) -> None:
-    lines = [
-        "digraph seg {",
-        '  graph [rankdir=LR, fontname="Helvetica"];',
-        '  node  [fontname="Helvetica", fontsize=11];',
-        '  edge  [fontname="Helvetica", fontsize=9];',
-        "",
-    ]
-    lines.append("  // nodes")
-    for node in sorted(graph.nodes.values(), key=lambda n: n.store_id):
-        dot_id = f'"{node.store_id}"'
-        style = _NODE_STYLES.get(node.node_type, "")
-        label = f"{node.store_id}\\n{node.node_type}"
-        lines.append(f"  {dot_id} [{style}, label=\"{label}\"];")
-    lines.append("")
-    lines.append("  // edges")
-    for edge in graph.edges:
-        from_id = f'"{graph.nodes[edge.from_iri].store_id}"'
-        to_id = f'"{graph.nodes[edge.to_iri].store_id}"'
-        style = _EDGE_STYLES.get(edge.edge_type, "")
-        lines.append(f"  {from_id} -> {to_id} [{style}];")
-    lines.append("}")
-    print("\n".join(lines))
+    from dot_render import render
+    print(render(graph))
 
 
 def cmd_dump(flags: argparse.Namespace) -> None:
@@ -163,15 +130,20 @@ def cmd_dump(flags: argparse.Namespace) -> None:
 
 # ── other commands ────────────────────────────────────────────────────────────
 
-def cmd_consistency() -> None:
-    from workflows import consistency
+def cmd_consistency(flags: argparse.Namespace) -> None:
+    from workflows import consistency, compute_dot_state
+    from dot_render import render
     graph, _ = _load()
-    result = consistency(graph)
-    print(json.dumps(result, indent=2))
+    if flags.dot:
+        state = compute_dot_state(graph)
+        print(render(graph, state))
+    else:
+        print(json.dumps(consistency(graph), indent=2))
 
 
-def cmd_proof(patterns: list[str]) -> None:
-    from workflows import generate_proof
+def cmd_proof(patterns: list[str], dot: bool) -> None:
+    from workflows import generate_proof, compute_dot_state
+    from dot_render import render
     graph, _ = _load()
     scope = _resolve_scope(patterns, graph)
     if not scope:
@@ -179,8 +151,11 @@ def cmd_proof(patterns: list[str]) -> None:
         sys.exit(1)
     matched_ids = [graph.nodes[iri].store_id for iri in scope]
     print(f"scope: {matched_ids}", file=sys.stderr)
-    result = generate_proof(graph, scope)
-    print(json.dumps(result, indent=2))
+    if dot:
+        state = compute_dot_state(graph, scope_iris=scope)
+        print(render(graph, state))
+    else:
+        print(json.dumps(generate_proof(graph, scope), indent=2))
 
 
 def cmd_suspect() -> None:
@@ -200,19 +175,24 @@ def main() -> None:
 
     match argv[0]:
         case "dump":
-            p = argparse.ArgumentParser(prog="cli.py dump", add_help=True)
+            p = argparse.ArgumentParser(prog="cli.py dump")
             p.add_argument("--nodes",  action="store_true", help="emitted node records (JSON)")
             p.add_argument("--edges",  action="store_true", help="emitted edge records (JSON)")
             p.add_argument("--hashes", action="store_true", help="per-node sub/node/merkle hashes")
-            p.add_argument("--dot",    action="store_true", help="graph in DOT format")
+            p.add_argument("--dot",    action="store_true", help="static DOT graph")
             cmd_dump(p.parse_args(argv[1:]))
         case "consistency":
-            cmd_consistency()
+            p = argparse.ArgumentParser(prog="cli.py consistency")
+            p.add_argument("--dot", action="store_true",
+                           help="DOT graph with state overlay instead of JSON")
+            cmd_consistency(p.parse_args(argv[1:]))
         case "proof":
-            if len(argv) < 2:
-                print("Usage: python cli.py proof <pattern> [<pattern> ...]")
-                sys.exit(1)
-            cmd_proof(argv[1:])
+            p = argparse.ArgumentParser(prog="cli.py proof")
+            p.add_argument("patterns", nargs="+", help="regex patterns for requirement IDs")
+            p.add_argument("--dot", action="store_true",
+                           help="DOT graph with scope + state overlay instead of JSON")
+            flags = p.parse_args(argv[1:])
+            cmd_proof(flags.patterns, flags.dot)
         case "suspect":
             cmd_suspect()
         case _:

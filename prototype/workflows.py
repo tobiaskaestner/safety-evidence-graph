@@ -217,3 +217,46 @@ def _top_level_reqs(graph: Graph) -> list[str]:
     reqs_with_parent = {e.from_iri for e in graph.edges if e.edge_type == "seg:Refines"}
     return [iri for iri, n in graph.nodes.items()
             if n.node_type == "Requirement" and iri not in reqs_with_parent]
+
+
+def compute_dot_state(graph: Graph, scope_iris: list[str] | None = None):
+    """Compute a DotState for dot_render.render().
+
+    scope_iris — requirement IRIs already resolved by the CLI; None means
+                 show the full graph (consistency --dot).
+    """
+    from dot_render import DotState
+
+    results = satisfaction.evaluate(graph)
+    current_sha = _majority_sha(graph)
+
+    req_status: dict[str, str] = {}
+    for iri, r in results.items():
+        if r.classification == "orphan":
+            req_status[iri] = "orphan"
+        elif r.satisfied:
+            req_status[iri] = "satisfied"
+        else:
+            req_status[iri] = "unsatisfied"
+
+    outcome_status: dict[str, str] = {}
+    for iri, node in graph.nodes.items():
+        if node.node_type != "TestOutcome":
+            continue
+        item = node.store_item
+        if current_sha and item.get("repoBSha") != current_sha:
+            outcome_status[iri] = "stale"
+        elif item["outcome"] == "PASS":
+            outcome_status[iri] = "pass"
+        elif graph.incoming(iri, "seg:Excuses"):
+            outcome_status[iri] = "fail_waived"
+        else:
+            outcome_status[iri] = "fail"
+
+    in_scope: set[str] | None = None
+    if scope_iris is not None:
+        in_scope_reqs = _expand_req_scope(scope_iris, graph)
+        in_scope = _expand_to_impl_ts(in_scope_reqs, graph)
+
+    return DotState(req_status=req_status, outcome_status=outcome_status,
+                    in_scope=in_scope)
