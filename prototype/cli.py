@@ -1,13 +1,20 @@
 """Command-line entry point for the three SEG prototype workflows.
 
 Usage:
-    python cli.py dump                        # inspect emitted records and hashes
-    python cli.py consistency                 # workflow 1
-    python cli.py proof <req-id> [...]        # workflow 2
-    python cli.py suspect                     # workflow 3 (human edits store first)
+    python cli.py dump [--nodes] [--edges] [--hashes] [--dot]
+    python cli.py consistency
+    python cli.py proof <req-id> [...]
+    python cli.py suspect
+
+dump flags (no flags = show everything):
+    --nodes   emitted node records as JSON
+    --edges   emitted edge records as JSON
+    --hashes  per-node sub-hashes, nodeHash, merkleHash
+    --dot     graph in DOT format (pipe to: dot -Tsvg -o graph.svg)
 """
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -22,9 +29,9 @@ def _load():
     return graph, records
 
 
-def cmd_dump() -> None:
-    graph, records = _load()
+# ── dump sections ─────────────────────────────────────────────────────────────
 
+def _dump_nodes(records: dict) -> None:
     print("=" * 70)
     print("EMITTED NODE RECORDS")
     print("=" * 70)
@@ -34,7 +41,9 @@ def cmd_dump() -> None:
         for rec in records[group]:
             print(json.dumps(rec, indent=2))
 
-    print("\n" + "=" * 70)
+
+def _dump_edges(records: dict) -> None:
+    print("=" * 70)
     print("EMITTED EDGE RECORDS")
     print("=" * 70)
     for group in ("refines_edges", "implements_edges", "verifies_edges",
@@ -43,7 +52,9 @@ def cmd_dump() -> None:
         for rec in records[group]:
             print(json.dumps(rec, indent=2))
 
-    print("\n" + "=" * 70)
+
+def _dump_hashes(graph) -> None:
+    print("=" * 70)
     print("NODE HASHES (store_id → nodeHash, merkleHash)")
     print("=" * 70)
     for node in sorted(graph.nodes.values(), key=lambda n: n.store_id):
@@ -54,6 +65,74 @@ def cmd_dump() -> None:
             print(f"    {'nodeHash':12s}: {node.node_hash}")
         print(f"    {'merkleHash':12s}: {node.merkle_hash}")
 
+
+_NODE_STYLES: dict[str, str] = {
+    "Requirement":       'shape=box,      style=filled, fillcolor="#AED6F1"',
+    "Implementation":    'shape=ellipse,  style=filled, fillcolor="#A9DFBF"',
+    "TestSpecification": 'shape=hexagon,  style=filled, fillcolor="#FAD7A0"',
+    "TestOutcome":       'shape=note,     style=filled, fillcolor="#F9E79F"',
+    "Waiver":            'shape=octagon,  style=filled, fillcolor="#F5CBA7"',
+}
+
+_EDGE_STYLES: dict[str, str] = {
+    "seg:Refines":    'color="#2980B9", fontcolor="#2980B9", label="Refines"',
+    "seg:Implements": 'color="#27AE60", fontcolor="#27AE60", label="Implements"',
+    "seg:Verifies":   'color="#E67E22", fontcolor="#E67E22", label="Verifies"',
+    "seg:Confirms":   'style=dashed, color="#7F8C8D", fontcolor="#7F8C8D", label="Confirms"',
+    "seg:Witnesses":  'style=dashed, color="#7F8C8D", fontcolor="#7F8C8D", label="Witnesses"',
+    "seg:Excuses":    'style=dashed, color="#C0392B", fontcolor="#C0392B", label="Excuses"',
+}
+
+
+def _dump_dot(graph) -> None:
+    lines = [
+        "digraph seg {",
+        '  graph [rankdir=LR, fontname="Helvetica"];',
+        '  node  [fontname="Helvetica", fontsize=11];',
+        '  edge  [fontname="Helvetica", fontsize=9];',
+        "",
+    ]
+
+    lines.append("  // nodes")
+    for node in sorted(graph.nodes.values(), key=lambda n: n.store_id):
+        dot_id = f'"{node.store_id}"'
+        style = _NODE_STYLES.get(node.node_type, "")
+        label = f"{node.store_id}\\n{node.node_type}"
+        lines.append(f"  {dot_id} [{style}, label=\"{label}\"];")
+
+    lines.append("")
+    lines.append("  // edges")
+    for edge in graph.edges:
+        from_id = f'"{graph.nodes[edge.from_iri].store_id}"'
+        to_id = f'"{graph.nodes[edge.to_iri].store_id}"'
+        style = _EDGE_STYLES.get(edge.edge_type, "")
+        lines.append(f"  {from_id} -> {to_id} [{style}];")
+
+    lines.append("}")
+    print("\n".join(lines))
+
+
+def cmd_dump(flags: argparse.Namespace) -> None:
+    graph, records = _load()
+    show_all = not (flags.nodes or flags.edges or flags.hashes or flags.dot)
+
+    if show_all or flags.nodes:
+        _dump_nodes(records)
+    if show_all or flags.edges:
+        if show_all or flags.nodes:
+            print()
+        _dump_edges(records)
+    if show_all or flags.hashes:
+        if show_all or flags.nodes or flags.edges:
+            print()
+        _dump_hashes(graph)
+    if show_all or flags.dot:
+        if show_all or flags.nodes or flags.edges or flags.hashes:
+            print()
+        _dump_dot(graph)
+
+
+# ── other commands ────────────────────────────────────────────────────────────
 
 def cmd_consistency() -> None:
     from workflows import consistency
@@ -76,26 +155,33 @@ def cmd_suspect() -> None:
     print(json.dumps(result, indent=2))
 
 
+# ── entry point ───────────────────────────────────────────────────────────────
+
 def main() -> None:
-    args = sys.argv[1:]
-    if not args:
+    argv = sys.argv[1:]
+    if not argv:
         print(__doc__)
         sys.exit(1)
 
-    match args[0]:
+    match argv[0]:
         case "dump":
-            cmd_dump()
+            p = argparse.ArgumentParser(prog="cli.py dump", add_help=True)
+            p.add_argument("--nodes",  action="store_true", help="emitted node records (JSON)")
+            p.add_argument("--edges",  action="store_true", help="emitted edge records (JSON)")
+            p.add_argument("--hashes", action="store_true", help="per-node sub/node/merkle hashes")
+            p.add_argument("--dot",    action="store_true", help="graph in DOT format")
+            cmd_dump(p.parse_args(argv[1:]))
         case "consistency":
             cmd_consistency()
         case "proof":
-            if len(args) < 2:
+            if len(argv) < 2:
                 print("Usage: python cli.py proof <req-id> [...]")
                 sys.exit(1)
-            cmd_proof(args[1:])
+            cmd_proof(argv[1:])
         case "suspect":
             cmd_suspect()
         case _:
-            print(f"Unknown command: {args[0]!r}")
+            print(f"Unknown command: {argv[0]!r}")
             print(__doc__)
             sys.exit(1)
 
