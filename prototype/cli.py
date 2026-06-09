@@ -1,10 +1,24 @@
 """Command-line entry point for the three SEG prototype workflows.
 
 Usage:
-    python cli.py dump [--nodes] [--edges] [--hashes] [--dot]
-    python cli.py consistency [--dot]
-    python cli.py proof <pattern> [<pattern> ...] [--dot]
-    python cli.py suspect --mutate STORE_ID FIELD "new content" [--mutate ...] [--dot]
+    python cli.py [--store-file PATH] <command> [options]
+
+Commands:
+    dump          [--nodes] [--edges] [--hashes] [--dot]
+    consistency   [--dot]
+    proof         <pattern> [<pattern> ...] [--dot]
+    suspect       --mutate STORE_ID FIELD "new content" [--mutate ...] [--dot]
+    generate-store --sys-reqs N --reqs-per-sys-req N [--test-cases-per-req N]
+                   [--outcomes-per-test-case N] [--seed N] --out-file PATH
+
+Global flag:
+    --store-file PATH   store file to load (default: store-small.json)
+
+Available stores in prototype/:
+    store-small.json       — 2 sys-reqs, 5 leaf reqs (hand-crafted; has waivers/stale)
+    store-medium.json      — ~10 sys-reqs, up to 6 reqs each
+    store-large.json       — ~80 sys-reqs, up to 10 reqs each
+    store-extra-large.json — ~1000 sys-reqs, up to 50 reqs each
 
 dump flags (no flags = show everything):
     --nodes   emitted node records as JSON
@@ -33,7 +47,7 @@ import re
 import sys
 from pathlib import Path
 
-STORE = Path(__file__).parent / "store.json"
+STORE = Path(__file__).parent / "store-small.json"
 
 
 def _load():
@@ -186,10 +200,37 @@ def cmd_suspect(flags: argparse.Namespace) -> None:
         print(json.dumps(result, indent=2))
 
 
+def cmd_generate_store(flags: argparse.Namespace) -> None:
+    from store_generator import GenConfig, generate
+    cfg = GenConfig(
+        num_sys_reqs=flags.sys_reqs,
+        max_reqs_per_sys_req=flags.reqs_per_sys_req,
+        max_test_cases_per_req=flags.test_cases_per_req,
+        max_outcomes_per_test_case=flags.outcomes_per_test_case,
+        seed=flags.seed,
+    )
+    items = generate(cfg)
+    out = Path(flags.out_file)
+    out.write_text(json.dumps(items, indent=2))
+    node_count = sum(1 for it in items if "type" in it)
+    print(f"wrote {node_count} nodes to {out}", file=sys.stderr)
+
+
 # ── entry point ───────────────────────────────────────────────────────────────
 
 def main() -> None:
+    global STORE
     argv = sys.argv[1:]
+
+    # Pre-parse global --store-file before subcommand dispatch
+    if "--store-file" in argv:
+        idx = argv.index("--store-file")
+        if idx + 1 >= len(argv):
+            print("error: --store-file requires a path argument", file=sys.stderr)
+            sys.exit(1)
+        STORE = Path(argv[idx + 1])
+        argv = argv[:idx] + argv[idx + 2:]
+
     if not argv:
         print(__doc__)
         sys.exit(1)
@@ -222,6 +263,21 @@ def main() -> None:
             p.add_argument("--dot", action="store_true",
                            help="DOT graph with suspect edges highlighted instead of JSON")
             cmd_suspect(p.parse_args(argv[1:]))
+        case "generate-store":
+            p = argparse.ArgumentParser(prog="cli.py generate-store")
+            p.add_argument("--sys-reqs",               type=int, required=True,
+                           help="number of system requirements")
+            p.add_argument("--reqs-per-sys-req",       type=int, required=True,
+                           help="maximum leaf reqs per system req (actual count varies 1..N)")
+            p.add_argument("--test-cases-per-req",     type=int, default=2,
+                           help="maximum test specs per leaf req (default 2)")
+            p.add_argument("--outcomes-per-test-case", type=int, default=1,
+                           help="maximum test outcomes per test spec (default 1)")
+            p.add_argument("--seed",                   type=int, default=42,
+                           help="RNG seed for reproducibility (default 42)")
+            p.add_argument("--out-file",               required=True,
+                           help="output path for the generated store JSON")
+            cmd_generate_store(p.parse_args(argv[1:]))
         case _:
             print(f"Unknown command: {argv[0]!r}")
             print(__doc__)

@@ -24,7 +24,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from loader import load, emit_all_records  # noqa: E402
 
-STORE = Path(__file__).parent / "store.json"
+STORE = Path(__file__).parent / "store-small.json"
 SCHEMA_DIR = Path(__file__).parent / "schemas"
 
 
