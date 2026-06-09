@@ -20,7 +20,7 @@
     "id": {
       "type": "string",
       "format": "uri",
-      "pattern": "^https://[^/]+/[^/]+/req/REQ-[0-9]+$",
+      "pattern": "^https://[^/]+/[^/]+/req/[A-Z][A-Z0-9-]*-[0-9]+$",
       "description": "Globally unique IRI for this requirement. Form: {namespaceBase}/req/REQ-{number}. Maps to spdxId on SPDX export."
     },
 
@@ -32,7 +32,7 @@
 
     "name": {
       "type": "string",
-      "pattern": "^REQ-[0-9]+$",
+      "pattern": "^[A-Z][A-Z0-9-]*-[0-9]+$",
       "description": "Human-readable requirement identifier. Must match the ID suffix in the id field."
     },
 

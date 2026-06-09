@@ -16,7 +16,7 @@
     },
 
     "id": {
-      "pattern": "^https://[^/]+/[^/]+/edge/verifies/TS-[0-9]+-REQ-[0-9]+$",
+      "pattern": "^https://[^/]+/[^/]+/edge/verifies/TS-[0-9]+-[A-Z][A-Z0-9-]*-[0-9]+$",
       "description": "Form: {namespaceBase}/edge/verifies/{testSpecId}-{requirementId}."
     },
 
@@ -26,7 +26,7 @@
     },
 
     "seg:to": {
-      "pattern": "^https://[^/]+/[^/]+/req/REQ-[0-9]+$",
+      "pattern": "^https://[^/]+/[^/]+/req/[A-Z][A-Z0-9-]*-[0-9]+$",
       "description": "IRI of the Requirement node — the one being verified."
     }
   },

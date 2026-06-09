@@ -45,7 +45,7 @@
           "seg:requirementId": {
             "type": "string",
             "format": "uri",
-            "pattern": "^https://[^/]+/[^/]+/req/REQ-[0-9]+$",
+            "pattern": "^https://[^/]+/[^/]+/req/[A-Z][A-Z0-9-]*-[0-9]+$",
             "description": "IRI of the requirement with incomplete coverage."
           },
           "seg:missingEdgeTypes": {

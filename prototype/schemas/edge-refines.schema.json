@@ -16,17 +16,17 @@
     },
 
     "id": {
-      "pattern": "^https://[^/]+/[^/]+/edge/refines/REQ-[0-9]+-REQ-[0-9]+$",
+      "pattern": "^https://[^/]+/[^/]+/edge/refines/[A-Z][A-Z0-9-]*-[0-9]+-[A-Z][A-Z0-9-]*-[0-9]+$",
       "description": "Form: {namespaceBase}/edge/refines/{childId}-{parentId}."
     },
 
     "seg:from": {
-      "pattern": "^https://[^/]+/[^/]+/req/REQ-[0-9]+$",
+      "pattern": "^https://[^/]+/[^/]+/req/[A-Z][A-Z0-9-]*-[0-9]+$",
       "description": "IRI of the child Requirement node — the one that refines."
     },
 
     "seg:to": {
-      "pattern": "^https://[^/]+/[^/]+/req/REQ-[0-9]+$",
+      "pattern": "^https://[^/]+/[^/]+/req/[A-Z][A-Z0-9-]*-[0-9]+$",
       "description": "IRI of the parent Requirement node — the one being refined."
     }
   },

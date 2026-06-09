@@ -7,9 +7,7 @@ These are mechanical checks only (DEC-001 / brief §Build scope):
 Workflow correctness is NOT asserted here; that is judged by the human at each
 ⏸ PAUSE checkpoint.
 
-Known schema gaps (documented, not suppressed):
-  - SYS-REQ-001 / SYS-REQ-002: schema id/name patterns require REQ-[0-9]+
-  - Refines edges to SYS-REQ nodes: same pattern constraint on seg:to
+Known schema limitation:
   - Implementation seg:sourcePath: schema expects .h/.c (C-centric); dummy
     paths satisfy the regex but do not correspond to real Python source files
 """
@@ -106,11 +104,15 @@ class TestHashingDeterminism:
 # ── Schema validation: records that SHOULD validate ──────────────────────────
 
 class TestSchemaValidation:
-    def test_software_requirement_nodes(self, records):
+    def test_requirement_nodes(self, records):
         for rec in records["requirement_nodes"]:
-            if not rec["name"].startswith("SYS-"):
-                errs = schema_errors(rec, "requirement.schema.json")
-                assert errs == [], f"{rec['name']}: {errs}"
+            errs = schema_errors(rec, "requirement.schema.json")
+            assert errs == [], f"{rec['name']}: {errs}"
+
+    def test_refines_edges(self, records):
+        for rec in records["refines_edges"]:
+            errs = schema_errors(rec, "edge-refines.schema.json")
+            assert errs == [], f"{rec['id']}: {errs}"
 
     def test_implementation_nodes(self, records):
         for rec in records["implementation_nodes"]:
@@ -157,23 +159,3 @@ class TestSchemaValidation:
             errs = schema_errors(rec, "edge-excuses.schema.json")
             assert errs == [], f"{rec['id']}: {errs}"
 
-
-# ── Known schema gaps (assert they fail, to document the boundary) ───────────
-
-class TestKnownSchemaGaps:
-    """These tests verify that the known gaps DO fail validation, documenting
-    which schema constraints need extending for the real implementation."""
-
-    def test_sys_req_nodes_fail_pattern(self, records):
-        """SYS-REQ-xxx IDs don't match the schema's REQ-[0-9]+ pattern."""
-        sys_reqs = [r for r in records["requirement_nodes"] if r["name"].startswith("SYS-")]
-        assert sys_reqs, "Expected SYS-REQ nodes in the dataset"
-        for rec in sys_reqs:
-            errs = schema_errors(rec, "requirement.schema.json")
-            assert errs, f"{rec['name']} unexpectedly passed — schema gap may have been fixed"
-
-    def test_refines_edges_fail_due_to_sys_req_endpoint(self, records):
-        """Refines edges that target SYS-REQ nodes fail the seg:to pattern."""
-        for rec in records["refines_edges"]:
-            errs = schema_errors(rec, "edge-refines.schema.json")
-            assert errs, f"Refines edge {rec['id']} unexpectedly passed"
