@@ -1,0 +1,289 @@
+# SEG — Prior-Art Reconciliation & Early Bibliography
+ 
+**Purpose.** For each layer of SEG, name the canonical formalism, map SEG's
+vocabulary onto it, and record what SEG deliberately does *differently* and why.
+This converts "are we reinventing this?" into a documented design stance, and
+seeds the bibliography for a paper. References are grouped by layer; a
+consolidated BibTeX-ready list is at the end.
+ 
+**One-line thesis for the paper.** SEG is a *cryptographically-committed,
+drift-tracking assurance case with assume-guarantee composition*. No single prior
+field covers the whole stack; the contribution is the integration, and the novel
+seams are (i) binding a recursive-fixpoint validity predicate to a content-hash
+commitment, and (ii) composing sealed proofs by assumption-scope containment.
+ 
+---
+ 
+## Layer 1 — Type graph / well-formedness
+ 
+**Canonical formalism.** Typed (attributed) graphs in the algebraic
+graph-transformation tradition. A *type graph* TG defines the set of valid
+instance graphs as those admitting a typing morphism into TG; attributes make it
+*attributed*; extra constraints (e.g. multiplicity/cardinality) sit alongside
+typing.
+ 
+**SEG mapping.** `graph-type definition` = type graph; the 5/7 built-in model =
+the TG; `domain`/`range` = edge typing; the generic checker = typing-morphism
+validation; `node type` attributes = attributed nodes; `constraint slot` = the
+"extra constraints beyond typing" slot (cardinality bounds are a catalogued member
+there).
+ 
+**Deliberate divergence.** SEG does not use graph *rewriting* (productions/LHS→RHS)
+at all — the graph is built by extraction, not derived by a grammar. SEG takes the
+type-graph + constraints half and discards the transformation half. The
+meta-model (DEC-007) is a TG generator, not a graph grammar.
+ 
+**Leading references.** Ehrig, Ehrig, Prange, Taentzer, *Fundamentals of Algebraic
+Graph Transformation* (2006); Rozenberg (ed.), *Handbook of Graph Grammars and
+Computing by Graph Transformation*, Vol. 1 (1997); Ehrig & Taentzer on typed
+attributed graphs.
+ 
+## Layer 2 — Schema / shapes (the declarative half of the meta-model)
+ 
+**Canonical formalism.** SHACL and ShEx — declarative shape languages for typed
+graphs, where a *shape* constrains a node by properties of it and its neighbours.
+Shapes were shown to be, in essence, a description logic ("SHACL: a description
+logic in disguise"), which fixes their expressiveness and decidable fragments.
+ 
+**SEG mapping.** A `graph-type definition`'s structural constraints = a shape
+schema; "edge of type T must have domain/range X/Y" = a property shape;
+node-level required-incident-edge constraints = SHACL `sh:property` /
+`sh:minCount`. SEG's "vocabulary vs satisfaction" boundary ≈ SHACL's
+"shapes (structure) vs targets+recursion (validity)".
+ 
+**Deliberate divergence.** SHACL ranges over RDF triples and global IRIs; SEG
+ranges over content-hashed nodes whose identity is a byte-span hash, not an IRI
+(until the namespace work for composability). And SEG's shapes must be
+*proof-bound* (hashed into the TCB) — SHACL schemas are not themselves
+integrity-committed. Open question this resolves: the "what format is the
+definition" debate has a known answer space here (SHACL profile vs custom DSL),
+with a known expressiveness ceiling.
+ 
+**Leading references.** Knublauch & Kontokostas, *SHACL* (W3C Recommendation,
+2017); Prud'hommeaux, Labra Gayo, Solbrig, *ShEx* (2014); Bogaerts, Jakubowski,
+Van den Bussche, "SHACL: A Description Logic in Disguise" (LPNMR 2022); their
+"Expressiveness of SHACL Features" (ICDT 2022).
+ 
+## Layer 3 — Recursive satisfaction / verdict (DEC-007 Datalog pin)
+ 
+**Canonical formalism.** Recursive SHACL semantics + stratified Datalog. The
+problem SEG hit — "what does a recursive validity predicate mean over a cyclic
+reference graph?" — is exactly the recursive-SHACL problem. The literature gives
+supported-model, stable-model, well-founded, and least-fixpoint semantics, with a
+sharp result: **for stratified constraints, least-fixpoint = well-founded =
+stable-model all coincide, and validation is tractable**, whereas with arbitrary
+recursion validation is NP-hard even under stratified negation.
+ 
+**SEG mapping.** `satisfaction` predicate = a SHACL shape's validity; `satisfaction
+ruleset` = the recursive shape schema; `verdict` = the shape's per-node
+true/violated assignment ("valid typing"); `suspicion propagation` = a second
+recursive predicate (transitive closure) over the same graph; the "silently-wrong
+*unsatisfied*" failure mode on a cycle = the known divergence between fixpoint
+choices on non-stratified schemas.
+ 
+**Deliberate divergence (and vindication).** DEC-007 pins satisfaction to
+*stratified* Datalog. The literature shows this is precisely the fragment where
+the hard semantic ambiguities vanish and the competing semantics agree — so the
+pin is not a simplification but a selection of the tractable, well-defined island.
+This is a citable justification, not a hand-wave.
+ 
+**Leading references.** Corman, Reutter, Savković, "Semantics and Validation of
+Recursive SHACL" (ISWC 2018); Andreşel, Corman, Ortiz, Reutter, Savković, Šimkus,
+"Stable Model Semantics for Recursive SHACL" (WWW 2020); Bogaerts & Jakubowski,
+"Fixpoint Semantics for Recursive SHACL" (ICLP TC, EPTCS 2021); Abiteboul, Hull,
+Vianu, *Foundations of Databases* (1995) (stratified Datalog); Van Gelder, Ross,
+Schlipf, "The Well-Founded Semantics for General Logic Programs" (JACM 1991);
+Gelfond & Lifschitz, "The Stable Model Semantics for Logic Programming" (1988)
+(ASP foundation — clingo's semantics); Gebser, Kaufmann, Kaminski, Ostrowski,
+Schaub, Schneider, "Potassco: The Potsdam Answer Set Solving Collection"
+(AI Communications 2011) (clingo).
+ 
+## Layer 4 — Cryptographic commitment (nodeHash / edgeHash / merkleHash)
+ 
+**Canonical formalism.** Authenticated data structures and commitment schemes.
+Two distinct primitives map onto SEG's two fingerprint modes: a **Merkle tree /
+Merkle-DAG** is a *position/structure-binding* commitment (order and topology
+matter) — this is `deep`; a **cryptographic accumulator** is a *set* commitment
+(order-blind) — this is `flat`. A Merkle tree is itself a vector commitment with
+logarithmic openings; accumulators give constant-size membership proofs.
+ 
+**SEG mapping.** `nodeHash` = content commitment over raw bytes; `edgeHash` =
+a local 2-element commitment (one-hop); `merkleHash`/`design root` (deep) =
+Merkle-DAG over the `deep-fingerprint subgraph`; a `flat` sub-root = a set
+accumulator over its edges; "design root combines deep + flat sub-roots under a
+canonical composition" = a commitment to a tuple of commitments. The generic
+"make a structure emit integrity proofs" pattern is *authenticated data
+structures, generically*.
+ 
+**Deliberate divergence.** SEG hashes *raw source byte spans located by a parser*
+(parser-as-locator), not a normalized/canonical data model — a discipline specific
+to binding evidence to real source artifacts. And SEG separates the *local*
+commitment (edgeHash, drift detection) from the *global* one (merkleHash,
+fingerprint) and assigns them different jobs — most ADS work uses a single
+authenticating structure. This is the seam where the field's mental model
+(Merkle-DAG everywhere) actively misled us once; naming both primitives prevents
+recurrence.
+ 
+**Leading references.** Merkle, "A Digital Signature Based on a Conventional
+Encryption Function" (CRYPTO 1987) (Merkle trees); Benaloh & de Mare, "One-Way
+Accumulators" (EUROCRYPT 1993); Camenisch & Lysyanskaya, "Dynamic Accumulators"
+(CRYPTO 2002); Catalano & Fiore, "Vector Commitments and Their Applications"
+(PKC 2013); Miller, Hicks, Katz, Shi, "Authenticated Data Structures, Generically"
+(POPL 2014); Merkle-DAG in practice: Benet, "IPFS — Content Addressed, Versioned,
+P2P File System" (2014).
+ 
+## Layer 5 — Assurance case / structured argumentation (the domain)
+ 
+**Canonical formalism.** Assurance/safety cases: a top claim decomposed via
+argument strategies into sub-claims, ultimately discharged by evidence.
+Standardized as GSN (Goal Structuring Notation), CAE (Claims-Arguments-Evidence),
+and the OMG SACM metamodel; the intellectual root is Toulmin's model of argument.
+ 
+**SEG mapping.** Requirement = Goal/Claim; refines = decomposition Strategy;
+TestSpecification/Implementation/TestOutcome = Solution/Evidence; Waiver + excuses
+= Assumption / managed "weakener"; `satisfaction` = argument discharge;
+`design graph` = the goal structure; `proof` scope = the case's top-claim
+boundary. SEG is, structurally, a SACM assurance case.
+ 
+**Deliberate divergence (the wedge).** The assurance-case field has the *argument
+structure* but generally treats evidence as references and the case as a document;
+it has no content-hash integrity layer, no automatic *drift/suspect* detection
+when evidence changes, and no cryptographic proof of case integrity. SEG adds
+exactly those. Framing: SEG = a *machine-checkable, cryptographically-committed
+assurance case*. This is likely the paper's primary positioning, since the
+audience (IEC 61508 / safety certification) lives here.
+ 
+**Leading references.** Toulmin, *The Uses of Argument* (1958); Kelly,
+*Arguing Safety — A Systematic Approach to Managing Safety Cases* (PhD, Univ. of
+York, 1998); GSN Community Standard (Assurance Case Working Group, v3 2021/2023);
+Bishop & Bloomfield, "A Methodology for Safety Case Development" (CAE, 1998);
+OMG, *Structured Assurance Case Metamodel (SACM)* v2.x (2021).
+ 
+## Seam — Composition / assume-guarantee (DEC-010)
+ 
+**Canonical formalism.** Assume-guarantee / contract-based design. A contract is a
+pair (A, G); a component implements (A, G) iff, in any environment satisfying A, it
+delivers G. Composition/refinement of contracts is a mature algebra; the soundness
+condition for replacing a subsystem by a contract is refinement (composite
+guarantees preserved under the subcontracts).
+ 
+**SEG mapping.** Imported-requirement boundary = the assumptions A; the referenced
+foreign proof = the guarantee G with its discharging evidence; "valid iff product
+assumptions ⊆ proven scope" = contract refinement (the composition refines the
+top-level requirement); `dependsOn` edge = the contract link; transitive
+composition (A relies on B relies on C) = contract chaining. The integrity/identity
+half — trusting a foreign proof — maps onto software-supply-chain attestation
+(in-toto): hash each artifact, bind operations by policy, and (the open part)
+authenticate the *actor*, which in-toto itself flags as not solved by hashing
+alone.
+ 
+**Deliberate divergence.** Contract theory reasons over behaviors/specifications;
+SEG's "contract" is a hash-pinned requirement boundary plus a recomputable Merkle
+proof — a *cryptographically verifiable* assume-guarantee link, with cross-graph
+*staleness* (version-pin) as a first-class concern that classical AG theory does
+not model. The "recompute the Merkle vs also require a signature" question is the
+same actor-authentication gap in-toto documents.
+ 
+**Leading references.** Benveniste, Caillaud, Nickovic, Passerone, Raclet,
+Reinkemeier, Sangiovanni-Vincentelli, Damm, Henzinger, Larsen, "Contracts for
+System Design" (Foundations and Trends in EDA, 2018); Meyer, "Applying Design by
+Contract" (IEEE Computer, 1992); Jones, rely-guarantee (1983); Torres-Arias,
+Afzali, Kuppusamy, Curtmola, Cappos, "in-toto: Providing Farm-to-Table Guarantees
+for Bits and Bytes" (USENIX Security 2019); SLSA framework (2021).
+ 
+## Closest APPLIED prior art — lightweight VCS-based requirements traceability
+ 
+**The tools that occupy SEG's exact niche** (open-source safety projects: RTEMS,
+Space ROS). Unlike the formalism layers above, these are deployed tools SEG must beat,
+not theory it builds on — they are the related-work baseline *and* the evaluation
+target.
+ 
+**What they do.** *Doorstop:* a DAG of typed YAML items; a SHA-256 fingerprint over the
+*normative* fields only; review "stamps" that flag an item when a linked item changes.
+*OpenFastTrace (OFT):* specification items with artifact-type-in-ID (`req~`/`dsn~`/`impl~`);
+shallow + deep (whole-chain) coverage; revision-pinned coverage tags that break the chain
+on an upstream revision bump; a stateless tracer (recomputes every run).
+ 
+**The overlap (must NOT be claimed as novel).** Content fingerprinting with field
+selection; affirmation/review stamps; break-on-change; and — because OFT's tracer is
+stateless and whole-chain — transitive coverage failure with automatic clear-on-re-trace.
+ 
+**The SEG delta (the redrawn novelty).** (1) a *programmable* stratified-Datalog verdict
+layer vs their *hardwired* coverage check; (2) a *global, recomputable* commitment over
+the whole graph + a sealed proof object vs their *per-item / per-link* integrity; (3)
+assume-guarantee *composition of sealed proofs* across projects — they have no proof
+object; (4) a *graph-type definition that compiles to engines* vs their *conventions*.
+ 
+**Leading references.** Browning & Adams, "Doorstop: Text-Based Requirements Management
+Using Version Control" (2014); OpenFastTrace (itsallcode, open-source software; cite
+repository + version); and the traceability lineage — Gotel & Finkelstein, "An Analysis
+of the Requirements Traceability Problem" (RE 1994); CoEST / Cleland-Huang et al. on
+traceability.
+ 
+---
+ 
+## Consolidated bibliography (BibTeX-ready stubs — verify keys before paper)
+ 
+- **Toulmin1958** — S. Toulmin, *The Uses of Argument*, Cambridge Univ. Press, 1958.
+- **Merkle1987** — R. C. Merkle, "A Digital Signature Based on a Conventional
+  Encryption Function," CRYPTO 1987, LNCS 293, pp. 369–378.
+- **Meyer1992** — B. Meyer, "Applying Design by Contract," IEEE Computer, 1992.
+- **BenalohDeMare1993** — J. Benaloh, M. de Mare, "One-Way Accumulators: A
+  Decentralized Alternative to Digital Signatures," EUROCRYPT 1993.
+- **GelfondLifschitz1988** — M. Gelfond, V. Lifschitz, "The Stable Model Semantics
+  for Logic Programming," ICLP/SLP 1988. (ASP foundation; clingo's semantics)
+- **VanGelder1991** — A. Van Gelder, K. Ross, J. Schlipf, "The Well-Founded
+  Semantics for General Logic Programs," JACM 38(3), 1991.
+- **AbiteboulHullVianu1995** — S. Abiteboul, R. Hull, V. Vianu, *Foundations of
+  Databases*, Addison-Wesley, 1995.
+- **Potassco2011** — M. Gebser, B. Kaufmann, R. Kaminski, M. Ostrowski, T. Schaub,
+  M. Schneider, "Potassco: The Potsdam Answer Set Solving Collection,"
+  AI Communications 24(2), 2011. (clingo)
+- **GotelFinkelstein1994** — O. Gotel, A. Finkelstein, "An Analysis of the
+  Requirements Traceability Problem," ICRE/RE 1994. (traceability lineage)
+- **Browning2014Doorstop** — J. Browning, R. Adams, "Doorstop: Text-Based
+  Requirements Management Using Version Control," 2014. (closest applied prior art)
+- **OpenFastTrace** — itsallcode, "OpenFastTrace" requirement tracing suite
+  (open-source software; cite repository + version). (closest applied prior art)
+- **Rozenberg1997** — G. Rozenberg (ed.), *Handbook of Graph Grammars and Computing
+  by Graph Transformation, Vol. 1*, World Scientific, 1997.
+- **Kelly1998** — T. Kelly, *Arguing Safety: A Systematic Approach to Managing
+  Safety Cases*, PhD thesis, University of York, 1998.
+- **BishopBloomfield1998** — P. Bishop, R. Bloomfield, "A Methodology for Safety
+  Case Development," Safety-Critical Systems Symposium, 1998. (CAE)
+- **CamenischLysyanskaya2002** — J. Camenisch, A. Lysyanskaya, "Dynamic
+  Accumulators and Application to Efficient Revocation of Anonymous Credentials,"
+  CRYPTO 2002.
+- **EhrigEtAl2006** — H. Ehrig, K. Ehrig, U. Prange, G. Taentzer, *Fundamentals of
+  Algebraic Graph Transformation*, Springer, 2006.
+- **CatalanoFiore2013** — D. Catalano, D. Fiore, "Vector Commitments and Their
+  Applications," PKC 2013.
+- **MillerHicksKatzShi2014** — A. Miller, M. Hicks, J. Katz, E. Shi, "Authenticated
+  Data Structures, Generically," POPL 2014.
+- **Benet2014** — J. Benet, "IPFS — Content Addressed, Versioned, P2P File System,"
+  arXiv:1407.3561, 2014.
+- **Knublauch2017SHACL** — H. Knublauch, D. Kontokostas, "Shapes Constraint
+  Language (SHACL)," W3C Recommendation, 2017.
+- **Benveniste2018Contracts** — A. Benveniste et al., "Contracts for System
+  Design," Foundations and Trends in EDA, 12(2–3), 2018.
+- **Corman2018RecursiveSHACL** — J. Corman, J. L. Reutter, O. Savković, "Semantics
+  and Validation of Recursive SHACL," ISWC 2018, LNCS 11136, pp. 318–336.
+- **TorresArias2019Intoto** — S. Torres-Arias et al., "in-toto: Providing
+  Farm-to-Table Guarantees for Bits and Bytes," USENIX Security 2019.
+- **Andresel2020StableSHACL** — M. Andreşel et al., "Stable Model Semantics for
+  Recursive SHACL," The Web Conference (WWW) 2020, pp. 1570–1580.
+- **OMG2021SACM** — Object Management Group, "Structured Assurance Case Metamodel
+  (SACM)," v2.x, 2021.
+- **BogaertsJakubowski2021** — B. Bogaerts, M. Jakubowski, "Fixpoint Semantics for
+  Recursive SHACL," ICLP Technical Communications, EPTCS 345, 2021.
+- **BogaertsVdB2022DLDisguise** — B. Bogaerts, M. Jakubowski, J. Van den Bussche,
+  "SHACL: A Description Logic in Disguise," LPNMR 2022, LNCS 13416.
+- **GSN2023** — Assurance Case Working Group, "Goal Structuring Notation Community
+  Standard," v3, 2023.
+### Gaps to fill before submission
+- Requirements traceability lineage (Gotel & Finkelstein 1994; CoEST) — SEG's
+  refines/verifies/implements is also the traceability problem; add if the paper
+  leans on tracing.
+- IEC 61508 itself + any existing tool-qualification / evidence-management prior art.
+- ShEx primary citation (exact author/year/venue) — currently a stub.
+- Verkle trees (if `flat`/`deep` discussion wants the modern commitment frontier).
