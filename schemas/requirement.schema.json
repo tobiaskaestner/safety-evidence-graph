@@ -10,7 +10,6 @@
     "type",
     "name",
     "description",
-    "seg:nodeHash",
     "seg:sourceRepo",
     "seg:sourcePath"
   ],
@@ -41,46 +40,6 @@
       "type": "string",
       "minLength": 1,
       "description": "The full requirement text body as authored in sphinx-needs."
-    },
-
-    "seg:nodeHash": {
-      "type": "object",
-      "required": ["algorithm", "hashValue"],
-      "additionalProperties": false,
-      "description": "Cryptographic hash of this node's content. Computed by the extractor over the sphinx-needs item text body and fields. A change to this value marks all outgoing edges suspect.",
-      "properties": {
-
-        "algorithm": {
-          "type": "string",
-          "const": "SHA256",
-          "description": "Hash algorithm. Fixed to SHA256."
-        },
-
-        "hashValue": {
-          "type": "string",
-          "pattern": "^[0-9a-f]{64}$",
-          "description": "Lowercase hex-encoded SHA256 digest. Must be exactly 64 characters."
-        }
-      }
-    },
-
-    "seg:merkleHash": {
-      "type": "object",
-      "required": ["algorithm", "hashValue"],
-      "additionalProperties": false,
-      "description": "Merkle hash for this node. Computed by the proof generator as H(nodeHash || sorted(merkleHash of dependencies via strong-propagation edges)). Absent until the first proof generation run that includes this node.",
-      "properties": {
-
-        "algorithm": {
-          "type": "string",
-          "const": "SHA256"
-        },
-
-        "hashValue": {
-          "type": "string",
-          "pattern": "^[0-9a-f]{64}$"
-        }
-      }
     },
 
     "seg:sourceRepo": {

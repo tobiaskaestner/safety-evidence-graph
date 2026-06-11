@@ -1,0 +1,8 @@
+[
+  {
+    "id": "https://zephyrproject.org/safety/edge/excuses/WAV-001-RUN-44-TS-019",
+    "type": "seg:Excuses",
+    "seg:from": "https://zephyrproject.org/safety/waiver/WAV-001",
+    "seg:to": "https://zephyrproject.org/safety/outcome/RUN-44/TS-019"
+  }
+]

@@ -13,7 +13,6 @@
     "seg:specId",
     "seg:repoBSha",
     "seg:outcome",
-    "seg:nodeHash",
     "seg:sourceRepo",
     "seg:sourcePath"
   ],
@@ -63,23 +62,6 @@
       "type": "string",
       "enum": ["PASS", "FAIL", "ERROR", "SKIPPED"],
       "description": "Test execution result. FAIL, ERROR, and SKIPPED outcomes block proof generation unless excused by a valid non-expired Waiver node."
-    },
-
-    "seg:nodeHash": {
-      "type": "object",
-      "required": ["algorithm", "hashValue"],
-      "additionalProperties": false,
-      "description": "Hash of all content fields in this node: runId, specId, repoBSha, outcome. Computed by the test outcome extractor. Immutable once written.",
-      "properties": {
-        "algorithm": {
-          "type": "string",
-          "const": "SHA256"
-        },
-        "hashValue": {
-          "type": "string",
-          "pattern": "^[0-9a-f]{64}$"
-        }
-      }
     },
 
     "seg:sourceRepo": {

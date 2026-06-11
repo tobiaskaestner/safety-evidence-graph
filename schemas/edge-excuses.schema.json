@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zephyrproject.org/seg/schema/edge-excuses.schema.json",
+  "title": "SEG Excuses Edge",
+  "description": "Schema for an Excuses edge in the Safety Evidence Graph. Direction: Waiver → TestOutcome. The only downward edge in the graph — all other edges point upward toward claims. Created exclusively by the Functional Safety Manager via the graph manipulator tool. Sink edge: no suspicion propagation, no edgeHash, no linkState. The Waiver node is terminal — it either excuses the outcome or it does not. Approver identity and approval timestamp are derived from git log in repo G at proof generation time.",
+
+  "allOf": [
+    { "$ref": "edge-base.schema.json#/$defs/baseEdge" }
+  ],
+
+  "properties": {
+
+    "type": {
+      "const": "seg:Excuses"
+    },
+
+    "id": {
+      "pattern": "^https://[^/]+/[^/]+/edge/excuses/WAV-[0-9]+-[A-Z0-9-]+-TS-[0-9]+$",
+      "description": "Form: {namespaceBase}/edge/excuses/{waiverId}-{runId}-{testSpecId}."
+    },
+
+    "seg:from": {
+      "pattern": "^https://[^/]+/[^/]+/waiver/WAV-[0-9]+$",
+      "description": "IRI of the Waiver node — the one that excuses."
+    },
+
+    "seg:to": {
+      "pattern": "^https://[^/]+/[^/]+/outcome/[A-Z0-9-]+/TS-[0-9]+$",
+      "description": "IRI of the TestOutcome node being excused. Must have outcome FAIL, ERROR, or SKIPPED — excusing a PASS outcome is a schema-level warning and a graph-level error."
+    }
+  },
+
+  "unevaluatedProperties": false
+}

@@ -1,0 +1,18 @@
+{
+  "id": "https://zephyrproject.org/safety/proof/2024-03-15T120000Z/execution-coverage",
+  "type": "seg:ExecutionCoverageRecord",
+  "seg:testRunId": "RUN-44",
+  "seg:repoBSha": "aabbccddee11223344556677889900aabbccddee",
+  "seg:outcomes": [
+    {
+      "seg:outcomeId": "https://zephyrproject.org/safety/outcome/RUN-44/TS-017",
+      "seg:outcome": "PASS"
+    },
+    {
+      "seg:outcomeId": "https://zephyrproject.org/safety/outcome/RUN-44/TS-019",
+      "seg:outcome": "FAIL",
+      "seg:waiverId": "https://zephyrproject.org/safety/waiver/WAV-001",
+      "seg:waiverExpiry": "2025-12-31"
+    }
+  ]
+}

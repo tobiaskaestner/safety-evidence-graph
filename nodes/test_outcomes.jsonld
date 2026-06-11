@@ -1,0 +1,24 @@
+[
+  {
+    "id": "https://zephyrproject.org/safety/outcome/RUN-44/TS-017",
+    "type": "seg:TestOutcome",
+    "name": "RUN-44/TS-017",
+    "seg:runId": "RUN-44",
+    "seg:specId": "https://zephyrproject.org/safety/ts/TS-017",
+    "seg:repoBSha": "aabbccddee11223344556677889900aabbccddee",
+    "seg:outcome": "PASS",
+    "seg:sourceRepo": "repoC",
+    "seg:sourcePath": "runs/RUN-44/twister.log"
+  },
+  {
+    "id": "https://zephyrproject.org/safety/outcome/RUN-44/TS-019",
+    "type": "seg:TestOutcome",
+    "name": "RUN-44/TS-019",
+    "seg:runId": "RUN-44",
+    "seg:specId": "https://zephyrproject.org/safety/ts/TS-019",
+    "seg:repoBSha": "aabbccddee11223344556677889900aabbccddee",
+    "seg:outcome": "FAIL",
+    "seg:sourceRepo": "repoC",
+    "seg:sourcePath": "runs/RUN-44/twister.log"
+  }
+]

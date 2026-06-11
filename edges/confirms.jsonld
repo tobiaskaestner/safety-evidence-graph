@@ -1,0 +1,14 @@
+[
+  {
+    "id": "https://zephyrproject.org/safety/edge/confirms/RUN-44-TS-017",
+    "type": "seg:Confirms",
+    "seg:from": "https://zephyrproject.org/safety/outcome/RUN-44/TS-017",
+    "seg:to": "https://zephyrproject.org/safety/ts/TS-017"
+  },
+  {
+    "id": "https://zephyrproject.org/safety/edge/confirms/RUN-44-TS-019",
+    "type": "seg:Confirms",
+    "seg:from": "https://zephyrproject.org/safety/outcome/RUN-44/TS-019",
+    "seg:to": "https://zephyrproject.org/safety/ts/TS-019"
+  }
+]

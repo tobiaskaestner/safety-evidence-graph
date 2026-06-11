@@ -1,0 +1,12 @@
+[
+  {
+    "id": "https://zephyrproject.org/safety/waiver/WAV-001",
+    "type": "seg:Waiver",
+    "name": "WAV-001",
+    "seg:outcomeId": "https://zephyrproject.org/safety/outcome/RUN-44/TS-019",
+    "seg:justification": "Known timing issue in Twister under QEMU. Not reproducible on target hardware. See issue #4521.",
+    "seg:expiry": "2025-12-31",
+    "seg:sourceRepo": "repoG",
+    "seg:sourcePath": "nodes/waivers.jsonld"
+  }
+]

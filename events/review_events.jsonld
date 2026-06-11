@@ -1,0 +1,10 @@
+[
+  {
+    "id": "https://zephyrproject.org/safety/event/review/TS-017-REQ-001-2024-03-15T10-00-00Z",
+    "type": "seg:ReviewEvent",
+    "seg:affirmingEdge": "https://zephyrproject.org/safety/edge/verifies/TS-017-REQ-001",
+    "seg:affirmingRole": "TestEngineer",
+    "seg:subHashChanged": "implHash",
+    "comment": "Test execution logic refactored for clarity. Intent unchanged — still verifies preemption within one scheduler tick. No new test run required."
+  }
+]

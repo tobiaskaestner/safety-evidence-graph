@@ -1,0 +1,14 @@
+[
+  {
+    "id": "https://zephyrproject.org/safety/edge/witnesses/RUN-44-TS-017-z_sched_preempt",
+    "type": "seg:Witnesses",
+    "seg:from": "https://zephyrproject.org/safety/outcome/RUN-44/TS-017",
+    "seg:to": "https://zephyrproject.org/safety/impl/z_sched_preempt"
+  },
+  {
+    "id": "https://zephyrproject.org/safety/edge/witnesses/RUN-44-TS-019-z_sched_lock",
+    "type": "seg:Witnesses",
+    "seg:from": "https://zephyrproject.org/safety/outcome/RUN-44/TS-019",
+    "seg:to": "https://zephyrproject.org/safety/impl/z_sched_lock"
+  }
+]

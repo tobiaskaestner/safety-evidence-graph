@@ -1,0 +1,19 @@
+{
+  "@context": {
+    "id": "@id",
+    "type": "@type",
+    "seg": "https://zephyrproject.org/seg#",
+    "seg:from":                    { "@type": "@id" },
+    "seg:to":                      { "@type": "@id" },
+    "seg:specId":                  { "@type": "@id" },
+    "seg:outcomeId":               { "@type": "@id" },
+    "seg:waiverId":                { "@type": "@id" },
+    "seg:affirmingEdge":           { "@type": "@id" },
+    "seg:scope":                   { "@type": "@id" },
+    "seg:designConsistencyProof":  { "@type": "@id" },
+    "seg:executionCoverageRecord": { "@type": "@id" },
+    "seg:coverageReport":          { "@type": "@id" },
+    "xsd":        "http://www.w3.org/2001/XMLSchema#",
+    "seg:expiry": { "@type": "xsd:date" }
+  }
+}

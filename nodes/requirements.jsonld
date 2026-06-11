@@ -1,0 +1,18 @@
+[
+  {
+    "id": "https://zephyrproject.org/safety/req/REQ-001",
+    "type": "seg:Requirement",
+    "name": "REQ-001",
+    "description": "The kernel scheduler shall preempt a running thread when a higher-priority thread becomes ready.",
+    "seg:sourceRepo": "repoA",
+    "seg:sourcePath": "docs/safety/scheduler.rst"
+  },
+  {
+    "id": "https://zephyrproject.org/safety/req/REQ-002",
+    "type": "seg:Requirement",
+    "name": "REQ-002",
+    "description": "The scheduler shall not preempt a thread executing within a critical section protected by irq_lock().",
+    "seg:sourceRepo": "repoA",
+    "seg:sourcePath": "docs/safety/scheduler.rst"
+  }
+]

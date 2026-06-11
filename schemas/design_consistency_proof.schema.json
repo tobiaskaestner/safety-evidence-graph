@@ -20,7 +20,7 @@
     "id": {
       "type": "string",
       "format": "uri",
-      "pattern": "^https://[^/]+/[^/]+/proof/.+$",
+      "pattern": "^https://[^/]+/[^/]+/proof/[^/]+/design-consistency-proof$",
       "description": "Globally unique IRI for this proof document. Form: {namespaceBase}/proof/{snapshotId}."
     },
 

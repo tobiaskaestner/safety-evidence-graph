@@ -1,0 +1,16 @@
+{
+  "id": "https://zephyrproject.org/safety/proof/2024-03-15T120000Z/evidence-manifest",
+  "type": "seg:EvidenceManifest",
+  "seg:snapshotId": "2024-03-15T120000Z",
+  "seg:scope": [
+    "https://zephyrproject.org/safety/req/REQ-001",
+    "https://zephyrproject.org/safety/req/REQ-002"
+  ],
+  "seg:designConsistencyProof": "https://zephyrproject.org/safety/proof/2024-03-15T120000Z/design-consistency-proof",
+  "seg:executionCoverageRecord": "https://zephyrproject.org/safety/proof/2024-03-15T120000Z/execution-coverage",
+  "seg:coverageReport": "https://zephyrproject.org/safety/proof/2024-03-15T120000Z/coverage-report",
+  "seg:repoASha": "1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b",
+  "seg:repoBSha": "aabbccddee11223344556677889900aabbccddee",
+  "seg:repoCSha": "2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c",
+  "seg:repoGSha": "3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d"
+}

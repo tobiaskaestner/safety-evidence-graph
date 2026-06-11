@@ -1,0 +1,6 @@
+{
+  "id": "https://zephyrproject.org/safety/proof/2024-03-15T120000Z/coverage-report",
+  "type": "seg:CoverageReport",
+  "seg:overallStatus": "ready",
+  "comment": "All in-scope requirements have verifies and implements edges. All strong edges are active. RUN-44/TS-019 FAIL excused by WAV-001 (expiry 2025-12-31)."
+}

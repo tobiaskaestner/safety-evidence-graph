@@ -1,0 +1,24 @@
+[
+  {
+    "id": "https://zephyrproject.org/safety/edge/verifies/TS-017-REQ-001",
+    "type": "seg:Verifies",
+    "seg:from": "https://zephyrproject.org/safety/ts/TS-017",
+    "seg:to": "https://zephyrproject.org/safety/req/REQ-001",
+    "seg:edgeHash": {
+      "algorithm": "SHA256",
+      "hashValue": "f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3"
+    },
+    "seg:linkState": "active"
+  },
+  {
+    "id": "https://zephyrproject.org/safety/edge/verifies/TS-019-REQ-002",
+    "type": "seg:Verifies",
+    "seg:from": "https://zephyrproject.org/safety/ts/TS-019",
+    "seg:to": "https://zephyrproject.org/safety/req/REQ-002",
+    "seg:edgeHash": {
+      "algorithm": "SHA256",
+      "hashValue": "a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4"
+    },
+    "seg:linkState": "active"
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "https://zephyrproject.org/safety/ts/TS-017",
+    "type": "seg:TestSpecification",
+    "name": "TS-017",
+    "description": "Verify that a higher-priority thread preempts a running lower-priority thread within one scheduler tick.",
+    "seg:sourceRepo": "repoB",
+    "seg:sourcePath": "tests/kernel/sched/src/test_preempt.c"
+  },
+  {
+    "id": "https://zephyrproject.org/safety/ts/TS-019",
+    "type": "seg:TestSpecification",
+    "name": "TS-019",
+    "description": "Verify that a thread holding irq_lock() is not preempted by a higher-priority thread until the lock is released.",
+    "seg:sourceRepo": "repoB",
+    "seg:sourcePath": "tests/kernel/sched/src/test_irq_lock.c"
+  }
+]

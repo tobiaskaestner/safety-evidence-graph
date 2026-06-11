@@ -10,9 +10,6 @@
     "type",
     "name",
     "description",
-    "seg:specHash",
-    "seg:implHash",
-    "seg:nodeHash",
     "seg:sourceRepo",
     "seg:sourcePath"
   ],
@@ -24,7 +21,7 @@
       "type": "string",
       "format": "uri",
       "pattern": "^https://[^/]+/[^/]+/ts/TS-[0-9]+$",
-      "description": "Globally unique IRI for this test specification. Form: {namespaceBase}/ts/TS-{number}. Maps to spdxId on SPDX export."
+      "description": "Globally unique IRI for this test specification. Form: {namespaceBase}/ts/TS-{number}."
     },
 
     "type": {
@@ -36,87 +33,19 @@
     "name": {
       "type": "string",
       "pattern": "^TS-[0-9]+$",
-      "description": "Human-readable test specification identifier. Assigned manually via @testcase-id doxygen tag. Must match the ID suffix in the id field."
+      "description": "Human-readable test specification identifier. Must match the ID suffix in the id field."
     },
 
     "description": {
       "type": "string",
       "minLength": 1,
-      "description": "The test intent as authored in the doxygen comment above the test function. Captured by the test spec extractor."
-    },
-
-    "seg:specHash": {
-      "type": "object",
-      "required": ["algorithm", "hashValue"],
-      "additionalProperties": false,
-      "description": "Hash of the doxygen comment above the test function — the test intent. A change to this sub-hash triggers a notification: 'the declared intent of this test specification changed — review whether it still verifies the requirement.'",
-      "properties": {
-        "algorithm": {
-          "type": "string",
-          "const": "SHA256"
-        },
-        "hashValue": {
-          "type": "string",
-          "pattern": "^[0-9a-f]{64}$"
-        }
-      }
-    },
-
-    "seg:implHash": {
-      "type": "object",
-      "required": ["algorithm", "hashValue"],
-      "additionalProperties": false,
-      "description": "Hash of the test function body — the execution logic. A change to this sub-hash triggers a notification: 'the execution of this test specification changed — a new test run is likely needed.'",
-      "properties": {
-        "algorithm": {
-          "type": "string",
-          "const": "SHA256"
-        },
-        "hashValue": {
-          "type": "string",
-          "pattern": "^[0-9a-f]{64}$"
-        }
-      }
-    },
-
-    "seg:nodeHash": {
-      "type": "object",
-      "required": ["algorithm", "hashValue"],
-      "additionalProperties": false,
-      "description": "Aggregate hash of this node's content. Computed as H(specHash || implHash). A change to either sub-hash produces a new nodeHash and marks all outgoing verifies edges suspect.",
-      "properties": {
-        "algorithm": {
-          "type": "string",
-          "const": "SHA256"
-        },
-        "hashValue": {
-          "type": "string",
-          "pattern": "^[0-9a-f]{64}$"
-        }
-      }
-    },
-
-    "seg:merkleHash": {
-      "type": "object",
-      "required": ["algorithm", "hashValue"],
-      "additionalProperties": false,
-      "description": "Merkle hash for this node. Computed by the proof generator as H(nodeHash || sorted(merkleHash of dependencies via strong-propagation edges)). Absent until the first proof generation run that includes this node.",
-      "properties": {
-        "algorithm": {
-          "type": "string",
-          "const": "SHA256"
-        },
-        "hashValue": {
-          "type": "string",
-          "pattern": "^[0-9a-f]{64}$"
-        }
-      }
+      "description": "The test intent as authored in the doxygen comment above the test function."
     },
 
     "seg:sourceRepo": {
       "type": "string",
       "const": "repoB",
-      "description": "Source repository for this node. Fixed to repoB for all TestSpecification nodes. Resolves to the concrete repo URL defined in config.json."
+      "description": "Source repository for this node. Fixed to repoB for all TestSpecification nodes."
     },
 
     "seg:sourcePath": {
@@ -127,7 +56,7 @@
 
     "comment": {
       "type": "string",
-      "description": "Optional free-text note. Not part of the node content and not included in nodeHash computation."
+      "description": "Optional free-text note."
     }
   }
 }

@@ -1,0 +1,24 @@
+[
+  {
+    "id": "https://zephyrproject.org/safety/edge/implements/z_sched_preempt-REQ-001",
+    "type": "seg:Implements",
+    "seg:from": "https://zephyrproject.org/safety/impl/z_sched_preempt",
+    "seg:to": "https://zephyrproject.org/safety/req/REQ-001",
+    "seg:edgeHash": {
+      "algorithm": "SHA256",
+      "hashValue": "b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5"
+    },
+    "seg:linkState": "active"
+  },
+  {
+    "id": "https://zephyrproject.org/safety/edge/implements/z_sched_lock-REQ-002",
+    "type": "seg:Implements",
+    "seg:from": "https://zephyrproject.org/safety/impl/z_sched_lock",
+    "seg:to": "https://zephyrproject.org/safety/req/REQ-002",
+    "seg:edgeHash": {
+      "algorithm": "SHA256",
+      "hashValue": "c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6"
+    },
+    "seg:linkState": "active"
+  }
+]

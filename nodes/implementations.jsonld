@@ -1,0 +1,22 @@
+[
+  {
+    "id": "https://zephyrproject.org/safety/impl/z_sched_preempt",
+    "type": "seg:Implementation",
+    "name": "z_sched_preempt",
+    "seg:sourceRepo": "repoB",
+    "seg:sourcePath": {
+      "header": "kernel/include/sched.h",
+      "body": "kernel/sched.c"
+    }
+  },
+  {
+    "id": "https://zephyrproject.org/safety/impl/z_sched_lock",
+    "type": "seg:Implementation",
+    "name": "z_sched_lock",
+    "seg:sourceRepo": "repoB",
+    "seg:sourcePath": {
+      "header": "kernel/include/sched.h",
+      "body": "kernel/sched.c"
+    }
+  }
+]

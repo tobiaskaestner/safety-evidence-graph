@@ -68,12 +68,13 @@
 
         "seg:edgeHash": {
           "$ref": "#/$defs/hashObject",
-          "description": "Hash computed as H(from || to || type) at the time of last affirmation. Used by the suspect link detector to determine whether either endpoint has changed since the edge was last affirmed. A mismatch between the stored edgeHash and a freshly computed one marks the edge suspect."
+          "description": "Hash computed as H(from || to || type || nodeHash(from) || nodeHash(to)) at the time of last affirmation. Used by the suspect link detector to determine whether either endpoint has changed since the edge was last affirmed. A mismatch between the stored edgeHash and a freshly computed one marks the edge suspect."
         },
 
         "seg:linkState": {
           "type": "string",
           "enum": [
+            "pending",
             "active",
             "directlyOutdated",
             "transitivelySuspect",

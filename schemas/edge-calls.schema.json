@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zephyrproject.org/seg/schema/edge-calls.schema.json",
+  "title": "SEG Calls Edge",
+  "description": "Schema for a Calls edge in the Safety Evidence Graph. Reserved for future use — the corresponding calls.jsonld instance file is currently empty. Direction and semantics TBD. Sink edge: no suspicion propagation, no edgeHash, no linkState.",
+
+  "allOf": [
+    { "$ref": "edge-base.schema.json#/$defs/baseEdge" }
+  ],
+
+  "properties": {
+    "type": {
+      "const": "seg:Calls"
+    },
+
+    "id": {
+      "pattern": "^https://[^/]+/[^/]+/edge/calls/.+$",
+      "description": "Form: {namespaceBase}/edge/calls/{fromId}-{toId}."
+    }
+  },
+
+  "unevaluatedProperties": false
+}

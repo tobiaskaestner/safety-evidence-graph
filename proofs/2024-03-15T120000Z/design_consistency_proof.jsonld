@@ -1,0 +1,81 @@
+{
+  "id": "https://zephyrproject.org/safety/proof/2024-03-15T120000Z/design-consistency-proof",
+  "type": "seg:DesignConsistencyProof",
+  "seg:snapshotId": "2024-03-15T120000Z",
+  "seg:scope": [
+    "https://zephyrproject.org/safety/req/REQ-001",
+    "https://zephyrproject.org/safety/req/REQ-002"
+  ],
+  "seg:merkleRoot": {
+    "algorithm": "SHA256",
+    "hashValue": "abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890"
+  },
+  "seg:nodeManifest": [
+    {
+      "id": "https://zephyrproject.org/safety/req/REQ-001",
+      "seg:nodeHash": {
+        "algorithm": "SHA256",
+        "hashValue": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
+      },
+      "seg:merkleHash": {
+        "algorithm": "SHA256",
+        "hashValue": "1111111111111111111111111111111111111111111111111111111111111111"
+      }
+    },
+    {
+      "id": "https://zephyrproject.org/safety/req/REQ-002",
+      "seg:nodeHash": {
+        "algorithm": "SHA256",
+        "hashValue": "c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4"
+      },
+      "seg:merkleHash": {
+        "algorithm": "SHA256",
+        "hashValue": "2222222222222222222222222222222222222222222222222222222222222222"
+      }
+    },
+    {
+      "id": "https://zephyrproject.org/safety/impl/z_sched_preempt",
+      "seg:nodeHash": {
+        "algorithm": "SHA256",
+        "hashValue": "cc33cc33cc33cc33cc33cc33cc33cc33cc33cc33cc33cc33cc33cc33cc33cc33"
+      },
+      "seg:merkleHash": {
+        "algorithm": "SHA256",
+        "hashValue": "3333333333333333333333333333333333333333333333333333333333333333"
+      }
+    },
+    {
+      "id": "https://zephyrproject.org/safety/impl/z_sched_lock",
+      "seg:nodeHash": {
+        "algorithm": "SHA256",
+        "hashValue": "ff66ff66ff66ff66ff66ff66ff66ff66ff66ff66ff66ff66ff66ff66ff66ff66"
+      },
+      "seg:merkleHash": {
+        "algorithm": "SHA256",
+        "hashValue": "4444444444444444444444444444444444444444444444444444444444444444"
+      }
+    },
+    {
+      "id": "https://zephyrproject.org/safety/ts/TS-017",
+      "seg:nodeHash": {
+        "algorithm": "SHA256",
+        "hashValue": "3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d"
+      },
+      "seg:merkleHash": {
+        "algorithm": "SHA256",
+        "hashValue": "5555555555555555555555555555555555555555555555555555555555555555"
+      }
+    },
+    {
+      "id": "https://zephyrproject.org/safety/ts/TS-019",
+      "seg:nodeHash": {
+        "algorithm": "SHA256",
+        "hashValue": "6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a"
+      },
+      "seg:merkleHash": {
+        "algorithm": "SHA256",
+        "hashValue": "6666666666666666666666666666666666666666666666666666666666666666"
+      }
+    }
+  ]
+}
