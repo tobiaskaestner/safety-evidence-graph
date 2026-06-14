@@ -90,11 +90,11 @@ Five node types exist. Four are content nodes (sourced from git repos A/B/C);
 one is a graph-level assertion node (sourced from repo G).
  
 **Key principle on node hashes:** node hashes (nodeHash, apiHash, bodyHash,
-specHash, implHash, merkleHash) are computed transiently by the extractor on
+specHash, implHash) are computed transiently by the extractor on
 each CI run and used immediately for edgeHash computation and suspect
 detection. They are NOT stored in the live node records in repo G. The only
 place node hashes are persisted is in sealed proof documents (the nodeManifest
-in DesignConsistencyProof, which stores both nodeHash and merkleHash per
+in DesignConsistencyProof, which stores `nodeHash` per
 node). Those sealed proof documents are themselves committed under
 `proofs/{snapshotId}/` in repo G, so the precise statement is: hashes never
 live in `nodes/*.jsonld`, only in sealed proofs. This avoids redundant
@@ -356,13 +356,18 @@ query string recorded in the commit message.
 ### 4.6 Schema Constraints
  
 - A Test Outcome is only valid as audit evidence if it has both a `confirms`
-  edge and a `witnesses` edge.
+  edge and a `witnesses` edge. This is a **verdict-layer** evidence-validity
+  check (`valid_outcome`), *not* a SHACL/schema constraint — SHACL enforces no
+  mandatory edge presence; an incomplete outcome is **discarded** (treated as
+  absent), becoming a coverage gap only if it leaves a spec uncovered (DEC-016).
 - Suspect links only block proof generation for scopes whose evidence chains
   pass through those links.
 - Proof generation is per-scope.
 - The `refines` relation MUST be acyclic; a cycle or self-loop is a
-  graph-level error. (Both the deep-Merkle closure in §7.2 and the recursive
-  satisfaction rule in §12.5 require a DAG to terminate. The other strong
+  graph-level error. (The recursive satisfaction rule in §12.5 requires a DAG to
+  terminate; the `flat-sealed` commitment in §7.2 does not aggregate up the
+  DAG and imposes no acyclicity requirement of its own, so `refines`
+  acyclicity now rests solely on satisfaction (DEC-012). The other strong
   edges cannot form cycles — nothing strong points back into a test spec or
   implementation — so this constraint applies to `refines` specifically.)
 ### 4.7 Edge Identifiers Are Opaque
@@ -458,60 +463,66 @@ node, `seg:waiverExpiry` in the record) are the same value by construction.
  
 ### 7.1 Hash Algorithm
  
-SHA-256 throughout. This applies to all nodeHash, edgeHash, merkleHash, and
-merkleRoot computations. Git object IDs (repo SHAs) may be SHA-1 (40 hex
+SHA-256 throughout. This applies to all nodeHash, edgeHash, and merkleRoot computations. Git object IDs (repo SHAs) may be SHA-1 (40 hex
 chars) or SHA-256 (64 hex chars) depending on repo configuration — both are
 supported. Every git-SHA-bearing field (the `repoBSha` on TestOutcome, the
 four repo SHAs in the EvidenceManifest, `repoBSha` in the
 ExecutionCoverageRecord, and `recordedSha`/`currentSha` in the CoverageReport)
 uses the same `^[0-9a-f]{40}([0-9a-f]{24})?$` pattern. SEG's own computed
-hashes (nodeHash, edgeHash, merkleHash, merkleRoot) are always SHA-256 and
+hashes (nodeHash, edgeHash, merkleRoot) are always SHA-256 and
 fixed at 64 hex chars.
  
-### 7.2 Merkle Hash Computation
- 
-Deep Merkle — full transitive closure over strong-propagation edges.
- 
-**Dependency direction (critical).** `strong_deps(N)` is the set of *in-neighbours*
-of N over strong-propagation edges: every node M such that a `refines`,
-`verifies`, or `implements` edge points **to** N (i.e. `seg:to == N`). Because
-all strong edges point upward toward the requirement they support, Merkle
-aggregation runs **opposite to edge direction**: a Requirement's dependencies
-are the child Requirements, TestSpecifications, and Implementations that point
-at it; TestSpecifications and Implementations have no strong in-neighbours and
-are therefore the **leaves**; top-level Requirements (those nothing else
-refines within scope) are the **roots**. Both implementers of the traversal
-must use this definition or they will compute different — but each
-self-consistent — Merkle roots.
- 
-**Leaf nodes** (no strong dependencies within scope):
-```
-merkleHash(N) = SHA256(nodeHash(N))
-```
- 
-**Non-leaf nodes:**
-```
-merkleHash(N) = SHA256(nodeHash(N) || sorted_lexicographic(merkleHash(dep) for dep in strong_deps(N)))
-```
- 
-Sibling hashes are sorted **lexicographically on their hex string values**
-before concatenation. This ensures deterministic computation across
-implementations.
- 
-Only **refines**, **verifies**, and **implements** edges participate in
-Merkle computation. **calls**, **confirms**, **witnesses**, and **excuses**
-do not.
- 
+### 7.2 Design Commitment (`flat-sealed`)
+
+The design commitment is a **`flat-sealed` set-commitment** over the design
+graph: take the design nodes' `nodeHash`es and the design edges'
+⟨from, to, type⟩ tuples, sort both canonically, and fold them — with the
+snapshot metadata — into a single root (§7.3). There is **no** recursive
+per-node aggregation up the `refines` DAG.
+
+Tamper-evidence and topology binding come from the *set itself*: adding,
+removing, or rewiring any participating edge changes a tuple — hence the sorted
+set, hence the root. Only **refines**, **verifies**, and **implements** edges,
+and the nodes they connect, participate; **calls**, **confirms**, **witnesses**,
+and **excuses** do not.
+
+**v1 posture (DEC-013/DEC-014).** v1 keeps this `flat-sealed` root as its seal,
+snapshot fingerprint, and the auditor's recompute target. v1 has **no
+cryptographic signature**; global integrity is the root plus the repo-G commit
+under the Authorised Committer List (§8.3) — governance-plus-fingerprint, not a
+signature (a future signature would be additive, not taken here). The
+*configurable* `fingerprint` facet, the `flat-openable` selective-disclosure
+sub-mode, and the retired `deep` mode are all **deferred to Phase C**
+(composability); no v1 edge carries a `fingerprint` setting, and the root is
+computed over the hardcoded design set. Per-edge integrity in v1 remains
+`edgeHash` (local, content-bound); `refines` acyclicity rests on the
+satisfaction recursion, not on the commitment layer.
+
+**`deep` is retired, not removed (DEC-012).** The earlier `deep` mode — a
+recursive, topology-aware aggregation running *opposite* to edge direction (each
+parent folding `merkleHash` over its strong in-neighbours) — remains *defined*
+in the `fingerprint` facet vocabulary as a dormant mode with **no current
+consumer**, re-openable if a future use needs per-node topology-bound
+aggregates; the engine need not compute it. "Retire `deep`" is not "retire
+Merkle": `flat-openable` (the Phase-C disclosure sub-mode) is itself a Merkle
+tree over the set.
+
 ### 7.3 Evidence Root
- 
-There is no explicit root node in the graph. At proof generation time, an
-implicit evidence root is computed over the top-level in-scope requirements:
- 
+
+There is no explicit root node in the graph. At proof generation time the sealed
+design root (the `merkleRoot` field of the DesignConsistencyProof) folds the
+in-scope design set with the snapshot metadata in one hash — no per-node
+aggregation (DEC-014):
+
 ```
-merkleRoot = SHA256(canonicalJSON(metadata) || sorted_lexicographic(merkleHash(req) for req in top_level_scope_requirements))
+merkleRoot = SHA256( canonicalJSON(metadata)
+                     ‖ sorted( nodeHash(n)       for n in in-scope design nodes )
+                     ‖ sorted( ⟨from, to, type⟩ for in-scope design edges ) )
 ```
- 
-Where `metadata` is RFC 8785 Canonical JSON over:
+
+This is v1's seal, snapshot fingerprint, and recompute target: an auditor holds
+the `nodeManifest` and recomputes the root. `metadata` is RFC 8785 Canonical
+JSON over:
 ```json
 {
   "snapshotId": "2024-03-15T14:32:00Z-a1b2c3d4e5f6",
@@ -522,7 +533,7 @@ Where `metadata` is RFC 8785 Canonical JSON over:
   "repoGSha": "0011..."
 }
 ```
- 
+
 ### 7.4 The Two Subgraphs
  
 **The design graph** — Merkle root computed over this:
@@ -694,10 +705,11 @@ HEAD. Fresh outcomes (matching SHA) are used in the proof. Stale outcomes
 (mismatching SHA) are discarded and recorded in the CoverageReport. Stale
 outcomes only block proof if their removal creates a coverage gap.
  
-**Step 5 — Compute Merkle hashes**
-Bottom-up topological traversal of the design graph. Compute merkleHash for
-each in-scope node. Compute evidence root (merkleRoot) over top-level
-scope requirements.
+**Step 5 — Compute the design root**
+Canonically sort the in-scope design nodes' `nodeHash`es and edges'
+⟨from, to, type⟩ tuples, fold them with the snapshot metadata, and hash once to
+the `flat-sealed` design root (`merkleRoot`). No per-node aggregation, no
+topological traversal (DEC-014).
  
 **Step 6 — Assemble four proof documents**
 In dependency order:
@@ -813,7 +825,9 @@ rule over the `refines` DAG (see §12.5):
   graph) satisfied; any direct verifies/implements edges it also carries are
   enforced if present
 - Every test spec has ≥1 fresh test outcome from the specified run
-- Every test outcome has confirms and witnesses edges
+- An outcome counts as evidence only if it has both confirms and witnesses
+  edges; an incomplete outcome is discarded (treated as absent) at the verdict
+  layer, becoming a coverage gap only if it leaves a spec uncovered (DEC-016)
 - All strong edges in scope are active
 - No in-scope node has unresolved warnings or errors
 - All in-scope outcomes are PASS or have valid non-expired waiver

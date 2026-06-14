@@ -16,7 +16,7 @@ requirement lattice), `seg_composition_settheoretic.svg` (the same in behaviour-
 / trace form — formal grounding).
 **Demos:** `seg_demo_clingo_partial_discharge.py` (residual + the three verdicts,
 single-level import), `seg_demo_clingo_transitive.py` (A→B→C reliance chain,
-two-hop staleness propagation, reliance-cycle guardrail).
+two-hop staleness propagation, reliance-cycle detection via the `acyclic` facet).
  
 ---
  
@@ -353,31 +353,35 @@ edge and propagate up the `refines` DAG like any internal drift. Cross-project r
 reuses the suspicion machinery wholesale; it adds no new state.
  
 **Partial discharge: the residual and the conditional verdict.** Discharge is binary
-per requirement, but a *proof* over a set of relied-on requirements need not be
-all-or-nothing. Define the **residual** as the relied-on requirements the product
-depends on that no valid discharge reaches — derived (the complement of `discharged`
-among the product's `relies-on` targets), never stored, so it recomputes under drift.
-Empty residual ⇒ a **total** proof; non-empty residual ⇒ a **conditional** proof
-`M ⊨ (A = residual, G = discharged)`. This is not a weakening: it is
-`C_up = (A_up, G_up)` of §3 with the residual *as* the published `A_up` — a compliant
-item shipped with a safety manual whose conditions of use are precisely the
-undischarged requirements (§10). The next importer composes against that residual via
-mode 2. The verdict layer therefore reports three states — **satisfied (total)** /
-**conditional (residual published)** / **unsatisfied** — the conditional state being
-the composability-level surfacing of partial-vs-total scope (DEC-002) and the
-verdict-layer image of the quotient (§6).
+per requirement, but a *proof* need not be all-or-nothing. Define the **residual** as
+the product's own *authored* conditions of use — the `assumes` edges issued by a local
+(non-referenced) guarantee — derived, never stored, so it recomputes under drift. A
+residual is the published `A_up`: `C_up = (A_up, G_up)` of §3 with the authored
+conditions *as* `A_up`, a compliant item shipped with a safety manual. Empty residual ⇒
+a **total** proof; non-empty residual ⇒ a **conditional** proof
+`M ⊨ (A = residual, G = satisfied)`. The next importer composes against that residual
+via mode 2. Crucially, a *broken or incomplete reliance is not a residual* — it is
+**unsatisfied** (DEC-015): a `relies-on` edge is a commitment to discharge locally, so a
+failed one is a defect, never something publishable downstream. The verdict layer
+therefore reports three states — **satisfied (total)** / **conditional (residual
+published)** / **unsatisfied** — the conditional state being the composability-level
+surfacing of partial-vs-total scope (DEC-002) and the verdict-layer image of the
+quotient (§6).
  
 This is orthogonal to mode-2 completeness above: "miss one, no verdict" still governs
 *using* a single upstream reliance (every sealed `assumes` condition of the guarantee
-you lean on must be discharged). The residual concerns the product's *own* relied-on
-requirements, not the conditions internal to a reliance it invokes — a conditional
+you lean on must be discharged). The residual concerns the product's *own* authored
+conditions of use, not the conditions internal to a reliance it invokes — a conditional
 proof never relaxes a reliance's completeness.
  
 *Demonstrated:* `seg_demo_clingo_partial_discharge.py` computes the residual and the
-three verdicts on a single-level import (partial → complete → stale);
-`seg_demo_clingo_transitive.py` chains reliance A→B→C, shows staleness propagating two
-hops, and trips the determinism guardrail on a reliance cycle (the well-foundedness
-condition above, made to fail).
+proof-scope three-state rollup (`product` / `proof_total` / `proof_conditional` /
+`proof_unsatisfied`, with a non-empty-scope guard) on a single-level import, mirroring
+the composition grammar's rules; `seg_demo_clingo_transitive.py` chains reliance A→B→C and shows
+staleness propagating two hops. Note: under the composition grammar's positive-recursion `unsatisfied`
+idiom a reliance cycle is a benign positive loop, so the single-answer-set determinism
+guardrail stays *silent* on it — well-foundedness is enforced by the explicit `acyclic`
+facet's structural (closure) check, not by the verdict engine's determinism.
  
 ## 9. Conservative-extension invariant
  
@@ -413,7 +417,7 @@ residual(R)   :- relies_on(R,_), not discharged(R).      % NEW: relied-on but un
  
 On an import-free graph there are no `design_review`, `relies_on`, `manifest`, or
 `assumes` facts, so every NEW clause has an unsatisfiable body and contributes nothing
-(including `residual`, which is guarded by `relies_on`); the derivable
+(including `residual`, which is guarded by `assumes`); the derivable
 `discharged`/`satisfied` set is *identical* to the base rule-set's. That is
 conservativity by construction, not by testing — and it composes with the DEC-001
 stratification (the added `relies_on`/`assumes` literals merely join the dependency graph
@@ -423,12 +427,17 @@ nothing derives `discharged` from `residual` — so it adds a stratum, not a cyc
 **The three-state verdict (§8) on this sketch.** `satisfied/1` keeps its meaning —
 *total* discharge. The added `residual/1` carries the published assumption set `A_up`. A
 proof is then **total** iff its root is satisfied with empty residual; **conditional**
-iff its only remaining gaps are residuals (relied-on requirements awaiting external
-discharge, publishable as `A_up`); **unsatisfied** iff a gap is *not* a residual (e.g. a
-failing or absent witness, or a reliance whose seal/affirmation fails). The exact
-stratified rollup that separates conditional from unsatisfied at proof scope is the
-runnable encoding in the two header demos; the sketch derives `residual` and leaves the
-proof-scope rollup to them.
+iff its only remaining gaps are residuals (the product's own authored conditions of
+use, publishable as `A_up`); **unsatisfied** iff a gap is *not* a residual (e.g. a
+failing or absent witness, or a reliance whose seal/affirmation/condition-coverage
+fails). The proof-scope rollup that separates conditional from unsatisfied is now
+concrete — `product` / `proof_total` / `proof_conditional` / `proof_unsatisfied` in
+`seg_example_v1_plus_composition.dsl`, exercised in
+`seg_demo_clingo_partial_discharge.py`. (This section's positive-`discharged` framing is
+illustrative; the composition grammar realises the same verdict in the syntactically-stratified
+`unsatisfied`-recursion idiom, so the line-above "residual over `discharged`" stratum
+argument is the sketch's form, not the composition grammar's — reconciling the two presentations is a
+separate pass.)
  
 **Empirical backstop.** Run the existing import-free fixtures under the augmented
 rule-set and assert byte-identical verdicts to the pre-extension baseline. The

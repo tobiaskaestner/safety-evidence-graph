@@ -167,7 +167,14 @@ all decidable before anything runs. The transpiler must enforce all of them:
 2. **Declared-acyclicity.** The union of all edge types declared `acyclic` (in the
    built-in model: `refines`, for satisfaction soundness) must induce a DAG — checked
    *jointly over the union*, not per edge type (a per-edge check would miss a
-   cross-type cycle). The operative entailment is `satisfaction-role ⟹ acyclic`. The
+   cross-type cycle). The operative entailment is `satisfaction-role ⟹ acyclic`. Under
+   the composition extension (DEC-017) the union is `{refines, covers, assumes}`, and
+   `covers` enters it in its **dependant→dependee orientation** `R → G` (a covered
+   requirement's discharge depends on the guarantee), **not** its surface direction
+   `G → R`. So the dependency graph the cycle check ranges over is byte-identical to the
+   pre-DEC-017 `relies_on(R, G)` form; a naive union over surface directions would place
+   `covers` and `assumes` in parallel (both `G → R`), collapse a reliance cycle, and miss
+   it (DEC-017 §2a). The
    `fingerprint:deep ⟹ acyclic` entailment is **dormant** while `deep` is retired
    (DEC-012); it would re-add the deep-fingerprint union to this check if a `deep`
    edge type were reintroduced.
