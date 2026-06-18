@@ -14,8 +14,9 @@ the deferred actor-authentication corner), `seg_definition_language.md` (edge mo
 `seg_composition_requirements.svg` (**primary** — the two-space set view in the
 requirement lattice), `seg_composition_settheoretic.svg` (the same in behaviour-set
 / trace form — formal grounding).
-**Demos:** `seg_demo_clingo_partial_discharge.py` (residual + the three verdicts,
-single-level import), `seg_demo_clingo_transitive.py` (A→B→C reliance chain,
+**Demos:** `seg_demo_clingo_partial_discharge_v2.py` (residual + the three verdicts,
+single-level import; also the DEC-001 universal mode-A and the DEC-016 `valid_outcome`
+check — supersedes the v1 module), `seg_demo_clingo_transitive.py` (A→B→C reliance chain,
 two-hop staleness propagation, reliance-cycle detection via the `acyclic` facet).
  
 ---
@@ -374,7 +375,7 @@ you lean on must be discharged). The residual concerns the product's *own* autho
 conditions of use, not the conditions internal to a reliance it invokes — a conditional
 proof never relaxes a reliance's completeness.
  
-*Demonstrated:* `seg_demo_clingo_partial_discharge.py` computes the residual and the
+*Demonstrated:* `seg_demo_clingo_partial_discharge_v2.py` computes the residual and the
 proof-scope three-state rollup (`product` / `proof_total` / `proof_conditional` /
 `proof_unsatisfied`, with a non-empty-scope guard) on a single-level import, mirroring
 the composition grammar's rules; `seg_demo_clingo_transitive.py` chains reliance A→B→C and shows
@@ -382,6 +383,15 @@ staleness propagating two hops. Note: under the composition grammar's positive-r
 idiom a reliance cycle is a benign positive loop, so the single-answer-set determinism
 guardrail stays *silent* on it — well-foundedness is enforced by the explicit `acyclic`
 facet's structural (closure) check, not by the verdict engine's determinism.
+
+The v2 module also makes the base mode-A coverage rule faithful: a test specification is
+satisfied under the **DEC-001 universal** (every *valid* confirming outcome PASS-or-waived,
+not merely one), and a test outcome counts as evidence only with both a `confirms` and a
+`witnesses` edge (**DEC-016** `valid_outcome` — a verdict-layer completeness check, not a
+SHACL constraint; an incomplete outcome is discarded, not rejected). It carries the five
+three-state scenarios above plus four targeting these rules (PASS + unwaived-FAIL, a waived
+FAIL, an incomplete outcome, and both directions of enforce-if-present), 10/10, and
+supersedes `seg_demo_clingo_partial_discharge_v1.py`.
  
 ## 9. Conservative-extension invariant
  
@@ -433,7 +443,7 @@ failing or absent witness, or a reliance whose seal/affirmation/condition-covera
 fails). The proof-scope rollup that separates conditional from unsatisfied is now
 concrete — `product` / `proof_total` / `proof_conditional` / `proof_unsatisfied` in
 `seg_example_v1_plus_composition.dsl`, exercised in
-`seg_demo_clingo_partial_discharge.py`. (This section's positive-`discharged` framing is
+`seg_demo_clingo_partial_discharge_v2.py`. (This section's positive-`discharged` framing is
 illustrative; the composition grammar realises the same verdict in the syntactically-stratified
 `unsatisfied`-recursion idiom, so the line-above "residual over `discharged`" stratum
 argument is the sketch's form, not the composition grammar's — reconciling the two presentations is a
