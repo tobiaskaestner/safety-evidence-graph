@@ -8,15 +8,25 @@ node_field(toa, outcome, "PASS")). Descriptive fields (text, etc.) are carried
 for the SPDX projection but only the fields the ruleset reads
 ({outcome, component_iri, expiry, approver}) affect the verdict.
 """
+import hashlib
 from dataclasses import dataclass, field
 from typing import Dict, List
+
+
+def impl_sha1(body: str) -> str:
+    """DEC-028 stand-in content-ref for an implementation: sha1 over its body
+    label. Real content-addressing (a git blob/commit sha) replaces this later;
+    the field is the source of truth the BOM projects (never invented at export)."""
+    return hashlib.sha1(body.encode("utf-8")).hexdigest()
 
 
 @dataclass
 class Node:
     id: str
     type: str                       # requirement|testspecification|implementation|
-                                    # testoutcome|waiver|designreview|manifest|guarantee
+                                    # testoutcome|waiver|designreview|manifest|guarantee|
+                                    # assumption
+                                    # implementation nodes carry a `sha1` content-ref (DEC-028)
     fields: Dict[str, str] = field(default_factory=dict)
 
 
@@ -24,9 +34,12 @@ class Node:
 class Edge:
     id: str
     type: str                       # refines|verifies|implements|confirms|witnesses|
-                                    # excuses|reviews|covers|assumes|uses
+                                    # excuses|reviews|covers|assumes|uses|conformsTo
     src: str
     dst: str
+    kind: str = ""                  # provenance hint for rendering (e.g. covers:
+                                    # "affirmed" = hand-authored reliance / "minted" =
+                                    # derived from a resolved conformsTo). Not lowered.
 
 
 @dataclass

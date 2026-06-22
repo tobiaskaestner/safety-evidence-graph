@@ -1,0 +1,10 @@
+{
+  "algorithm": "sha256-merkle",
+  "root": "6f7f21fb70e4cdcc8be8ba4205b4efd0e0263fe31c58ce875c19bdae5191f838",
+  "openings": {
+    "contract-m_hal": {
+      "member_hash": "6f7f21fb70e4cdcc8be8ba4205b4efd0e0263fe31c58ce875c19bdae5191f838",
+      "path": []
+    }
+  }
+}

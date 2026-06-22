@@ -1,0 +1,24 @@
+{
+  "algorithm": "sha256-merkle",
+  "root": "a5a95cef2ac167728d55437a219c88a053a016f0a9da0d806bb29ffc04be6f4e",
+  "openings": {
+    "contract-p_sys": {
+      "member_hash": "88fd6e82fcfde4e6a004f1e17cd05112c8d3b71c19241822e641fff0cf7cb673",
+      "path": [
+        [
+          "ca25d0faaa39690acc3c65eeaab7d9213d65d49b7506eb9a3e63acaaa2cc1090",
+          "R"
+        ]
+      ]
+    },
+    "contract-p_sys_2": {
+      "member_hash": "ca25d0faaa39690acc3c65eeaab7d9213d65d49b7506eb9a3e63acaaa2cc1090",
+      "path": [
+        [
+          "88fd6e82fcfde4e6a004f1e17cd05112c8d3b71c19241822e641fff0cf7cb673",
+          "L"
+        ]
+      ]
+    }
+  }
+}

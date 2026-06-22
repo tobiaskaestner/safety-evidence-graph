@@ -30,7 +30,14 @@ has_unmet_spec(R) :- active_edge(_, verifies, TS, R), not spec_ok(TS).
 unsatisfied(R) :- node(R, requirement), has_unmet_spec(R).
 unsatisfied(R) :- is_parent(R), active_edge(_, refines, C, R), unsatisfied(C).
 unsatisfied(R) :- is_parent(R), edge(E, refines, _, R), inactive(E).
-satisfied(R)   :- node(R, requirement), not unsatisfied(R).
+satisfied(R)   :- node(R, requirement), not unsatisfied(R), not obligation(R).
+
+% --- DEC-018: `obligation` is the node-level verdict state for an open
+%     condition-of-use, distinct from the structural `residual`. Precedence
+%     unsatisfied > obligation > satisfied (a failing test is a gap regardless
+%     of how the node was published). `obligation`/`satisfied` are reported-only
+%     -- no rule body reads them, so the proof verdict is unchanged. ---
+obligation(R)  :- residual(R), not unsatisfied(R).
 """
 LEAF_COMP = r"""
 unsatisfied(R) :- leaf(R), not has_active_verifies(R),   not discharged_otherwise(R).
@@ -65,7 +72,7 @@ DEFS = """
 #defined node/2. #defined edge/4. #defined node_field/3. #defined inactive/1.
 #defined referenced_under/2. #defined seal_ok/1.
 """
-SHOW = ("#show satisfied/1.\n#show unsatisfied/1.\n#show residual/1.\n#show product/1.\n"
+SHOW = ("#show satisfied/1.\n#show unsatisfied/1.\n#show residual/1.\n#show obligation/1.\n#show product/1.\n"
         "#show proof_total/0.\n#show proof_conditional/0.\n#show proof_unsatisfied/0.\n")
 
 

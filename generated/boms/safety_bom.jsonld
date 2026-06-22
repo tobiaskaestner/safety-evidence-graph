@@ -17,21 +17,37 @@
         "functionalSafety"
       ],
       "rootElement": [
-        "https://zephyrproject.org/seg/crypto-rng#p_sys"
+        "https://zephyrproject.org/seg/crypto-rng#contract-p_sys",
+        "https://zephyrproject.org/seg/crypto-rng#contract-p_sys_2"
       ],
       "element": [
         "https://zephyrproject.org/seg/crypto-rng#agent-seg",
-        "https://zephyrproject.org/seg/crypto-rng#p_rng",
         "https://zephyrproject.org/seg/crypto-rng#p_sys",
         "https://zephyrproject.org/seg/crypto-rng#p_entropy",
-        "https://zephyrproject.org/seg/crypto-rng#rel-tracedToDetail-1",
-        "https://zephyrproject.org/seg/crypto-rng#rel-assumes-2"
+        "https://zephyrproject.org/seg/crypto-rng#rel-assumes-1",
+        "https://zephyrproject.org/seg/crypto-rng#p_hal",
+        "https://zephyrproject.org/seg/crypto-rng#rel-assumes-2",
+        "https://zephyrproject.org/seg/crypto-rng#p_mem",
+        "https://zephyrproject.org/seg/crypto-rng#rel-assumes-3",
+        "https://zephyrproject.org/seg/crypto-rng#p_rng_a",
+        "https://zephyrproject.org/seg/crypto-rng#rel-assumes-4",
+        "https://zephyrproject.org/seg/crypto-rng#p_impl",
+        "https://zephyrproject.org/seg/crypto-rng#contract-p_sys",
+        "https://zephyrproject.org/seg/crypto-rng#p_sys_2",
+        "https://zephyrproject.org/seg/crypto-rng#rel-assumes-5",
+        "https://zephyrproject.org/seg/crypto-rng#p_sha256_a",
+        "https://zephyrproject.org/seg/crypto-rng#rel-assumes-6",
+        "https://zephyrproject.org/seg/crypto-rng#p_sha512_a",
+        "https://zephyrproject.org/seg/crypto-rng#rel-assumes-7",
+        "https://zephyrproject.org/seg/crypto-rng#p_im256",
+        "https://zephyrproject.org/seg/crypto-rng#p_im512",
+        "https://zephyrproject.org/seg/crypto-rng#contract-p_sys_2"
       ],
       "verifiedUsing": [
         {
           "type": "Hash",
           "algorithm": "sha256",
-          "hashValue": "c810d70a9ebd53624eba14eb0a2cade18376b9dae66bd723d027dfbbf184bafd"
+          "hashValue": "a5a95cef2ac167728d55437a219c88a053a016f0a9da0d806bb29ffc04be6f4e"
         }
       ]
     },
@@ -50,20 +66,6 @@
     },
     {
       "type": "Requirement",
-      "spdxId": "https://zephyrproject.org/seg/crypto-rng#p_rng",
-      "creationInfo": {
-        "type": "CreationInfo",
-        "specVersion": "3.0.1",
-        "created": "2026-06-23T00:00:00Z",
-        "createdBy": [
-          "https://zephyrproject.org/seg/crypto-rng#agent-seg"
-        ]
-      },
-      "name": "p_rng",
-      "requirementStatement": "The RNG shall pass the NIST SP 800-22 statistical test suite."
-    },
-    {
-      "type": "Requirement",
       "spdxId": "https://zephyrproject.org/seg/crypto-rng#p_sys",
       "creationInfo": {
         "type": "CreationInfo",
@@ -74,7 +76,8 @@
         ]
       },
       "name": "p_sys",
-      "requirementStatement": "The crypto subsystem shall provide cryptographically secure random numbers."
+      "requirementStatement": "The crypto subsystem shall provide cryptographically secure random numbers.",
+      "comment": "seg:type=guarantee"
     },
     {
       "type": "functionalsafety_Assumption",
@@ -88,12 +91,12 @@
         ]
       },
       "name": "p_entropy",
-      "functionalsafety_assumptionStatement": "The host platform shall provide at least 256 bits of hardware entropy to the RNG at boot.",
+      "functionalsafety_assumptionStatement": "The host shall provide >=256 bits of hardware entropy at boot.",
       "comment": "seg:type=requirement"
     },
     {
       "type": "Relationship",
-      "spdxId": "https://zephyrproject.org/seg/crypto-rng#rel-tracedToDetail-1",
+      "spdxId": "https://zephyrproject.org/seg/crypto-rng#rel-assumes-1",
       "creationInfo": {
         "type": "CreationInfo",
         "specVersion": "3.0.1",
@@ -103,10 +106,25 @@
         ]
       },
       "from": "https://zephyrproject.org/seg/crypto-rng#p_sys",
-      "relationshipType": "tracedToDetail",
+      "relationshipType": "assumes",
       "to": [
-        "https://zephyrproject.org/seg/crypto-rng#p_rng"
+        "https://zephyrproject.org/seg/crypto-rng#p_entropy"
       ]
+    },
+    {
+      "type": "functionalsafety_Assumption",
+      "spdxId": "https://zephyrproject.org/seg/crypto-rng#p_hal",
+      "creationInfo": {
+        "type": "CreationInfo",
+        "specVersion": "3.0.1",
+        "created": "2026-06-23T00:00:00Z",
+        "createdBy": [
+          "https://zephyrproject.org/seg/crypto-rng#agent-seg"
+        ]
+      },
+      "name": "p_hal",
+      "functionalsafety_assumptionStatement": "A compliant hardware abstraction layer (HAL) shall be present.",
+      "comment": "seg:type=requirement"
     },
     {
       "type": "Relationship",
@@ -122,7 +140,300 @@
       "from": "https://zephyrproject.org/seg/crypto-rng#p_sys",
       "relationshipType": "assumes",
       "to": [
-        "https://zephyrproject.org/seg/crypto-rng#p_entropy"
+        "https://zephyrproject.org/seg/crypto-rng#p_hal"
+      ]
+    },
+    {
+      "type": "functionalsafety_Assumption",
+      "spdxId": "https://zephyrproject.org/seg/crypto-rng#p_mem",
+      "creationInfo": {
+        "type": "CreationInfo",
+        "specVersion": "3.0.1",
+        "created": "2026-06-23T00:00:00Z",
+        "createdBy": [
+          "https://zephyrproject.org/seg/crypto-rng#agent-seg"
+        ]
+      },
+      "name": "p_mem",
+      "functionalsafety_assumptionStatement": "The caller shall provide DMA-incoherent scratch memory.",
+      "comment": "seg:type=requirement"
+    },
+    {
+      "type": "Relationship",
+      "spdxId": "https://zephyrproject.org/seg/crypto-rng#rel-assumes-3",
+      "creationInfo": {
+        "type": "CreationInfo",
+        "specVersion": "3.0.1",
+        "created": "2026-06-23T00:00:00Z",
+        "createdBy": [
+          "https://zephyrproject.org/seg/crypto-rng#agent-seg"
+        ]
+      },
+      "from": "https://zephyrproject.org/seg/crypto-rng#p_sys",
+      "relationshipType": "assumes",
+      "to": [
+        "https://zephyrproject.org/seg/crypto-rng#p_mem"
+      ]
+    },
+    {
+      "type": "functionalsafety_Assumption",
+      "spdxId": "https://zephyrproject.org/seg/crypto-rng#p_rng_a",
+      "creationInfo": {
+        "type": "CreationInfo",
+        "specVersion": "3.0.1",
+        "created": "2026-06-23T00:00:00Z",
+        "createdBy": [
+          "https://zephyrproject.org/seg/crypto-rng#agent-seg"
+        ]
+      },
+      "name": "p_rng_a",
+      "functionalsafety_assumptionStatement": "The RNG API shall be called from a single thread.",
+      "comment": "seg:type=requirement"
+    },
+    {
+      "type": "Relationship",
+      "spdxId": "https://zephyrproject.org/seg/crypto-rng#rel-assumes-4",
+      "creationInfo": {
+        "type": "CreationInfo",
+        "specVersion": "3.0.1",
+        "created": "2026-06-23T00:00:00Z",
+        "createdBy": [
+          "https://zephyrproject.org/seg/crypto-rng#agent-seg"
+        ]
+      },
+      "from": "https://zephyrproject.org/seg/crypto-rng#p_sys",
+      "relationshipType": "assumes",
+      "to": [
+        "https://zephyrproject.org/seg/crypto-rng#p_rng_a"
+      ]
+    },
+    {
+      "type": "software_File",
+      "spdxId": "https://zephyrproject.org/seg/crypto-rng#p_impl",
+      "creationInfo": {
+        "type": "CreationInfo",
+        "specVersion": "3.0.1",
+        "created": "2026-06-23T00:00:00Z",
+        "createdBy": [
+          "https://zephyrproject.org/seg/crypto-rng#agent-seg"
+        ]
+      },
+      "name": "p_impl",
+      "comment": "seg:type=implementation",
+      "verifiedUsing": [
+        {
+          "type": "Hash",
+          "algorithm": "sha1",
+          "hashValue": "83c7971bffb8a36359e9705b9c2fadc1c97bae09"
+        }
+      ]
+    },
+    {
+      "type": "Bom",
+      "spdxId": "https://zephyrproject.org/seg/crypto-rng#contract-p_sys",
+      "creationInfo": {
+        "type": "CreationInfo",
+        "specVersion": "3.0.1",
+        "created": "2026-06-23T00:00:00Z",
+        "createdBy": [
+          "https://zephyrproject.org/seg/crypto-rng#agent-seg"
+        ]
+      },
+      "name": "contract-p_sys",
+      "profileConformance": [
+        "core",
+        "functionalSafety"
+      ],
+      "rootElement": [
+        "https://zephyrproject.org/seg/crypto-rng#p_sys"
+      ],
+      "element": [
+        "https://zephyrproject.org/seg/crypto-rng#p_sys",
+        "https://zephyrproject.org/seg/crypto-rng#p_entropy",
+        "https://zephyrproject.org/seg/crypto-rng#p_hal",
+        "https://zephyrproject.org/seg/crypto-rng#p_mem",
+        "https://zephyrproject.org/seg/crypto-rng#p_rng_a",
+        "https://zephyrproject.org/seg/crypto-rng#p_impl"
+      ],
+      "verifiedUsing": [
+        {
+          "type": "Hash",
+          "algorithm": "sha256",
+          "hashValue": "88fd6e82fcfde4e6a004f1e17cd05112c8d3b71c19241822e641fff0cf7cb673"
+        }
+      ]
+    },
+    {
+      "type": "Requirement",
+      "spdxId": "https://zephyrproject.org/seg/crypto-rng#p_sys_2",
+      "creationInfo": {
+        "type": "CreationInfo",
+        "specVersion": "3.0.1",
+        "created": "2026-06-23T00:00:00Z",
+        "createdBy": [
+          "https://zephyrproject.org/seg/crypto-rng#agent-seg"
+        ]
+      },
+      "name": "p_sys_2",
+      "requirementStatement": "The crypto subsystem shall provide collision-resistant hashing.",
+      "comment": "seg:type=guarantee"
+    },
+    {
+      "type": "Relationship",
+      "spdxId": "https://zephyrproject.org/seg/crypto-rng#rel-assumes-5",
+      "creationInfo": {
+        "type": "CreationInfo",
+        "specVersion": "3.0.1",
+        "created": "2026-06-23T00:00:00Z",
+        "createdBy": [
+          "https://zephyrproject.org/seg/crypto-rng#agent-seg"
+        ]
+      },
+      "from": "https://zephyrproject.org/seg/crypto-rng#p_sys_2",
+      "relationshipType": "assumes",
+      "to": [
+        "https://zephyrproject.org/seg/crypto-rng#p_mem"
+      ]
+    },
+    {
+      "type": "functionalsafety_Assumption",
+      "spdxId": "https://zephyrproject.org/seg/crypto-rng#p_sha256_a",
+      "creationInfo": {
+        "type": "CreationInfo",
+        "specVersion": "3.0.1",
+        "created": "2026-06-23T00:00:00Z",
+        "createdBy": [
+          "https://zephyrproject.org/seg/crypto-rng#agent-seg"
+        ]
+      },
+      "name": "p_sha256_a",
+      "functionalsafety_assumptionStatement": "Input buffers to SHA-256 shall not alias the output.",
+      "comment": "seg:type=requirement"
+    },
+    {
+      "type": "Relationship",
+      "spdxId": "https://zephyrproject.org/seg/crypto-rng#rel-assumes-6",
+      "creationInfo": {
+        "type": "CreationInfo",
+        "specVersion": "3.0.1",
+        "created": "2026-06-23T00:00:00Z",
+        "createdBy": [
+          "https://zephyrproject.org/seg/crypto-rng#agent-seg"
+        ]
+      },
+      "from": "https://zephyrproject.org/seg/crypto-rng#p_sys_2",
+      "relationshipType": "assumes",
+      "to": [
+        "https://zephyrproject.org/seg/crypto-rng#p_sha256_a"
+      ]
+    },
+    {
+      "type": "functionalsafety_Assumption",
+      "spdxId": "https://zephyrproject.org/seg/crypto-rng#p_sha512_a",
+      "creationInfo": {
+        "type": "CreationInfo",
+        "specVersion": "3.0.1",
+        "created": "2026-06-23T00:00:00Z",
+        "createdBy": [
+          "https://zephyrproject.org/seg/crypto-rng#agent-seg"
+        ]
+      },
+      "name": "p_sha512_a",
+      "functionalsafety_assumptionStatement": "SHA-512 shall run only on a 64-bit word architecture.",
+      "comment": "seg:type=requirement"
+    },
+    {
+      "type": "Relationship",
+      "spdxId": "https://zephyrproject.org/seg/crypto-rng#rel-assumes-7",
+      "creationInfo": {
+        "type": "CreationInfo",
+        "specVersion": "3.0.1",
+        "created": "2026-06-23T00:00:00Z",
+        "createdBy": [
+          "https://zephyrproject.org/seg/crypto-rng#agent-seg"
+        ]
+      },
+      "from": "https://zephyrproject.org/seg/crypto-rng#p_sys_2",
+      "relationshipType": "assumes",
+      "to": [
+        "https://zephyrproject.org/seg/crypto-rng#p_sha512_a"
+      ]
+    },
+    {
+      "type": "software_File",
+      "spdxId": "https://zephyrproject.org/seg/crypto-rng#p_im256",
+      "creationInfo": {
+        "type": "CreationInfo",
+        "specVersion": "3.0.1",
+        "created": "2026-06-23T00:00:00Z",
+        "createdBy": [
+          "https://zephyrproject.org/seg/crypto-rng#agent-seg"
+        ]
+      },
+      "name": "p_im256",
+      "comment": "seg:type=implementation",
+      "verifiedUsing": [
+        {
+          "type": "Hash",
+          "algorithm": "sha1",
+          "hashValue": "bfc035411e53814605f413bea0a690b0b0b8fec7"
+        }
+      ]
+    },
+    {
+      "type": "software_File",
+      "spdxId": "https://zephyrproject.org/seg/crypto-rng#p_im512",
+      "creationInfo": {
+        "type": "CreationInfo",
+        "specVersion": "3.0.1",
+        "created": "2026-06-23T00:00:00Z",
+        "createdBy": [
+          "https://zephyrproject.org/seg/crypto-rng#agent-seg"
+        ]
+      },
+      "name": "p_im512",
+      "comment": "seg:type=implementation",
+      "verifiedUsing": [
+        {
+          "type": "Hash",
+          "algorithm": "sha1",
+          "hashValue": "558fd555e64b51040c9b2c173ea7c6045266d3cf"
+        }
+      ]
+    },
+    {
+      "type": "Bom",
+      "spdxId": "https://zephyrproject.org/seg/crypto-rng#contract-p_sys_2",
+      "creationInfo": {
+        "type": "CreationInfo",
+        "specVersion": "3.0.1",
+        "created": "2026-06-23T00:00:00Z",
+        "createdBy": [
+          "https://zephyrproject.org/seg/crypto-rng#agent-seg"
+        ]
+      },
+      "name": "contract-p_sys_2",
+      "profileConformance": [
+        "core",
+        "functionalSafety"
+      ],
+      "rootElement": [
+        "https://zephyrproject.org/seg/crypto-rng#p_sys_2"
+      ],
+      "element": [
+        "https://zephyrproject.org/seg/crypto-rng#p_sys_2",
+        "https://zephyrproject.org/seg/crypto-rng#p_mem",
+        "https://zephyrproject.org/seg/crypto-rng#p_sha256_a",
+        "https://zephyrproject.org/seg/crypto-rng#p_sha512_a",
+        "https://zephyrproject.org/seg/crypto-rng#p_im256",
+        "https://zephyrproject.org/seg/crypto-rng#p_im512"
+      ],
+      "verifiedUsing": [
+        {
+          "type": "Hash",
+          "algorithm": "sha256",
+          "hashValue": "ca25d0faaa39690acc3c65eeaab7d9213d65d49b7506eb9a3e63acaaa2cc1090"
+        }
       ]
     }
   ],
