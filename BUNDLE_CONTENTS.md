@@ -18,20 +18,17 @@ SPDX-SEG/
     boms/                   ← *_bom.jsonld + *openings*.json
     graphs/                 ← *.dot / *.svg / *.png renders
   notes/                    ← record + process/meta
-    seg_decision_log_v20.md   ← AUTHORITATIVE record (DEC-001 … DEC-028)
+    seg_decision_log.md   ← AUTHORITATIVE record (DEC-001 … DEC-028)
     GAPS.md HANDOFF_layerB.md correction-3-handoff-prompt.md seg_spdx_fusa_handoff_v1.md
-    seg_open_threads_v5.md seg_reconciliation_v5.md seg_glossary_v5.md MANIFEST.md CLAUDE_v5.md
+    seg_open_threads.md seg_reconciliation_v5.md seg_glossary_v5.md MANIFEST.md CLAUDE_v5.md
   design/                   ← architecture, language, summaries
-    seg_adr_projection_core_v5.md seg_architecture_constraints_v5.md seg_cli_reference_v5.md
-    seg_definition_language_v5.md/v6.md seg_composability_cbd_v5.md/v6.md/v7.md
-    knowledge_graph_design_summary_v5_1.md/v6_1.md seg_python_realization_v5.md
   briefs/                   ← agent briefs (prototype / re / swe / ppt_overview)
   research/                 ← paper seed, prior art, future directions
   skills/                   ← SKILL_v5.md
 ```
 
 ## Start here
-- **`notes/seg_decision_log_v20.md`** — the authoritative, citeable record (DEC-001 … DEC-028).
+- **`notes/seg_decision_log.md`** — the authoritative, citeable record (DEC-001 … DEC-028).
 - **`README.md`** — environment rebuild + run order (also reproduced below).
 
 ## State as of this bundle
