@@ -87,6 +87,21 @@ the hard semantic ambiguities vanish and the competing semantics agree — so th
 pin is not a simplification but a selection of the tractable, well-defined island.
 This is a citable justification, not a hand-wave.
  
+**Why not OWL 2 RL specifically (the two walls).** A natural objection is to skip a
+dedicated verdict engine and encode satisfaction as OWL 2 RL rules over the same
+graph. SEG's stance: the two predicates it actually needs are inexpressible in
+OWL 2 RL on *two independent grounds*, so the objection fails twice over.
+**Wall 1 — closed-world negation.** The `unsatisfied`/`residual` predicate asserts
+that *no* discharging evidence exists; under OWL's open-world assumption absence
+cannot be concluded, and OWL 2 RL offers no negation-as-failure. **Wall 2 —
+multi-variable joins with co-reference.** The universal-over-children satisfaction
+check ("every child is covered by a guarantee that refines the *same* parent") is a
+conjunctive join over several variables sharing a co-reference; OWL 2 RL's
+forward-chaining rule fragment cannot state it. Stratified Datalog supplies both:
+negation-as-failure across a stratum boundary (Wall 1) and unrestricted conjunctive
+joins in a rule body (Wall 2). This argues against the OWL-RL alternative
+*specifically*, not for any particular engine over another.
+ 
 **Leading references.** Corman, Reutter, Savković, "Semantics and Validation of
 Recursive SHACL" (ISWC 2018); Andreşel, Corman, Ortiz, Reutter, Savković, Šimkus,
 "Stable Model Semantics for Recursive SHACL" (WWW 2020); Bogaerts & Jakubowski,
@@ -96,7 +111,9 @@ Schlipf, "The Well-Founded Semantics for General Logic Programs" (JACM 1991);
 Gelfond & Lifschitz, "The Stable Model Semantics for Logic Programming" (1988)
 (ASP foundation — clingo's semantics); Gebser, Kaufmann, Kaminski, Ostrowski,
 Schaub, Schneider, "Potassco: The Potsdam Answer Set Solving Collection"
-(AI Communications 2011) (clingo).
+(AI Communications 2011) (clingo); Motik, Cuenca Grau, Horrocks, Wu, Fokoue, Lutz,
+"OWL 2 Web Ontology Language Profiles" (W3C Recommendation, 2012) (the OWL 2 RL
+fragment the "two walls" argument rules out).
  
 ## Layer 4 — Cryptographic commitment (nodeHash / edgeHash / merkleHash)
  
@@ -264,6 +281,9 @@ traceability.
   arXiv:1407.3561, 2014.
 - **Knublauch2017SHACL** — H. Knublauch, D. Kontokostas, "Shapes Constraint
   Language (SHACL)," W3C Recommendation, 2017.
+- **Motik2012OWL2Profiles** — B. Motik, B. Cuenca Grau, I. Horrocks, Z. Wu,
+  A. Fokoue, C. Lutz, "OWL 2 Web Ontology Language Profiles (2nd ed.)," W3C
+  Recommendation, 2012. (OWL 2 RL — the fragment the "two walls" argument rules out)
 - **Benveniste2018Contracts** — A. Benveniste et al., "Contracts for System
   Design," Foundations and Trends in EDA, 12(2–3), 2018.
 - **Corman2018RecursiveSHACL** — J. Corman, J. L. Reutter, O. Savković, "Semantics
