@@ -1,7 +1,7 @@
 # Workflow setup + git history reconciliation
 
 - **Session:** `179da4bc-fd43-43d5-a5cb-58eb2fce0768` (2026-07-01)
-- **Status:** paused — awaiting user review of the reconstructed commits; **nothing pushed**
+- **Status:** archived — reconstructed commits reviewed and **pushed**; `research` == `origin/research` at `e0ac87d`
 - **Resume:** `claude --resume 179da4bc-fd43-43d5-a5cb-58eb2fce0768`
 
 ## Goal
@@ -38,9 +38,10 @@ exported file bundle (manual `_vN` versioning) into real git history.
   `composition_v2/v3`, `partial_discharge_v2`, `baseline__1__` dup, `plus_composition_v1` + `_1_v5`.
 
 ## Open / next steps
-- **User reviewing the commits now.** If unhappy: `git reset --hard 8790327` rewinds the whole reconstruction.
-- **Push decision pending** — all local on `research`, origin/research not updated.
+- ~~User reviewing the commits~~ — **done**: reviewed, reconstruction kept.
+- ~~Push decision pending~~ — **done**: pushed; `research` == `origin/research` at `e0ac87d`.
 - ~~Root README.md stale~~ — **done** (commit `05073ed`): refreshed to DEC-028, de-suffixed gates, `prototypes/spdx-v3.1-exchange/` paths. (CLAUDE.md refreshed in `3375a20`.)
+- Bundle hygiene loose ends closed (commit `dc9636b`): `BUNDLE_CONTENTS.md` de-suffixed to match the tree; `requirements.txt` added pinning prototype deps.
 - If any dropped dup file should be a standalone, restore from git history.
 
 ## Pointers
