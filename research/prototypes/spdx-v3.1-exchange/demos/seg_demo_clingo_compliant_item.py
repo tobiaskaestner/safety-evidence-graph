@@ -27,9 +27,9 @@ The compatibility check is a pre-reconstruction verifier step (Python), the sibl
 of consumer.py's Merkle inclusion check; the verdict engine cannot see version skew.
 Verdict recomputed on the FIXED engine (DEC-022 forward + condition_of_use).
 
-Run: python seg_demo_clingo_compliant_item.py
+Run: python -m demos.seg_demo_clingo_compliant_item
 """
-import seg_demo_clingo_forward as F   # FIXED engine (forward + condition_of_use rollup)
+from demos import seg_demo_clingo_forward as F   # FIXED engine (forward + condition_of_use rollup)
 
 
 # --- document-root compatibility (diamond co-reference / version-pin) --------

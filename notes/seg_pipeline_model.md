@@ -186,6 +186,15 @@ mentions in demo docstrings (legitimate lineage notes; not worth a per-line swee
 - **`notes/sessions/archive/`** introduced to hold spent session artifacts out of the
   way; `BUNDLE_CONTENTS.md`, `HANDOFF_layerB.md`, `MANIFEST.md` moved there. Frozen
   session notes that mention these by name keep their historical references.
+- **spdx prototype restructured into packages** — the flat 16-file
+  `spdx-v3.1-exchange/` split three ways: `lib/` (5 import-only common-logic modules:
+  graph, ruleset, composition, commitment, graphviz), `demos/` (the 6 `seg_demo_clingo_*`
+  model-level gates), and the top level kept as the runnable three-party round-trip
+  (`producer`/`spdx_export`/`supplier`/`consumer`) + `validate`. Both subfolders are
+  packages (`__init__.py`); imports repointed to `lib.*`, demos run as
+  `python -m demos.<name>` (README step 4 updated). All 6 gates re-verified
+  (forward 5/5, forward_export 3/3, compliant_item 3/3, conformsto 3/3; the other two
+  exit 0).
 
 ## Process
 

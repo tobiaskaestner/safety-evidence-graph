@@ -17,9 +17,9 @@ safety_bom.jsonld); this reads M's published pin and writes supplier_bom.jsonld.
 Run: python3 supplier.py
 """
 import json
-from seg_graph import Graph, Node, Edge, impl_sha1
-from seg_composition import contract_vector
-from seg_commitment import member_hash, root, prove
+from lib.seg_graph import Graph, Node, Edge, impl_sha1
+from lib.seg_composition import contract_vector
+from lib.seg_commitment import member_hash, root, prove
 from spdx_export import export, contracts_with_text, _members, pin_from_bom
 
 NS = "https://st.example/seg/stm32l4-hal#"
@@ -117,7 +117,7 @@ if __name__ == "__main__":
 
     # --- visualization (parity with producer_graph / integrator_graph) ---
     from producer import node_states
-    from seg_graphviz import render
+    from lib.seg_graphviz import render
     states = node_states(g)
     render(g, states=states, title="SEG compliant-item supplier graph (STM32L4 HAL, M')",
            path="supplier_graph", fmt="svg")

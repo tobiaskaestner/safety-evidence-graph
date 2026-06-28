@@ -13,13 +13,13 @@ under a flat-openable commitment).
 """
 import json
 import re
-from seg_graph import Graph, Node, Edge, impl_sha1
-from seg_ruleset import solve
-from seg_commitment import member_hash, verify
-from seg_composition import contract_vector
+from lib.seg_graph import Graph, Node, Edge, impl_sha1
+from lib.seg_ruleset import solve
+from lib.seg_commitment import member_hash, verify
+from lib.seg_composition import contract_vector
 from spdx_export import export, export_openings, pin_from_bom
 from producer import node_states
-from seg_graphviz import render
+from lib.seg_graphviz import render
 
 _frag = lambda iri: re.split(r"[#/]", iri.rstrip("/"))[-1]
 MAN = "man_up"

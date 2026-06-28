@@ -11,7 +11,7 @@ the producer and the demos share one definition.
                 := C is authored (residual) AND locally handled    (DEC-019 forbid)
 """
 import clingo
-from seg_ruleset import DEFS, PROG
+from lib.seg_ruleset import DEFS, PROG
 
 CLOSURE = r"""
 % the exported guarantee is a TOP-LEVEL satisfied requirement (the root of a

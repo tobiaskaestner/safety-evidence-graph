@@ -23,12 +23,12 @@ INV: inert on any forward-free graph (OLD vector == NEW vector).
 S1 : OLD closure on the integrator fixture -> A_i drops the forwarded remainder (the gap).
 S2 : NEW closure -> A_i = {forwarded}; the discharged inherited condition is excluded.
 
-Run: python seg_demo_clingo_forward_export_v1.py   (needs clingo)
+Run: python -m demos.seg_demo_clingo_forward_export   (needs clingo)
 """
 import clingo
-import seg_ruleset as R
-import seg_demo_clingo_forward as F          # ratified FORWARD block + condition_of_use rollup
-from seg_composition import CLOSURE, STRUCT      # DEC-019 down-closure (OLD) + structural facet
+import lib.seg_ruleset as R
+from demos import seg_demo_clingo_forward as F          # ratified FORWARD block + condition_of_use rollup
+from lib.seg_composition import CLOSURE, STRUCT      # DEC-019 down-closure (OLD) + structural facet
 
 # FIXED verdict engine (forward + condition_of_use rollup), as ratified.
 PROG_FIXED = R.BASE_SHARED + R.LEAF_COMP + R.COMPOSITION + F.FORWARD + F.FIXED_ROLLUP

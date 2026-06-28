@@ -19,9 +19,9 @@ Checks:
                   inherited assumption stays undischarged -> proof not total
                   (the honest forward-or-fail point, DEC-022).
 """
-from seg_ruleset import DEFS, PROG, solve
-from seg_composition import CLOSURE, STRUCT, contract_vector
-from seg_graph import Graph, Node, Edge
+from lib.seg_ruleset import DEFS, PROG, solve
+from lib.seg_composition import CLOSURE, STRUCT, contract_vector
+from lib.seg_graph import Graph, Node, Edge
 from supplier import build_supplier
 
 

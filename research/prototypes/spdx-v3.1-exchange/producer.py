@@ -13,8 +13,8 @@ verdict engine reports as a residual. The exported contract is therefore:
 Run: python3 producer.py
 """
 import json
-from seg_graph import Graph, Node, Edge, impl_sha1
-from seg_ruleset import solve
+from lib.seg_graph import Graph, Node, Edge, impl_sha1
+from lib.seg_ruleset import solve
 
 NS = "https://zephyrproject.org/seg/crypto-rng#"
 
@@ -146,7 +146,7 @@ def node_states(g: Graph):
 
 
 if __name__ == "__main__":
-    from seg_composition import contract_vector
+    from lib.seg_composition import contract_vector
     g = build_producer()
     result = verdict_and_contract(g)
     vec = contract_vector(g.to_facts())
@@ -177,7 +177,7 @@ if __name__ == "__main__":
     print("\nOK: 2 root contracts; p_hal flows into C[p_sys]; p_mem shared across subsystems.")
 
     # --- visualization ---
-    from seg_graphviz import render
+    from lib.seg_graphviz import render
     states = node_states(g)
     render(g, states=states, title="SEG producer graph (crypto: RNG + hashing)",
            path="producer_graph", fmt="svg")

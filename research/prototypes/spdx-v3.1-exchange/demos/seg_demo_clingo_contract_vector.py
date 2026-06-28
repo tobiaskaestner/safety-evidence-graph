@@ -11,8 +11,8 @@ VIOLATING   : a subtree that both authors an assumption and reviews it locally
               -> struct_err_assumes_not_forwarded fires.
 """
 from collections import Counter
-from seg_graph import Graph, Node, Edge
-from seg_composition import contract_vector
+from lib.seg_graph import Graph, Node, Edge
+from lib.seg_composition import contract_vector
 from producer import build_producer
 
 

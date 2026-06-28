@@ -19,9 +19,9 @@ The opening proofs are written to a sidecar (openings.json): SPDX carries the
 hashes, not inclusion proofs. See GAPS.
 """
 import json
-from seg_graph import Graph
-from seg_composition import contract_vector
-from seg_commitment import member_hash, root, prove
+from lib.seg_graph import Graph
+from lib.seg_composition import contract_vector
+from lib.seg_commitment import member_hash, root, prove
 
 CONTEXT_PATH = "/tmp/spdx_rdf/spdx-context.jsonld"
 SPEC_VERSION = "3.0.1"

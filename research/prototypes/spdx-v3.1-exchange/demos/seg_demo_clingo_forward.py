@@ -32,10 +32,10 @@ A silent drop (no forward edge) or an UNAFFIRMED forward edge stays a gap (S3/S4
 and a genuine in-scope gap still dominates (S5) -- a forward can never launder a
 real failure (DEC-015: unsatisfied > conditional).
 
-Run: python seg_demo_clingo_forward_v1.py   (needs clingo; engine lifted from seg_ruleset)
+Run: python -m demos.seg_demo_clingo_forward   (needs clingo; engine lifted from lib.seg_ruleset)
 """
 import clingo
-import seg_ruleset as R   # the engine the demos-of-record run (AS-IS baseline)
+import lib.seg_ruleset as R   # the engine the demos-of-record run (AS-IS baseline)
 
 # ----------------------------------------------------------------------------
 # FIXED engine = the verbatim seg_ruleset BASE/LEAF/COMPOSITION + a FORWARD

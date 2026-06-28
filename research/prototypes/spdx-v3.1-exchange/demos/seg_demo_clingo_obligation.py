@@ -7,7 +7,7 @@ satisfied/obligation) and that satisfied / obligation / unsatisfied form a
 mutually-exclusive partition. Self-contained: covers all three proof states.
 """
 import clingo
-from seg_ruleset import DEFS, PROG
+from lib.seg_ruleset import DEFS, PROG
 from producer import build_producer
 
 # OLD = applied PROG with every `obligation` line removed and `satisfied` reverted
