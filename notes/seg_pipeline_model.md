@@ -111,7 +111,8 @@ DEC; none harvested to funnel.
 
 | File(s) | Destination |
 |---|---|
-| `notes/seg_reconciliation.md`, `notes/seg_spdx_fusa_handoff.md` | `research/notes/` |
+| `notes/seg_reconciliation.md` | `research/notes/` |
+| `notes/seg_spdx_fusa_handoff.md` | `research/notes/` → **later archived to `notes/sessions/`** (2026-06-28; a timestamped exploration handoff, same kind as `HANDOFF_layerB`) |
 | `briefs/prototype_agent_brief.md` | `prototype/notes/` |
 | `briefs/re_agent_brief.md`, `briefs/swe_agent_brief.md` | `development/notes/` |
 | `briefs/ppt_overview_brief.md` | `notes/` (cross-cutting — outreach, no pipeline stage) |
@@ -172,8 +173,8 @@ execution.
 
 **Still open (deliberately deferred):** cosmetic `_vN` mentions in demo docstrings (mix
 of misleading vs legitimate-lineage — needs per-line judgment); `seg_open_threads.md` ↔
-`notes/sessions/SESSIONS.md` reconciliation; `_vN` filenames inside the
-`seg_spdx_fusa_handoff` snapshot (left as historical).
+`notes/sessions/SESSIONS.md` reconciliation. (`seg_spdx_fusa_handoff.md` archived to
+`notes/sessions/` on 2026-06-28, resolving its `_vN`-snapshot question.)
 
 ## Process
 

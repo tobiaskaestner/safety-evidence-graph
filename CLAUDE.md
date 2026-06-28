@@ -16,7 +16,8 @@ supply chain**. A case is a vector of per-component assume-guarantee contracts
 (DEC-010, DEC-019) under a flat-openable commitment (DEC-012/020), projected to an
 SPDX 3.x FunctionalSafety (FuSa) JSON-LD BOM and re-imported downstream. The
 roll-up verdict is **never carried in a BOM** — each consumer recomputes it (the
-thesis). See DEC-017…028 for the exchange model and `research/notes/seg_spdx_fusa_handoff.md`.
+thesis). See DEC-017…028 for the exchange model; the early SPDX-FuSa exploration is
+archived at `notes/sessions/seg_spdx_fusa_handoff.md`.
 
 The repo follows a **four-stage maturity pipeline** — funnel → research →
 prototype → development — mapped in `notes/seg_pipeline_model.md`:
