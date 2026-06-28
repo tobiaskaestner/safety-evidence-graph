@@ -65,7 +65,7 @@ Moves use `git mv` to preserve history.
 | `prototypes/demos/*` — **all 8** (verified self-contained; none import `graph-construction`) | `research/prototypes/demos/` |
 | top-level `prototypes/` | dissolved (children redistributed above) |
 | `research/seg_prior_art.md`, `research/seg_paper_seed.md` | `research/notes/` |
-| Root `README.md`, `BUNDLE_CONTENTS.md`, `CLAUDE.md`, `requirements.txt`, `.gitignore` | stay at root (cross-cutting) |
+| Root `README.md`, `BUNDLE_CONTENTS.md`, `CLAUDE.md`, `requirements.txt`, `.gitignore` | stay at root (cross-cutting) — *but `README.md` later reclassified as prototype-specific and moved into `research/prototypes/spdx-v3.1-exchange/` (see tidy-ups below); `BUNDLE_CONTENTS.md` archived* |
 | `notes/sessions/` (session sidebar + distilled notes) | stays (cross-cutting workflow record) |
 
 ### Settled — `design/` per-file cut (item 2, ratified 2026-06-27)
@@ -195,6 +195,13 @@ mentions in demo docstrings (legitimate lineage notes; not worth a per-line swee
   `python -m demos.<name>` (README step 4 updated). All 6 gates re-verified
   (forward 5/5, forward_export 3/3, compliant_item 3/3, conformsto 3/3; the other two
   exit 0).
+- **Root `README.md` reclassified and moved** — it was entirely about the SPDX
+  round-trip (title "SPDX ↔ SEG safety-BOM round-trip"), not the repo, so it moved
+  from the root into `research/prototypes/spdx-v3.1-exchange/README.md`. Self-referential
+  paths localized (`generated/`, "run from this directory"); repo-level cross-refs
+  (`notes/decision_log_index.md`, `research/notes/GAPS.md`) kept root-relative as they
+  live at repo level. **The repo now has no root README** — left so deliberately
+  pending a possible repo-level one.
 
 ## Process
 

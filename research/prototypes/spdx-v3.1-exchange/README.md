@@ -7,7 +7,7 @@ safety case. Each party's SEG safety case is projected to an SPDX 3.x Functional
 (FuSa) JSON-LD BOM as a vector of per-component contracts under a flat-openable
 commitment, validated against the FuSa SHACL, and re-imported downstream.
 
-The prototype lives in **`research/prototypes/spdx-v3.1-exchange/`** (run from there). Idealizations
+This is the prototype's own README — run all commands from this directory. Idealizations
 are logged in `research/notes/GAPS.md` (G9 and G12 resolved). Generated against the SPDX
 `spdx-3-model` `develop` tip **`1c7f1e0`** (2026-06-12). Decisions of record:
 `notes/decision_log_index.md` (DEC-001…028) — the exchange rests on DEC-017 (reliance
@@ -70,11 +70,11 @@ or dropping a pinned implementation breaks the seal (DEC-028).
 
 The authoritative decisions and idealization ledger live at repo level:
 `notes/decision_log_index.md` and `research/notes/GAPS.md`. A snapshot of a prior run's outputs
-lives in `research/prototypes/spdx-v3.1-exchange/generated/` — `boms/` (`safety_bom.jsonld` + `openings.json`,
+lives in `generated/` (next to this README) — `boms/` (`safety_bom.jsonld` + `openings.json`,
 `supplier_bom.jsonld`, `integrator_bom.jsonld` + their openings) and `graphs/`
 (`producer_graph.* / supplier_graph.* / bom_graph.* / consumer_graph_A|B|C.* /
 integrator_graph.*`, DOT/SVG/PNG). The pipeline writes fresh outputs into the directory
-you run it from, not into `research/prototypes/spdx-v3.1-exchange/generated/`.
+you run it from, not into `generated/`.
 
 ## Reproduce locally (Python 3.12)
 
@@ -101,11 +101,11 @@ python validate.py safety_bom.jsonld                          # CONFORMS (self-c
 python validate.py supplier_bom.jsonld safety_bom.jsonld      # CONFORMS (conformsTo target resolves in M)
 python validate.py integrator_bom.jsonld safety_bom.jsonld supplier_bom.jsonld   # CONFORMS
 
-# 4. (optional) the model-level gates
-python seg_demo_clingo_forward.py            # DEC-022 (5/5)
-python seg_demo_clingo_forward_export.py     # DEC-022 export (3/3)
-python seg_demo_clingo_compliant_item.py     # DEC-023 (3/3)
-python seg_demo_clingo_conformsto.py         # DEC-024 (3/3)
+# 4. (optional) the model-level gates — demos live in the demos/ package, run as modules
+python -m demos.seg_demo_clingo_forward            # DEC-022 (5/5)
+python -m demos.seg_demo_clingo_forward_export     # DEC-022 export (3/3)
+python -m demos.seg_demo_clingo_compliant_item     # DEC-023 (3/3)
+python -m demos.seg_demo_clingo_conformsto         # DEC-024 (3/3)
 ```
 
 `validate.py` / `spdx_export.py` reference `/tmp/spdx_rdf/...` (`SHAPES`, `CONTEXT_PATH`);
