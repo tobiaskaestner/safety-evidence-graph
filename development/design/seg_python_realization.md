@@ -3,7 +3,7 @@
 Concrete realization of the Safety Evidence Graph for a Python, single-repo,
 self-hosting project. The language-agnostic / C-oriented design of record is
 the SEG design summary; binding decisions and rationale are in
-`seg_decision_log.md`. This document records *how the design is bound to this
+`notes/decision_log_index.md`. This document records *how the design is bound to this
 project* and is the reference the agent briefs build on. Where this document
 and v4 appear to differ, v4 states the general design and this document states
 the Python/single-repo binding of it.

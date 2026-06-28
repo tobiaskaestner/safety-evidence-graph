@@ -8,8 +8,8 @@ throwaway de-risking prototype.** Its job is to play through the core graph
 workflows and **surface unknowns** before the real tool is built — not to be
 reused, packaged, or made production-clean.
 
-Reference docs (read first): `seg_decision_log.md` (DEC-001…DEC-004),
-`seg_python_realization.md`, the schemas in `schema/`. Where a question isn't
+Reference docs (read first): `notes/decision_log_index.md` (DEC-001…DEC-004),
+`development/design/seg_python_realization.md`, the schemas in `graph-construction/schemas/`. Where a question isn't
 answered here, ask — do not invent design.
 
 ## Hard non-goals

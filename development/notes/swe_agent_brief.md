@@ -29,8 +29,8 @@ proper, test-driven implementation, not a promotion of prototype code. Treat the
 prototype as a reference and a parts bin, not a foundation.
 
 Read first, and treat as binding: the SEG design summary,
-`seg_decision_log.md` (DEC-001…007), `seg_architecture_constraints.md`,
-`seg_python_realization.md`, and the prototype's `NOTES.md`. Follow the
+`notes/decision_log_index.md` (DEC-001…007), `development/design/seg_architecture_constraints.md`,
+`development/design/seg_python_realization.md`, and the prototype's `NOTES.md`. Follow the
 **python-pattern skill** in `.claude/skills/` for all code. Where intent is
 unclear, ask — do not invent design.
 

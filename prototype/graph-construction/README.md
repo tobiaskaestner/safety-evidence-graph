@@ -35,6 +35,6 @@ All commands read `store.json` from the same directory as `cli.py`.
 
 ## Reference docs
 
-- `.claude/plans/seg_decision_log.md` — DEC-001…DEC-004
-- `.claude/plans/seg_python_realization.md`
-- `.claude/plans/prototype_agent_brief.md` — action plan and scope
+- `notes/decision_log_index.md` — DEC-001…DEC-004
+- `development/design/seg_python_realization.md`
+- `prototype/notes/prototype_agent_brief.md` — action plan and scope

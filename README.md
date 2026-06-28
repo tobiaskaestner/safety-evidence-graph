@@ -7,10 +7,10 @@ safety case. Each party's SEG safety case is projected to an SPDX 3.x Functional
 (FuSa) JSON-LD BOM as a vector of per-component contracts under a flat-openable
 commitment, validated against the FuSa SHACL, and re-imported downstream.
 
-The prototype lives in **`prototypes/spdx-v3.1-exchange/`** (run from there). Idealizations
-are logged in `notes/GAPS.md` (G9 and G12 resolved). Generated against the SPDX
+The prototype lives in **`research/prototypes/spdx-v3.1-exchange/`** (run from there). Idealizations
+are logged in `research/notes/GAPS.md` (G9 and G12 resolved). Generated against the SPDX
 `spdx-3-model` `develop` tip **`1c7f1e0`** (2026-06-12). Decisions of record:
-`notes/seg_decision_log.md` (DEC-001…028) — the exchange rests on DEC-017 (reliance
+`notes/decision_log_index.md` (DEC-001…028) — the exchange rests on DEC-017 (reliance
 becomes `covers`), DEC-018 (obligation), DEC-019 (contract vector), DEC-020 (SPDX
 representation + flat-openable commitment), DEC-021 (witness environment), DEC-022
 (`forward` re-publish, G9), DEC-023 (compliant-item-supplier discharge + document-root
@@ -69,12 +69,12 @@ or dropping a pinned implementation breaks the seal (DEC-028).
 | `seg_demo_clingo_conformsto.py` | DEC-024 gate (3/3): `conformsTo` inert; matched → mint covers → total; unmatched → forward-or-fail. |
 
 The authoritative decisions and idealization ledger live at repo level:
-`notes/seg_decision_log.md` and `notes/GAPS.md`. A snapshot of a prior run's outputs
-lives in `generated/` — `boms/` (`safety_bom.jsonld` + `openings.json`,
+`notes/decision_log_index.md` and `research/notes/GAPS.md`. A snapshot of a prior run's outputs
+lives in `research/prototypes/generated/` — `boms/` (`safety_bom.jsonld` + `openings.json`,
 `supplier_bom.jsonld`, `integrator_bom.jsonld` + their openings) and `graphs/`
 (`producer_graph.* / supplier_graph.* / bom_graph.* / consumer_graph_A|B|C.* /
 integrator_graph.*`, DOT/SVG/PNG). The pipeline writes fresh outputs into the directory
-you run it from, not into `generated/`.
+you run it from, not into `research/prototypes/generated/`.
 
 ## Reproduce locally (Python 3.12)
 
@@ -90,7 +90,7 @@ pip install -r /tmp/spec-parser/requirements.txt
 python /tmp/spec-parser/main.py -r -R /tmp/spdx_rdf -f /tmp/spdx-3-model/model
 
 # 2. Run the three-party pipeline (outputs land in the cwd)
-cd prototypes/spdx-v3.1-exchange
+cd research/prototypes/spdx-v3.1-exchange
 python producer.py         # M: 2 root contracts; p_hal in C[p_sys]
 python spdx_export.py      # M's BOM + commitment root -> safety_bom.jsonld, openings.json
 python supplier.py         # M′'s BOM, pins M, declares conformsTo -> supplier_bom.jsonld

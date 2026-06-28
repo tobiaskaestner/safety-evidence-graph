@@ -8,7 +8,7 @@ decision log (DEC-007, DEC-009, DEC-010) with a binding cheap-seam constraint fo
 v1; what remains is the actual design research, captured here as open questions.
 
 This doc is deliberately enough to brief someone cold. For depth, the full set is:
-the SEG design summary, `seg_decision_log.md`, `seg_architecture_constraints.md`.
+the SEG design summary, `notes/decision_log_index.md`, `development/design/seg_architecture_constraints.md`.
 
 ---
 
@@ -189,7 +189,7 @@ assumptions ⊆ the scope that proof actually proved.**
 
 ## 7. Pointers
 
-- Decisions: `seg_decision_log.md` — DEC-001/002/005 (v1 satisfaction, scope/trust,
+- Decisions: `notes/decision_log_index.md` — DEC-001/002/005 (v1 satisfaction, scope/trust,
   suspicion), DEC-007 (meta-model + Datalog), DEC-009 (repo topology), DEC-010
   (composability).
 - Constraints: `seg_architecture_constraints.md` — AC-001/002/003 (seams),

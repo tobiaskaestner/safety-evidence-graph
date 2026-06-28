@@ -49,7 +49,7 @@ these are corrections and clarifications.
 - Namespace genericity (project-specific `zephyrproject.org` base/vocab)
   remains deferred — see §14.
 **Companion documents (do not duplicate into this spec):** binding design
-decisions and their rationale live in `seg_decision_log.md` (DEC-001…DEC-004);
+decisions and their rationale live in `notes/decision_log_index.md` (DEC-001…DEC-004);
 the concrete Python/single-repo realization (node binding, marker dialect,
 extractors, branch topology, build sequencing) lives in
 `seg_python_realization.md`. This spec remains the language-agnostic,

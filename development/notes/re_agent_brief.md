@@ -9,7 +9,7 @@ implement against them and the Test Engineer can verify them. These requirements
 are the contract the rest of the team builds on.
 
 Source material — derive requirements from these, do not invent design:
-the SEG design summary and `seg_decision_log.md` (DEC-001…004).
+the SEG design summary and `notes/decision_log_index.md` (DEC-001…004).
 Where intent is unclear, ask.
 
 ## Scope of this first slice
