@@ -70,11 +70,11 @@ or dropping a pinned implementation breaks the seal (DEC-028).
 
 The authoritative decisions and idealization ledger live at repo level:
 `notes/decision_log_index.md` and `research/notes/GAPS.md`. A snapshot of a prior run's outputs
-lives in `research/prototypes/generated/` — `boms/` (`safety_bom.jsonld` + `openings.json`,
+lives in `research/prototypes/spdx-v3.1-exchange/generated/` — `boms/` (`safety_bom.jsonld` + `openings.json`,
 `supplier_bom.jsonld`, `integrator_bom.jsonld` + their openings) and `graphs/`
 (`producer_graph.* / supplier_graph.* / bom_graph.* / consumer_graph_A|B|C.* /
 integrator_graph.*`, DOT/SVG/PNG). The pipeline writes fresh outputs into the directory
-you run it from, not into `research/prototypes/generated/`.
+you run it from, not into `research/prototypes/spdx-v3.1-exchange/generated/`.
 
 ## Reproduce locally (Python 3.12)
 

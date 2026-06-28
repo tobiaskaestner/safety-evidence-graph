@@ -176,6 +176,14 @@ archived to `notes/sessions/` (`888d816`); `seg_open_threads.md` ↔ `SESSIONS.m
 reconciled into distinct roles (`aae734d`). **Left by decision:** the cosmetic `_vN`
 mentions in demo docstrings (legitimate lineage notes; not worth a per-line sweep).
 
+### Post-migration tidy-ups (2026-06-28)
+
+- **`generated/` folded into its prototype** — the prior-run snapshot moved from the
+  shared `research/prototypes/generated/` to `research/prototypes/spdx-v3.1-exchange/generated/`;
+  these BOMs/graphs are outputs of that one prototype, not a cross-prototype artifact.
+  README repointed (both refs); demo scripts unaffected (they write cwd-relative, not
+  into this snapshot).
+
 ## Process
 
 propose → ratify (mark the row Settled) → log (update this doc) → apply (`git mv`).
