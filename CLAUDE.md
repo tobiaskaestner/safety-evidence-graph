@@ -16,16 +16,19 @@ supply chain**. A case is a vector of per-component assume-guarantee contracts
 (DEC-010, DEC-019) under a flat-openable commitment (DEC-012/020), projected to an
 SPDX 3.x FunctionalSafety (FuSa) JSON-LD BOM and re-imported downstream. The
 roll-up verdict is **never carried in a BOM** — each consumer recomputes it (the
-thesis). See DEC-017…028 for the exchange model and `notes/seg_spdx_fusa_handoff.md`.
+thesis). See DEC-017…028 for the exchange model and `research/notes/seg_spdx_fusa_handoff.md`.
 
-Two phases:
-- **Phase A — prototype** (`prototypes/`, throwaway, all inputs mocked): de-risks
-  the graph workflows. Holds `graph-construction/` (the graph/coverage/suspect
-  workflows), `spdx-v3.1-exchange/` (the three-party FuSa round-trip), and
-  `demos/` + `examples/` (clingo verdict lineage, DSL examples). Does not use the
-  worktree topology below.
-- **Phase B — implementation**: the real `seg` tool, built test-first across the
-  worktrees below.
+The repo follows a **four-stage maturity pipeline** — funnel → research →
+prototype → development — mapped in `notes/seg_pipeline_model.md`:
+- **`funnel/`** — raw idea exploration (currently empty).
+- **`research/`** — general-grounds conclusions + self-contained prototypes
+  (throwaway, inputs mocked): `research/prototypes/spdx-v3.1-exchange/` (the
+  three-party FuSa round-trip), `research/prototypes/demos/` + `examples/` (clingo
+  verdict/composition proofs, DSL), and `research/notes/` (design drafts, prior art).
+- **`prototype/`** — `prototype/graph-construction/`, the original SEG prototype
+  (graph/coverage/suspect workflows). Does not use the worktree topology below.
+- **`development/`** (**Phase B**) — the real `seg` tool, built test-first across the
+  worktrees below; design-of-record in `development/design/`.
 
 ## Workspace (Phase B)
 
@@ -46,20 +49,25 @@ TE: `tests/`), worked **sequentially** — never two agents at once in one workt
 ## Binding documents — cite by ID
 
 Core design & engine:
-- **The SEG design summary** (`design/knowledge_graph_design_summary.md`) — design
-  of record (concept + C-oriented reference).
-- **`notes/seg_decision_log.md`** — the authoritative locked decisions **DEC-001…028**
-  (DEC-011 intentionally vacant); the citeable *why*. This is the record of record.
-- **`design/seg_architecture_constraints.md`** — engine structural constraints
-  **AC-001…016** (tagged `[now]` / `[seam]` / `[future]`).
-- **`design/seg_python_realization.md`** — the Python / single-repo binding.
+- **The SEG design summary** (`development/design/knowledge_graph_design_summary.md`)
+  — design of record (concept + C-oriented reference).
+- **The decision log** — split into stage slices, indexed at
+  **`notes/decision_log_index.md`**: `development/notes/decision_log.md` (core-engine
+  DEC-001…006) and `research/notes/decision_log.md` (composability/direction
+  DEC-007…028). DEC-011 vacant; DEC-IDs stable and globally unique. The citeable
+  *why*; the record of record.
+- **`development/design/seg_architecture_constraints.md`** — engine structural
+  constraints **AC-001…016** (tagged `[now]` / `[seam]` / `[future]`).
+- **`development/design/seg_python_realization.md`** — the Python / single-repo binding.
 
 Composability & SPDX exchange:
-- **`design/seg_composability_cbd.md`** — assume-guarantee composition, contract
-  algebra, the verdict ruleset realization.
-- **`design/seg_definition_language.md`** — the SEG DSL.
-- **`design/seg_cli_reference.md`** — CLI surface; **`design/seg_adr_projection_core.md`** — ADR/projection core.
-- **`notes/GAPS.md`** — idealization ledger (prototype simplifications); **`notes/seg_glossary.md`** — terms.
+- **`research/notes/seg_composability_cbd.md`** — assume-guarantee composition,
+  contract algebra, the verdict ruleset realization.
+- **`research/notes/seg_definition_language.md`** — the SEG DSL.
+- **`development/design/seg_cli_reference.md`** — CLI surface;
+  **`research/notes/seg_adr_projection_core.md`** — ADR/projection core.
+- **`research/notes/GAPS.md`** — idealization ledger (prototype simplifications);
+  **`notes/seg_glossary.md`** — terms.
 
 ## Skills
 
