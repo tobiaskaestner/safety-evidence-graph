@@ -200,8 +200,11 @@ mentions in demo docstrings (legitimate lineage notes; not worth a per-line swee
   from the root into `research/prototypes/spdx-v3.1-exchange/README.md`. Self-referential
   paths localized (`generated/`, "run from this directory"); repo-level cross-refs
   (`notes/decision_log_index.md`, `research/notes/GAPS.md`) kept root-relative as they
-  live at repo level. **The repo now has no root README** — left so deliberately
-  pending a possible repo-level one.
+  live at repo level.
+- **README tree introduced** — a lean repo-level `README.md` (what SEG is + the pipeline
+  + a delegating table) plus one README per top-level stage folder (`funnel/`,
+  `research/`, `prototype/`, `development/`) and `notes/`. The root stays short by
+  routing to the folder READMEs; `skills/` keeps `SKILL.md` as its doc (no README).
 
 ## Process
 
