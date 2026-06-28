@@ -1,24 +1,22 @@
-# SEG — Open Threads (next-session backlog)
+# SEG — Research Backlog (open threads)
 
-> **START HERE (next session).** Read this file, pick one thread below, then load only
-> the doc(s) that thread points to — not all of them. Tell the assistant your working
-> style up front (incremental, runnable evidence, push back on weak reasoning). If any
-> doc and a fresh chat disagree, trust the doc; if two docs disagree, trust the more
-> specific one and flag it. Standing caution for this project: every "we're the first
-> to…" claim needs an external check before it hardens — verify, then write it down.
+> **The research-stage open-work backlog** — what research is open, why, and where to
+> read. Companion: `notes/sessions/SESSIONS.md` tracks *conversations* (which sessions
+> exist, how to resume); **this file tracks *work***. Pick one thread, load only the
+> doc(s) it points to. Standing caution: every "we're the first to…" claim needs an
+> external check before it hardens — verify, then write it down.
 
-**What this is.** A single pickup point. The detail lives in the per-topic docs;
-this file just lists what's open, why, and where to read. Update it at the end of
-each session.
+**What this is.** A research pickup point — what's open, why, and where to read.
+Update it at the end of each research session.
 
 **Document set (for orientation):**
-- `seg_glossary.md` — vocabulary (definition pass in progress).
-- `seg_prior_art.md` — where SEG sits in the literature + bibliography.
-- `seg_reconciliation.md` — term substitute/explain/novel + tool-leverage map.
-- `seg_adr_projection_core.md` — the projection-core architecture decision.
-- `seg_definition_language.md` — grammar, field model, facets, compilation, invariants.
-- `seg_paper_seed.md` — contribution/novelty material + the two/three venue framings.
-- Demos (runnable evidence): `seg_demo_shacl_projection.py`,
+- `notes/seg_glossary.md` — vocabulary (definition pass in progress).
+- `research/notes/seg_prior_art.md` — where SEG sits in the literature + bibliography.
+- `research/notes/seg_reconciliation.md` — term substitute/explain/novel + tool-leverage map.
+- `research/notes/seg_adr_projection_core.md` — the projection-core architecture decision.
+- `research/notes/seg_definition_language.md` — grammar, field model, facets, compilation, invariants.
+- `research/notes/seg_paper_seed.md` — contribution/novelty material + the venue framings.
+- Demos (runnable evidence): `research/prototypes/demos/seg_demo_shacl_projection.py`,
   `seg_demo_datalog_projection.py`, `seg_demo_clingo_verdict.py`.
 
 ---
@@ -61,6 +59,12 @@ each session.
    → `seg_prior_art.md` ("Gaps to fill") + `seg_reconciliation.md` tooling list.
 
 8. **SPDX 3.1-RC1 FunctionalSafety profile — projection target + standards alignment.**
+   **Status: largely realized.** The three-party round-trip prototype
+   (`research/prototypes/spdx-v3.1-exchange/`) projects to/from the FuSa profile and
+   validates under federated SHACL (DEC-020/027/028); the "SPDX can't model safety
+   evidence" claim is retired. Remaining SPDX idealizations live in
+   `research/notes/GAPS.md` (G1–G12). Still open below: vocabulary alignment + the paper
+   sub-claim. Original finding kept for context:
    FINDING: SPDX 3.1-RC1 has a **FunctionalSafety profile** (classes
    `RequirementVerification`, `EvidenceRelationship`, `EvaluationResult`; props
    `verificationMethod`, `evidenceCategory`, `evaluationBasedOn`, …) plus Core
@@ -88,12 +92,11 @@ each session.
 - Sanity-check `binds`/`propagates` per edge type (e.g. does suspicion really
   propagate along `adheres_to`?). → `seg_definition_language.md` §2.
 
-## Decided this session (so we don't re-litigate)
-- IRIs for node identity; namespace = per-graph definition param, local part = data;
-  identity not hashed.
-- `answers_to`, `implements`, `adheres_to` are all `fingerprint: deep` (proof must
-  attest the affirmed-against-content pairing).
-- Third field category `tracked` (uncommitted, report-only); `status` is tracked.
-- Verdicts are sealed/reproducible, not live: no sealed verdict reads a tracked field;
-  promotion to `hash_fields` is the sanctioned escape hatch.
-- clingo is the prototype verdict engine; single-answer-set determinism guardrail.
+## Where these decisions now live (was: "decided this session")
+
+The decisions once snapshotted here are durably recorded — and some have since moved
+on (e.g. the `fingerprint: deep` choice was **retired**, DEC-012). Authoritative homes:
+- node-identity/IRIs, the `tracked` field category, verdict reproducibility, and the
+  clingo single-answer-set guardrail → `research/notes/seg_adr_projection_core.md`
+  (§5, §8, §10) and `research/notes/seg_definition_language.md` (§3, §6, §7).
+- the binding decision record → `notes/decision_log_index.md`.

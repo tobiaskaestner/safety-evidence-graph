@@ -9,6 +9,9 @@
 > full transcript — the transcript is the backup, the note is the summary.
 >
 > Claude keeps this file updated when we start or wrap a thread.
+>
+> **This index tracks *conversations*, not tasks.** For the open *research work*
+> backlog (what's unfinished, where to read), see `research/notes/seg_open_threads.md`.
 
 | Topic | Session ID | Status | Last active | Distilled note |
 |---|---|---|---|---|
