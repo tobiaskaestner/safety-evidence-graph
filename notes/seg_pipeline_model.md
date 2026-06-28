@@ -171,10 +171,10 @@ execution.
   (`seg_demo_clingo_forward_v1` → `seg_demo_clingo_forward` in `compliant_item.py` /
   `forward_export.py`; gates re-run 3/3); flipped this doc to applied.
 
-**Still open (deliberately deferred):** cosmetic `_vN` mentions in demo docstrings (mix
-of misleading vs legitimate-lineage — needs per-line judgment); `seg_open_threads.md` ↔
-`notes/sessions/SESSIONS.md` reconciliation. (`seg_spdx_fusa_handoff.md` archived to
-`notes/sessions/` on 2026-06-28, resolving its `_vN`-snapshot question.)
+**Migration complete (2026-06-28).** Follow-ups resolved: `seg_spdx_fusa_handoff.md`
+archived to `notes/sessions/` (`888d816`); `seg_open_threads.md` ↔ `SESSIONS.md`
+reconciled into distinct roles (`aae734d`). **Left by decision:** the cosmetic `_vN`
+mentions in demo docstrings (legitimate lineage notes; not worth a per-line sweep).
 
 ## Process
 
