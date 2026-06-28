@@ -183,6 +183,9 @@ mentions in demo docstrings (legitimate lineage notes; not worth a per-line swee
   these BOMs/graphs are outputs of that one prototype, not a cross-prototype artifact.
   README repointed (both refs); demo scripts unaffected (they write cwd-relative, not
   into this snapshot).
+- **`notes/sessions/archive/`** introduced to hold spent session artifacts out of the
+  way; `BUNDLE_CONTENTS.md`, `HANDOFF_layerB.md`, `MANIFEST.md` moved there. Frozen
+  session notes that mention these by name keep their historical references.
 
 ## Process
 
