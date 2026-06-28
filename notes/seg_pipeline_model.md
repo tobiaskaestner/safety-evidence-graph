@@ -153,20 +153,27 @@ DEC-001…006 = core engine; DEC-012…028 = composability/SPDX; 007–010 = dir
 
 ### All map items settled (2026-06-27)
 
-Items 1–6 ratified and logged above. **No content moved yet** — the entire map is the
-plan; execution is the batched apply below.
+Items 1–6 ratified and logged above. The map is the plan; the apply log below records
+execution.
 
-## Apply phase (not yet started)
+## Apply phase — applied (2026-06-28)
 
-One batched cutover, then one propagation pass:
-1. Create stage dirs (`funnel/`, `research/`, `prototype/`, `development/`) with their
-   `notes/`/`design/`/`prototypes/` subfolders; `.gitkeep` in empty `funnel/notes/`.
-2. `git mv` settled relocations; split `decision_log` (incl. DEC-003) into the two
-   stage files; build `notes/decision_log_index.md` (master index).
-3. Archive the three spent handoffs to `notes/sessions/`.
-4. **Propagation pass (once):** fix path references (CLAUDE.md binding-docs list,
-   briefs, cross-doc links), de-suffix stale internal `_vN` demo references, reconcile
-   `seg_open_threads.md` ↔ `SESSIONS.md`.
+- **(a) moves** `f02c9f1` — stage dirs created; all settled relocations done as
+  history-preserving `git mv`; `prototypes/`/`design/`/`briefs/`/`generated/`/`paper/`
+  dissolved. `BUNDLE_CONTENTS.md` later archived to `notes/sessions/` (committed in c1).
+- **(b) decision-log split** `4731d54` — `seg_decision_log.md` → two stage slices +
+  `notes/decision_log_index.md`; DEC-003 split at the Decision/Rationale boundary.
+- **(c1) propagation — CLAUDE.md** `40ead15` — binding-docs paths + Phase-A reframe.
+- **(c2) propagation — README + stage docs** `c794beb` — repointed all stale path /
+  `seg_decision_log.md` citations to the stage layout + the index.
+- **(c3) propagation — demo imports + this status** — fixed two broken runtime imports
+  (`seg_demo_clingo_forward_v1` → `seg_demo_clingo_forward` in `compliant_item.py` /
+  `forward_export.py`; gates re-run 3/3); flipped this doc to applied.
+
+**Still open (deliberately deferred):** cosmetic `_vN` mentions in demo docstrings (mix
+of misleading vs legitimate-lineage — needs per-line judgment); `seg_open_threads.md` ↔
+`notes/sessions/SESSIONS.md` reconciliation; `_vN` filenames inside the
+`seg_spdx_fusa_handoff` snapshot (left as historical).
 
 ## Process
 

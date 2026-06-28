@@ -27,7 +27,7 @@ Run: python seg_demo_clingo_forward_export_v1.py   (needs clingo)
 """
 import clingo
 import seg_ruleset as R
-import seg_demo_clingo_forward_v1 as F          # ratified FORWARD block + condition_of_use rollup
+import seg_demo_clingo_forward as F          # ratified FORWARD block + condition_of_use rollup
 from seg_composition import CLOSURE, STRUCT      # DEC-019 down-closure (OLD) + structural facet
 
 # FIXED verdict engine (forward + condition_of_use rollup), as ratified.
