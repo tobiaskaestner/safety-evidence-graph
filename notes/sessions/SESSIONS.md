@@ -21,6 +21,7 @@
 | Prototype build — graph-construction (Steps 1–7) | `d0826f3d-dc7b-4058-9c86-4edeb47bc598` | archived (large) | 2026-06-25 | [prototype-build.md](prototype-build.md) |
 | Web-session access question (stub) | `1b4ad22f-ee7e-4a3d-a084-c0241712a394` | archived | 2026-07-01 | _none yet_ |
 | Workflow setup + git history reconciliation | `179da4bc-fd43-43d5-a5cb-58eb2fce0768` | archived (pushed) | 2026-06-26 | [workflow-and-git-reconciliation.md](workflow-and-git-reconciliation.md) |
+| Repo migration to the stage pipeline | `bc875929-9fd2-49c6-8bd3-6362d64ee858` | archived | 2026-06-28 | [migration_to_repo.md](migration_to_repo.md) |
 
 ## Conventions
 
