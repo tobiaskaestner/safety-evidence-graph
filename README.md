@@ -1,4 +1,4 @@
-# `reqs/` — branch `a-reqs` (repo **A**, requirements)
+# `a-reqs/` — branch `reqs` (repo **A**, requirements)
 
 Part of the SEG Phase-B workspace (DEC-002): one bare repo, four long-lived
 branches checked out as worktrees that **never merge** into each other. This is
