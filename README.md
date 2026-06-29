@@ -1,4 +1,4 @@
-# `results/` — branch `c-results` (repo **C**, test outcomes)
+# `c-results/` — branch `results` (repo **C**, test outcomes)
 
 Part of the SEG Phase-B workspace (DEC-002): one bare repo, four long-lived
 branches checked out as worktrees that **never merge** into each other. This is
