@@ -1,4 +1,4 @@
-# `impl/` — branch `b-impl` (repo **B**, implementation + test specs)
+# `b-impl/` — branch `impl` (repo **B**, implementation + test specs)
 
 Part of the SEG Phase-B workspace (DEC-002): one bare repo, four long-lived
 branches checked out as worktrees that **never merge** into each other. This is
