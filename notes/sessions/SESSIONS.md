@@ -22,6 +22,7 @@
 | Web-session access question (stub) | `1b4ad22f-ee7e-4a3d-a084-c0241712a394` | archived | 2026-07-01 | _none yet_ |
 | Workflow setup + git history reconciliation | `179da4bc-fd43-43d5-a5cb-58eb2fce0768` | archived (pushed) | 2026-06-26 | [workflow-and-git-reconciliation.md](workflow-and-git-reconciliation.md) |
 | Repo migration to the stage pipeline | `bc875929-9fd2-49c6-8bd3-6362d64ee858` | archived | 2026-06-28 | [migration_to_repo.md](migration_to_repo.md) |
+| Phase-B workspace bootstrap (bare repo + worktrees) | `7d9b6125-4e29-4d42-af79-697115564b24` | active | 2026-06-29 | [worktree-workspace-bootstrap.md](worktree-workspace-bootstrap.md) |
 
 ## Conventions
 
