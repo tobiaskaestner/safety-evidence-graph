@@ -1,4 +1,4 @@
-# `graph/` — branch `g-graph` (repo **G**, graph state)
+# `g-graph/` — branch `graph` (repo **G**, graph state)
 
 Part of the SEG Phase-B workspace (DEC-002): one bare repo, four long-lived
 branches checked out as worktrees that **never merge** into each other. This is

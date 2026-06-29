@@ -1,16 +1,16 @@
 # SEG workspace configuration — TEMPLATE.
 # Copy to the workspace root as `seg.yaml` and adjust paths to your environment:
-#     cp graph/seg.yaml.example ../seg.yaml
+#     cp g-graph/seg.yaml.example ../seg.yaml
 # `seg.yaml` itself is UNTRACKED (it lives at the container root, outside every
 # worktree); this committed example is the versioned reference (DEC-002).
 #
 # The logical repo keys repoA..repoG are independent of the git branch names
-# (a-reqs / b-impl / c-results / g-graph); they map to the worktree directories.
+# (reqs / impl / results / graph); they map to the worktree directories.
 repos:
-  repoA: "./reqs"      # branch a-reqs    — requirements (doc/requirements/)
-  repoB: "./impl"      # branch b-impl    — implementation + test specs
-  repoC: "./results"   # branch c-results — raw test outcomes
-  repoG: "./graph"     # branch g-graph   — graph state
+  repoA: "./a-reqs"      # branch reqs    — requirements (doc/requirements/)
+  repoB: "./b-impl"      # branch impl    — implementation + test specs
+  repoC: "./c-results"   # branch results — raw test outcomes
+  repoG: "./g-graph"     # branch graph   — graph state
 
 tools:
   extractor_requirements: "seg extract requirements"
