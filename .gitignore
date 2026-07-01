@@ -2,3 +2,6 @@ __pycache__/
 .pytest_cache/
 *.pyc
 prototype/store-extra-large.json
+
+# macOS
+.DS_Store
