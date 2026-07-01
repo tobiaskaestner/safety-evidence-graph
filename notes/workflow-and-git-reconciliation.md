@@ -38,10 +38,9 @@ exported file bundle (manual `_vN` versioning) into real git history.
   `composition_v2/v3`, `partial_discharge_v2`, `baseline__1__` dup, `plus_composition_v1` + `_1_v5`.
 
 ## Open / next steps
-- **User reviewing the 8 commits now.** If unhappy: `git reset --hard 8790327` rewinds the whole reconstruction.
+- **User reviewing the commits now.** If unhappy: `git reset --hard 8790327` rewinds the whole reconstruction.
 - **Push decision pending** — all local on `research`, origin/research not updated.
-- **Root `README.md` is stale** (v4/v16-era round-trip readme: references `seg_decision_log_v16`,
-  singular `prototype/` paths). Accurate as history; could be refreshed like CLAUDE.md was.
+- ~~Root README.md stale~~ — **done** (commit `05073ed`): refreshed to DEC-028, de-suffixed gates, `prototypes/spdx-v3.1-exchange/` paths. (CLAUDE.md refreshed in `3375a20`.)
 - If any dropped dup file should be a standalone, restore from git history.
 
 ## Pointers
