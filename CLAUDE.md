@@ -11,15 +11,26 @@ SEG (the **SEG Toolbox**) binds safety requirements, tests, and code into a
 hash-anchored graph and generates an integrity proof over it. Long-term goal:
 **self-hosting** — SEG generates an integrity proof of itself.
 
+A second pillar has since grown out of the core: **composing safety cases across a
+supply chain**. A case is a vector of per-component assume-guarantee contracts
+(DEC-010, DEC-019) under a flat-openable commitment (DEC-012/020), projected to an
+SPDX 3.x FunctionalSafety (FuSa) JSON-LD BOM and re-imported downstream. The
+roll-up verdict is **never carried in a BOM** — each consumer recomputes it (the
+thesis). See DEC-017…028 for the exchange model and `notes/seg_spdx_fusa_handoff.md`.
+
 Two phases:
-- **Phase A — prototype** (`prototype/`, throwaway, all inputs mocked): de-risks
-  the graph workflows. Does not use the worktree topology below.
+- **Phase A — prototype** (`prototypes/`, throwaway, all inputs mocked): de-risks
+  the graph workflows. Holds `graph-construction/` (the graph/coverage/suspect
+  workflows), `spdx-v3.1-exchange/` (the three-party FuSa round-trip), and
+  `demos/` + `examples/` (clingo verdict lineage, DSL examples). Does not use the
+  worktree topology below.
 - **Phase B — implementation**: the real `seg` tool, built test-first across the
   worktrees below.
 
 ## Workspace (Phase B)
 
-One repo, four long-lived branches as worktrees; they never merge into each other:
+One repo, four long-lived branches as worktrees; they never merge into each other
+(DEC-002):
 
 | Worktree | Branch | Holds |
 |---|---|---|
@@ -32,18 +43,28 @@ One repo, four long-lived branches as worktrees; they never merge into each othe
 worktrees. `impl/` is co-owned by the Software and Test Engineers (SWE: `src/seg/`;
 TE: `tests/`), worked **sequentially** — never two agents at once in one worktree.
 
-## Binding documents (`.claude/plans/`) — cite by ID
+## Binding documents — cite by ID
 
-- **The SEG design summary** (`knowledge_graph_design_summary_v4.x.md`) — design of
-  record (concept + C-oriented reference).
-- **`seg_decision_log.md`** — locked decisions DEC-001…008; the authoritative *why*.
-- **`seg_architecture_constraints.md`** — engine structural constraints AC-001…014.
-- **`seg_python_realization.md`** — the Python / single-repo binding.
+Core design & engine:
+- **The SEG design summary** (`design/knowledge_graph_design_summary.md`) — design
+  of record (concept + C-oriented reference).
+- **`notes/seg_decision_log.md`** — the authoritative locked decisions **DEC-001…028**
+  (DEC-011 intentionally vacant); the citeable *why*. This is the record of record.
+- **`design/seg_architecture_constraints.md`** — engine structural constraints
+  **AC-001…016** (tagged `[now]` / `[seam]` / `[future]`).
+- **`design/seg_python_realization.md`** — the Python / single-repo binding.
 
-## Skills (`.claude/skills/`)
+Composability & SPDX exchange:
+- **`design/seg_composability_cbd.md`** — assume-guarantee composition, contract
+  algebra, the verdict ruleset realization.
+- **`design/seg_definition_language.md`** — the SEG DSL.
+- **`design/seg_cli_reference.md`** — CLI surface; **`design/seg_adr_projection_core.md`** — ADR/projection core.
+- **`notes/GAPS.md`** — idealization ledger (prototype simplifications); **`notes/seg_glossary.md`** — terms.
 
-Follow the relevant skill: **python-pattern** (all engine/extractor code),
-**seg-requirements-authoring** (requirements).
+## Skills
+
+Follow the relevant skill: **python-patterns** (`.claude/skills/`, all engine/
+extractor code), **seg-requirements-authoring** (`skills/SKILL.md`, requirements).
 
 ## Cardinal rules (everyone, always)
 
@@ -61,17 +82,40 @@ Follow the relevant skill: **python-pattern** (all engine/extractor code),
 
 ## Invariants worth knowing (detail in the docs)
 
+Core graph:
 - The graph stores **only hashes**, never content — content lives in the versioned
-  source repos and is fetched transiently when needed.
+  source repos and is fetched transiently when needed (AC-005).
 - Content hashes are over **raw source byte spans**; the parser only *locates*
   spans, never feeds the hash (DEC-003 / AC-004).
 - The engine **builds** proof-generation and affirmation but never **operates** them
   as authority — the FSM does (AC-006).
+- Transitive suspicion is derived, and auto-clears on descendant re-affirmation
+  (DEC-005 / AC-010).
 - Isolate the variable parts behind seams: taxonomy, satisfaction, input adapters,
-  and interfaces (AC-001/002/003/014) — so the meta-model and future interfaces
-  plug in rather than force a rewrite.
+  interfaces, repo topology (AC-001/002/003/014/015) — so the meta-model (DEC-007)
+  and future interfaces (DEC-008 REST) plug in rather than force a rewrite.
 - IDs: `SEG-SYS-nnn` (system), `SEG-SREQ-nnn` (software), `SEG-TS-nnn` (test spec).
   Markers are docstring fields `:implements:` / `:verifies:` (no runtime behaviour).
+
+Composability & exchange:
+- A contract opens to **`(G, A, I)`** — guarantee, assumption down-closure, and
+  the implementation pin (the set of implementations under `G`, content-ref'd).
+  Members are bound under a **flat set-commitment** seal (deep aggregation retired,
+  DEC-012); dropping an assumption *or* swapping an implementation breaks the seal
+  (DEC-019/020/028). v1 keeps a flat-sealed design root as its seal — no signature,
+  per-node `merkleHash` dropped (DEC-013/014).
+- The reliance edge is **`covers`** (Guarantee → Requirement), **derived** not
+  hard-coded; `conformsTo` is a verdict-inert producer declaration resolved to
+  `covers` only on import under the sealed manifest (DEC-017/024).
+- An undischarged inherited condition is `unsatisfied`, not residual (DEC-015);
+  `forward` re-publishes it as an affirmation-gated, verdict-conditional
+  `condition_of_use` (DEC-022); a compliant-item supplier discharges it via an
+  affirmed `covers`, gated by a document-root (version-pin) compatibility check
+  (DEC-023).
+- Entities/roles: {manufacturer, assessor, item provider} × {supplier, integrator,
+  verifier}; verification is universal self-verification (DEC-025). The assessor
+  certificate is a signature over `(hash(case), BOM)`; case and Safety BOM are
+  distinct documents (DEC-026).
 
 ## Getting started
 
