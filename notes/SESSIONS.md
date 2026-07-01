@@ -17,7 +17,7 @@
 | Sphinx-Needs plan (short) | `8725dbb3-d5da-4080-870a-36cfe83dd792` | stub (19 lines) | 2026-06-08 | _none yet_ |
 | Prototype build — graph-construction (Steps 1–7) | `d0826f3d-dc7b-4058-9c86-4edeb47bc598` | archived (large) | 2026-06-25 | [prototype-build.md](prototype-build.md) |
 | Web-session access question (stub) | `1b4ad22f-ee7e-4a3d-a084-c0241712a394` | stub (11 lines) | 2026-07-01 | _none yet_ |
-| **Research workflow setup (sessions/notes)** | `179da4bc-fd43-43d5-a5cb-58eb2fce0768` | **active** | 2026-07-01 | this file |
+| **Workflow setup + git history reconciliation** | `179da4bc-fd43-43d5-a5cb-58eb2fce0768` | paused (review pending) | 2026-07-01 | [workflow-and-git-reconciliation.md](workflow-and-git-reconciliation.md) |
 
 ## Conventions
 
