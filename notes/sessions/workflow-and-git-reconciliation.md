@@ -10,10 +10,10 @@ Move SEG research from the claude.ai web app into this repo: establish a
 exported file bundle (manual `_vN` versioning) into real git history.
 
 ## What was done
-1. **Research workflow** — one Claude Code session per topic. `notes/SESSIONS.md`
+1. **Research workflow** — one Claude Code session per topic. `notes/sessions/SESSIONS.md`
    is the curated sidebar (topic → session UUID → status → distilled note);
    revisit with `claude --resume <id>`. Distilled past sessions into
-   `notes/prototype-build.md` and `notes/schema-testdrive.md`.
+   `notes/sessions/prototype-build.md` and `notes/sessions/schema-testdrive.md`.
 2. **Git history reconstruction** — the 2026-06-25 CLI-migration bundle (96 untracked
    files, web-session workspace + design docs) reconciled into **8 commits** on
    `research`, purely additive (no rewrite of existing history). Chosen strategy:
@@ -44,7 +44,7 @@ exported file bundle (manual `_vN` versioning) into real git history.
 - If any dropped dup file should be a standalone, restore from git history.
 
 ## Pointers
-- `notes/SESSIONS.md` — the thread sidebar.
+- `notes/sessions/SESSIONS.md` — the thread sidebar.
 - `notes/seg_decision_log.md` — authoritative record (DEC-001…028).
 - `BUNDLE_CONTENTS.md` / `notes/MANIFEST.md` — original bundle provenance.
 - `git log --format='%h %ad %s' --date=short -9` — the reconstructed history.

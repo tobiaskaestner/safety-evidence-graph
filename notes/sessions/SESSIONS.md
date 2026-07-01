@@ -5,7 +5,7 @@
 >
 > **To revisit a thread:** `claude --resume <session-id>` (copy the UUID below).
 > **To start a new thread:** run `claude` fresh, then add a row here.
-> **Lookback shortcut:** prefer the distilled `notes/<topic>.md` over replaying the
+> **Lookback shortcut:** prefer the distilled `notes/sessions/<topic>.md` over replaying the
 > full transcript — the transcript is the backup, the note is the summary.
 >
 > Claude keeps this file updated when we start or wrap a thread.
@@ -22,5 +22,5 @@
 ## Conventions
 
 - **Status**: `active` (current work) · `paused` (will return) · `archived` (done/reference) · `stub` (abandoned early).
-- When a thread produces durable conclusions, create `notes/<topic>.md` and link it in the last column.
+- When a thread produces durable conclusions, create `notes/sessions/<topic>.md` and link it in the last column.
 - Session transcripts live at `~/.claude/projects/-wrk-z-ws-safety-safety-evidence-graph/<id>.jsonl`.
