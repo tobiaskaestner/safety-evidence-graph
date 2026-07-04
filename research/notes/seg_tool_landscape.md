@@ -62,14 +62,14 @@ Axes A2–A5 carry Paper 2 (facet bundling, novelty); A6–A7 carry Paper 1 (Pra
 
 | Axis | Doorstop | OFT | StrictDoc | BASIL | sphinx-needs |
 |---|---|---|---|---|---|
-| A1 identity | typed YAML items per doc dir; links untyped `UID: stamp`, typed only by target doc (P1); cross-doc links first-class (P2) | artifact-type-in-ID (`req~name~rev`); typed coverage links; one auto-named impl item per tag (O2) | SDoc docs; **user-defined element tags** + typed fields via [GRAMMAR] (S2); relations typed {Parent,Child,File} + declared ROLE — validated, carried, semantics-free (S1); impl = annotated source range, not a node | | |
-| A2 fingerprint | item stamp over text/ref/links/extended-reviewed attrs; committed/tracked split for extended attrs (P5/P6); source refs NOT content-bound — opt-in sha is review bookkeeping (P8) | none — no content hash anywhere; manual revision integer is the only anchor (O3a) | none stored; MID = uuid4 anchor; content-md5 exists only for the on-demand DIFF report + cache (S4); no field-role split | | |
-| A3 change/drift | one-hop, parent-only suspicion (P3/P4); no transitive propagation, auto-clear vacuous (P7); manual link-clear + item-review | manual-trigger, two-sided, whole-chain break (dual `orphaned`+`outdated`, O3b); re-trace auto-clears; nothing stored, no affirmation concept | **none** — no review state, no pin, edits silent (S3); markers silently droppable (S5); DIFF = on-demand two-tree changelog | | |
-| A4 verdict | hardwired checks; `item_validator` = per-item arbitrary-Python plugin, no rule language (P9) | recursive deep coverage PRESENT (O1, stateless fixpoint, coverage polarity); no rule/plugin/hook facility at all (O4); TestOutcome unrepresentable (O7) | no verdict at all — coverage screens are display-only (S6); **TEST_RESULT nodes with PASSED/FAILED representable** (S7, unique) but nothing consumes them; whole-graph Python plugin hook (S9) | | |
-| A5 commitment/proof | absent — publish = HTML/CSV report, no stamps/hash/signature (P10) | absent — reports carry no integrity artifact (O8) | absent — HTML/JSON/ReqIF carry no integrity artifact (S8) | | |
-| A6 exchange | none observed (publish/export are reports; import/export not deep-probed) | partial — ReqM2 XML exchange with `dstversion` pins, but textual: no content binding, no scope commitment (O8) | richest in set — ReqIF import+export, JSON, Excel; roles survive; textual, no commitment (S8) | | |
-| A7 ecosystem | RTEMS, Space ROS (prior-art record, not spike-verified) | itsallcode; OSS safety projects (prior-art record, not spike-verified) | **Zephyr verified locally**: doc/reqmgmt, shared .sgra grammar, ZEP-SRS UIDs, strictdoc>=0.9.1 | | |
-| A8 architecture | CLI over VCS working copy; stamps stored in item YAML; stateless recompute vs stamps; auto-stages edits into git index | stateless CLI tracer (Java); recomputes every run from sources; exit code = verdict | static-site generator + web server (Python); stateless rebuild each export; documents incl. junit/gcov reports; errors gate exit, nothing else does | | |
+| A1 identity | typed YAML items per doc dir; links untyped `UID: stamp`, typed only by target doc (P1); cross-doc links first-class (P2) | artifact-type-in-ID (`req~name~rev`); typed coverage links; one auto-named impl item per tag (O2) | SDoc docs; **user-defined element tags** + typed fields via [GRAMMAR] (S2); relations typed {Parent,Child,File} + declared ROLE — validated, carried, semantics-free (S1); impl = annotated source range, not a node | | rst directives; config-defined need types + named directed link vocabulary w/ auto back-links, dead-link warnings (N1) |
+| A2 fingerprint | item stamp over text/ref/links/extended-reviewed attrs; committed/tracked split for extended attrs (P5/P6); source refs NOT content-bound — opt-in sha is review bookkeeping (P8) | none — no content hash anywhere; manual revision integer is the only anchor (O3a) | none stored; MID = uuid4 anchor; content-md5 exists only for the on-demand DIFF report + cache (S4); no field-role split | | none — needs.json exports full content unhashed; no field-role split (N4) |
+| A3 change/drift | one-hop, parent-only suspicion (P3/P4); no transitive propagation, auto-clear vacuous (P7); manual link-clear + item-review | manual-trigger, two-sided, whole-chain break (dual `orphaned`+`outdated`, O3b); re-trace auto-clears; nothing stored, no affirmation concept | **none** — no review state, no pin, edits silent (S3); markers silently droppable (S5); DIFF = on-demand two-tree changelog | | **none, incl. cross-project** — edits silent (N4); rewritten external need rebuilds clean (N7); dead-link warnings only |
+| A4 verdict | hardwired checks; `item_validator` = per-item arbitrary-Python plugin, no rule language (P9) | recursive deep coverage PRESENT (O1, stateless fixpoint, coverage polarity); no rule/plugin/hook facility at all (O4); TestOutcome unrepresentable (O7) | no verdict at all — coverage screens are display-only (S6); **TEST_RESULT nodes with PASSED/FAILED representable** (S7, unique) but nothing consumes them; whole-graph Python plugin hook (S9) | | **declarative bounded-depth shape validation, SHACL-cited severities** (N2); per-need eval constraints, derived state exports (N3); no recursion/fixpoint (hard nest bound), no verdict object |
+| A5 commitment/proof | absent — publish = HTML/CSV report, no stamps/hash/signature (P10) | absent — reports carry no integrity artifact (O8) | absent — HTML/JSON/ReqIF carry no integrity artifact (S8) | | absent (N8) |
+| A6 exchange | none observed (publish/export are reports; import/export not deep-probed) | partial — ReqM2 XML exchange with `dstversion` pins, but textual: no content binding, no scope commitment (O8) | richest in set — ReqIF import+export, JSON, Excel; roles survive; textual, no commitment (S8) | | needs.json + needimport + **needs_external_needs by-reference cross-project links** (unique) — zero integrity/pin (N7) |
+| A7 ecosystem | RTEMS, Space ROS (prior-art record, not spike-verified) | itsallcode; OSS safety projects (prior-art record, not spike-verified) | **Zephyr verified locally**: doc/reqmgmt, shared .sgra grammar, ZEP-SRS UIDs, strictdoc>=0.9.1 | | Sphinx docs-as-code world; **used by SEG itself** (Phase-B reqs worktree) |
+| A8 architecture | CLI over VCS working copy; stamps stored in item YAML; stateless recompute vs stamps; auto-stages edits into git index | stateless CLI tracer (Java); recomputes every run from sources; exit code = verdict | static-site generator + web server (Python); stateless rebuild each export; documents incl. junit/gcov reports; errors gate exit, nothing else does | | Sphinx extension; build-time, stateless; jsonschema_rs validation each build; `-W` gates |
 
 ---
 
@@ -233,19 +233,26 @@ read with findings marked *not exercised*.
 **Findings.** —
 
 ### WP-5 — sphinx-needs
-**Status:** open
-**Goal.** Characterize the tool SEG itself uses for requirements (Phase B reqs
-worktree) on the same axes — including the cross-project angle.
-**Questions.**
-1. Item model: need types, options, links — what is enforced vs convention?
-2. Any content hash / change detection / review state on a need?
-3. Validity: `needs` filters/warnings — what can a *user-authored* check express
-   (closest thing to a programmable verdict in the set)?
-4. Exchange: `needs.json` export / `external_needs` import — how far is that from a
-   composition story (what integrity, if any, travels with it)?
-**Method.** Already a project dependency; exercise on a scratch Sphinx project or the
-reqs worktree (read-only). Docs + behaviour.
-**Findings.** —
+**Status:** done (2026-07-04, N1–N8 on 8.1.1/Sphinx 8.2.3; kit commit deeb395).
+**Findings (full evidence in the kit's RESULTS.md).** All eight confirmed as
+pre-registered. Headlines:
+- **The schema system is explicitly SHACL-derived** (N2 — citable verbatim:
+  `SeverityEnum` "levels are derived from the SHACL specification" + W3C URL):
+  declarative, typed link-target validation across the graph
+  (select/local/network, minContains, structured violation reports, `-W` gates) —
+  with a **hard non-recursion bound** (`network_max_nest_level`). The applied field
+  reaches SEG's shapes layer and stops exactly below the DEC-007
+  recursive-stratified island.
+- **Per-need eval-string checks whose derived state exports** (N3:
+  `constraints_passed` persists into needs.json) — single-need scope, no closure.
+- **Drift axis: none, including cross-project** (N4/N7): content edits silent, no
+  stored state; `needs_external_needs` links by reference and a completely rewritten
+  external guarantee rebuilds with zero warnings — the exact gap the sealed exchange
+  fills.
+- **No source binding at all** (N5) — SEG's own Phase-B usage pairs sphinx-needs
+  with SEG's extractor precisely to supply that half.
+- Evidence by convention only (N6); no commitment (N8); richest link-type
+  *vocabulary* in the set with referential-integrity warnings (N1).
 
 ---
 
