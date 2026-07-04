@@ -1,0 +1,10 @@
+[project]
+title = "SEG StrictDoc Spike"
+
+features = [
+  "REQUIREMENT_TO_SOURCE_TRACEABILITY",
+]
+
+include_source_paths = [
+  "src/*.c",
+]

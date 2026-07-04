@@ -1,0 +1,31 @@
+[DOCUMENT]
+TITLE: Test Specifications
+
+[GRAMMAR]
+ELEMENTS:
+- TAG: TEST
+  FIELDS:
+  - TITLE: UID
+    TYPE: String
+    REQUIRED: True
+  - TITLE: TITLE
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATEMENT
+    TYPE: String
+    REQUIRED: True
+  RELATIONS:
+  - TYPE: Parent
+    ROLE: verifies
+
+[TEST]
+UID: TST001
+TITLE: Scheduler lock preemption test
+STATEMENT: >>>
+Verify that a thread holding the scheduler lock is not preempted by a
+higher-priority ready thread for the duration of the lock.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: REQ001
+  ROLE: verifies

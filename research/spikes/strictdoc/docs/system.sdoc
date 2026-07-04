@@ -1,0 +1,10 @@
+[DOCUMENT]
+TITLE: System Requirements
+
+[REQUIREMENT]
+UID: SYS001
+TITLE: Deterministic scheduling
+STATEMENT: >>>
+The kernel SHALL provide deterministic thread scheduling under all load
+conditions.
+<<<

@@ -1,0 +1,71 @@
+[DOCUMENT]
+TITLE: Software Requirements and Design Decisions
+
+[GRAMMAR]
+ELEMENTS:
+- TAG: REQUIREMENT
+  FIELDS:
+  - TITLE: UID
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATUS
+    TYPE: SingleChoice(Draft, Approved)
+    REQUIRED: True
+  - TITLE: TITLE
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATEMENT
+    TYPE: String
+    REQUIRED: True
+  - TITLE: RATIONALE
+    TYPE: String
+    REQUIRED: False
+  RELATIONS:
+  - TYPE: Parent
+    ROLE: refines
+- TAG: ADR
+  FIELDS:
+  - TITLE: UID
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATUS
+    TYPE: String
+    REQUIRED: True
+  - TITLE: TITLE
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATEMENT
+    TYPE: String
+    REQUIRED: True
+  RELATIONS:
+  - TYPE: Parent
+    ROLE: answers
+
+[REQUIREMENT]
+UID: REQ001
+STATUS: Approved
+TITLE: Scheduler lock
+STATEMENT: >>>
+While a thread holds the scheduler lock, the kernel SHALL NOT preempt it.
+<<<
+RATIONALE: >>>
+Preemption during critical sections would violate timing guarantees
+required by SYS001.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SYS001
+  ROLE: refines
+
+[ADR]
+UID: ADR001
+STATUS: proposed
+TITLE: Use cooperative locking, not IRQ masking
+STATEMENT: >>>
+Scheduler locking is implemented via a cooperative lock counter rather than
+masking interrupts, to keep ISR latency bounded.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: REQ001
+  ROLE: answers
