@@ -48,6 +48,11 @@ RESULTS.md files under `research/spikes/` (pre-registered probes, raw output).
 
 ## 2. Adoption in OSS projects (researched 2026-07-04, web; evidence strength marked)
 
+**Bottom line.** Every tool in the set has at least one verifiable OSS adopter;
+evidence strength varies (docs-page vs README vs search-snippet vs vendor claim —
+marked per row, full URLs in §6). One anticipated adopter turned out to be an
+*informed rejecter* (RTEMS, §3), which is more valuable than an adoption.
+
 | Tool | Adopter | Evidence |
 |---|---|---|
 | Doorstop | **Space ROS** — "Doorstop, along with git, is used to ensure requirements tracking and traceability"; FRET imports/exports Doorstop's Markdown format | docs page: space-ros.github.io/docs/rolling/Related-Projects/Doorstop.html |
@@ -109,3 +114,26 @@ leave the tool over.
 - Eclipse S-CORE docs page (eclipse.dev/score/docs.html).
 - Not re-verified this session: the Exasol-testcontainers OFT statement came from a
   search snippet — open the repo doc before citing.
+
+## 6. Sources (as retrieved 2026-07-04)
+
+- Space ROS — Doorstop related-projects page:
+  <https://space-ros.github.io/docs/rolling/Related-Projects/Doorstop.html>
+  (companion FRET page: <https://space-ros.github.io/docs/rolling/Related-Projects/FRET.html>)
+- RTEMS Software Engineering manual, Requirements → Tooling:
+  <https://docs.rtems.org/docs/main/eng/req/tooling.html>
+- Eclipse Ankaios — Requirement tracing (v0.2 docs):
+  <https://eclipse-ankaios.github.io/ankaios/0.2/development/requirement-tracing/>
+- OpenFastTrace repository: <https://github.com/itsallcode/openfasttrace>
+- Exasol testcontainers (OFT-format requirements — snippet-level evidence, recheck):
+  <https://github.com/exasol/exasol-testcontainers>
+- linux-strictdoc (ELISA SPDX-Req kernel PoC, experimental):
+  <https://github.com/strictdoc-project/linux-strictdoc>
+- BASIL repository: <https://github.com/elisa-tech/BASIL>
+- ELISA Workshop Munich 2025 recap (BASIL/Red Hat context):
+  <https://elisa.tech/blog/2025/12/03/recap-elisa-workshop-munich-germany-2025/>
+- Eclipse S-CORE docs (sphinx-needs docs-as-code toolchain):
+  <https://eclipse.dev/score/docs.html>
+- sphinx-needs product site (vendor claims only): <https://www.sphinx-needs.com/>
+- Zephyr StrictDoc usage: verified locally at `/wrk/z/ws-safety/doc/reqmgmt`
+  (no URL needed; the west workspace copy is the evidence).
