@@ -51,6 +51,12 @@ Update it at the end of each research session.
    Contribution claim is sharpened (the novel core = suspicion lifecycle + its binding
    to the commitment layer; plus the static-invariants-as-trusted-core framing).
    Related-work section can be grown from `seg_prior_art.md`. → new doc when ready.
+   **Plan (2026-07-04): two papers.** Priority = **Paper 1, the Prague paper** (OSS
+   Summit EU 2026; talk + backing material, no proceedings deadline; builds on the
+   submitted *"A Safety BOM Is a Contract"* abstract). ZiSE is off; its facet /
+   projection-core material seeds Paper 2 (venue open). The paper seed was reconciled
+   the same day: DEC-012/013/014 commitment corrections applied, DEC-015…028 exchange
+   results folded in, §9 restructured to the two-paper plan.
 
 7. **Bibliography hardening.**
    All entries are stubs — verify authors/venues/pages/DOIs before submission. Named
@@ -83,8 +89,16 @@ Update it at the end of each research session.
    - whether Build/SupplyChain `Process`/`verifiedUsing` machinery covers more than it appears.
    ACTION also: align SEG built-in node/edge vocabulary with the profile's terms where
    they correspond, so the projection is near-trivial and SEG isn't gratuitously
-   incompatible. → revises `seg_definition_language.md`; new sub-claim in `seg_paper_seed.md`
-   §8 (currently marked UNVERIFIED — this thread is that verification).
+   incompatible. → revises `seg_definition_language.md`; the paper-seed sub-claim is
+   applied (2026-07-04): the UNVERIFIED marker is retired and §9 carries the
+   verified "SPDX is the schema, SEG the engine" framing.
+
+9. **OSS tool landscape — comparison/categorization WPs (Paper 1 lead-in).**
+   Five resumable work packages (Doorstop, OFT, StrictDoc, BASIL, sphinx-needs), one
+   per tool, human-driven with agent steering; axes + matrix + findings all in
+   → `research/notes/seg_tool_landscape.md` (created 2026-07-04). WP-2 (OFT) carries
+   the standing paper-seed §8 suspicion-lifecycle semantics check; supersedes the
+   browser-era Doorstop/OFT work packages (never run, not migrated).
 
 ## Small confirmations left hanging (cheap; resolve when convenient)
 - `Implementation.identity`: `symbol` vs `component_name` (which is stable under file
