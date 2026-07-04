@@ -1,0 +1,9 @@
+attributes:
+  reviewed:
+  - rationale
+settings:
+  digits: 3
+  itemformat: yaml
+  parent: SYS
+  prefix: REQ
+  sep: ''

@@ -1,0 +1,13 @@
+active: true
+derived: false
+header: |
+  k_sched_lock
+level: 1.0
+links:
+- ADR001: We0z0Akd-FQlH3T4mbCh1Q9S8vSvsRW-bWYFHf151JA=
+- REQ001: 96y40FdXVY7plTC6w913nsIKuzyBdV0wzEwvuUo2ako=
+normative: true
+ref: 'SEG-IMPL: k_sched_lock'
+reviewed: vuTawPUpxQVgdj0P8KHgdIIKYV6mgGQsnk_vWpfstZY=
+text: |
+  Implementation of the scheduler lock primitive.

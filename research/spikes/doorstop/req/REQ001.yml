@@ -1,0 +1,15 @@
+active: true
+derived: false
+header: |
+  Scheduler lock
+level: 1.0
+links:
+- SYS001: Gc1wistyMye-cvwRQimbczyTLfc1a1nuLwtuHMqT58k=
+normative: true
+rationale: |
+  Preemption during critical sections would violate timing guarantees
+  required by SYS001.
+ref: ''
+reviewed: K5oQYCeKVU-DVlOSO1y7_fgFZiao6wUIQtOoSn-Z9m0=
+text: |
+  While a thread holds the scheduler lock, the kernel SHALL NOT preempt it.

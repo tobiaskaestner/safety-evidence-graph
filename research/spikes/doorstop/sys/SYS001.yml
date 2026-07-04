@@ -1,0 +1,12 @@
+active: true
+derived: false
+header: |
+  Deterministic scheduling
+level: 1.0
+links: []
+normative: true
+ref: ''
+reviewed: Gc1wistyMye-cvwRQimbczyTLfc1a1nuLwtuHMqT58k=
+text: |
+  The kernel SHALL provide deterministic thread scheduling under all load
+  conditions.

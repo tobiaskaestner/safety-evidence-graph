@@ -1,0 +1,8 @@
+attributes:
+  reviewed: []
+settings:
+  digits: 3
+  itemformat: yaml
+  parent: REQ
+  prefix: ADR
+  sep: ''

@@ -1,0 +1,14 @@
+active: true
+derived: false
+header: |
+  Use cooperative locking, not IRQ masking
+level: 1.0
+links:
+- REQ001: 96y40FdXVY7plTC6w913nsIKuzyBdV0wzEwvuUo2ako=
+normative: true
+ref: ''
+reviewed: eLTYlijg4ZUyZLsQXfovFvE9aWdDGqwKqSYSSmtQ0c0=
+status: proposed
+text: |
+  Scheduler locking is implemented via a cooperative lock counter rather than
+  masking interrupts, to keep ISR latency bounded.
