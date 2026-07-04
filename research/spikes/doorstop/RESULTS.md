@@ -2,18 +2,65 @@
 
 Doorstop version: 3.1 (matches kit rehearsal)        Date: 2026-07-04
 
-| P# | Prediction (short) | Observed (paste key output) | Verdict | Table-cell impact |
-|----|--------------------|------------------------------|---------|-------------------|
-| P1 | links untyped | `links:` = bare `- ADR001: We0z…` / `- REQ001: 96y4…` UID:stamp pairs; injected `type: implements` key present before `doorstop`, absent after — validation clean (exit 0) throughout | CONFIRMED + SURPRISE | Edge typing: by-document only; facets: absent. Surprise: validation *rewrites* item YAML and silently drops foreign link keys — migration data would be erased, not ignored |
-| P2 | cross-doc link tolerated? (REFUTED in sandbox — reconfirm) | Baseline `doorstop -v`: no buried warnings. After ADR001 text edit: `WARNING: IMPL: IMPL001: suspect link: ADR001` + `WARNING: ADR: ADR001: unreviewed changes`; exit still 0 | REFUTED (reconfirmed) | Cross-doc links are first-class: tolerated, stamped, suspect-participating. "Tree-only" wall does not exist (v3.1); real wall = P1 (untyped) + P9 (no semantics). NB: warnings do not affect exit code |
-| P3 | parent edit ⇒ suspect | REQ001 text edit ⇒ `WARNING: REQ: REQ001: unreviewed changes` + `IMPL: IMPL001: suspect link: REQ001` + `ADR: ADR001: suspect link: REQ001`; no flag on REQ001→SYS001 (child-side change invisible — pre-confirms P4) | CONFIRMED | Direct suspicion: present (content-hash stamps, one hop, parent-only) |
-| P4 | child edit ⇒ NOT suspect | IMPL001 text edit ⇒ only `WARNING: IMPL: IMPL001: unreviewed changes`; zero suspect-link warnings (IMPL001→REQ001 stays green with drifted child endpoint) | CONFIRMED | edgeHash analogue: one-sided (parent-only); SEG's two-endpoint edgeHash has no counterpart — headline cell |
-| P5 | status edit ⇒ nothing | `status: proposed → accepted` ⇒ validation fully clean (0 warnings) | CONFIRMED | Field roles: partially present — `attributes.reviewed` allowlist = committed/tracked split for extended attrs |
-| P6 | rationale edit ⇒ unreviewed; child links suspect? | Config verified (`reviewed: [rationale]`). Rationale edit ⇒ `REQ001: unreviewed changes` + suspect on IMPL001→REQ001 AND ADR001→REQ001 | CONFIRMED (lean held) | Link stamps reuse the item stamp incl. extended reviewed attrs; no item-review/link-suspicion divergence |
-| P7 | SYS edit ⇒ one-hop suspect only | SYS001 text edit ⇒ `SYS001: unreviewed changes` + `REQ001: suspect link: SYS001` ONLY — ADR001/IMPL001 links stay green. `doorstop clear REQ001 SYS001` removes the suspect (SYS001 stays unreviewed — item review is a second, separate manual act) | CONFIRMED | Transitive suspicion: absent. Auto-clear: vacuous (nothing derived). Affirmation is two manual acts: link clear + item review |
-| P8 | source body edit ⇒ invisible drift | (a) body rewrite, keyword kept ⇒ validation fully clean; (b) keyword line deleted ⇒ `ERROR: … external reference not found`, exit 1 (errors gate; warnings don't). Addendum (source-read + behavioral): `references:` + `extensions: item_sha_required` stores a whole-file sha256 **at review time** (`review()` in `core/item.py`); validation (`find_references()`) checks existence only, never recomputes/compares — file edit with sha enabled still validates clean; sha silently updates on next review (5931b0ee… → 7df8e0be…) | CONFIRMED (incl. sha addendum) | Sharpest cell: parser-as-locator **without the hash half** — even the opt-in sha is review bookkeeping, not drift detection; content drift stays invisible either way |
-| P9 | impl_violates_adr inexpressible | Source inspection (stronger than the planned doc read): `extensions: item_validator` (document.py:835–870) dynamically imports a Python file exposing `item_validator(**kwargs)`, invoked per item, yields issues. No declarative/rule facility anywhere | REFUTED on the letter, CONFIRMED in spirit | A *hook* exists (arbitrary per-item Python plugin) — but no rule language: expressing impl_violates_adr = writing the verdict layer yourself in Turing-complete, unauditable code. Sharpens the DEC-007 contrast rather than weakening it |
-| P10 | publish = report, not proof | `doorstop publish all ./pub` ⇒ HTML docs + index + traceability.csv/html; only integrity-string hits are bundled jquery/bootstrap; CSV = bare UID rows; no stamps/hashes/signature in any published artifact | CONFIRMED | Sealed proofs: absent. Composition: absent (nothing to compose). Verifier must trust the working copy |
+### P1 — links untyped
+
+- **Verdict:** CONFIRMED + SURPRISE
+- **Observed:** `links:` = bare `- ADR001: We0z…` / `- REQ001: 96y4…` UID:stamp pairs; injected `type: implements` key present before `doorstop`, absent after — validation clean (exit 0) throughout
+- **Table-cell impact:** Edge typing: by-document only; facets: absent. Surprise: validation *rewrites* item YAML and silently drops foreign link keys — migration data would be erased, not ignored
+
+### P2 — cross-doc link tolerated? (REFUTED in sandbox — reconfirm)
+
+- **Verdict:** REFUTED (reconfirmed)
+- **Observed:** Baseline `doorstop -v`: no buried warnings. After ADR001 text edit: `WARNING: IMPL: IMPL001: suspect link: ADR001` + `WARNING: ADR: ADR001: unreviewed changes`; exit still 0
+- **Table-cell impact:** Cross-doc links are first-class: tolerated, stamped, suspect-participating. "Tree-only" wall does not exist (v3.1); real wall = P1 (untyped) + P9 (no semantics). NB: warnings do not affect exit code
+
+### P3 — parent edit ⇒ suspect
+
+- **Verdict:** CONFIRMED
+- **Observed:** REQ001 text edit ⇒ `WARNING: REQ: REQ001: unreviewed changes` + `IMPL: IMPL001: suspect link: REQ001` + `ADR: ADR001: suspect link: REQ001`; no flag on REQ001→SYS001 (child-side change invisible — pre-confirms P4)
+- **Table-cell impact:** Direct suspicion: present (content-hash stamps, one hop, parent-only)
+
+### P4 — child edit ⇒ NOT suspect
+
+- **Verdict:** CONFIRMED
+- **Observed:** IMPL001 text edit ⇒ only `WARNING: IMPL: IMPL001: unreviewed changes`; zero suspect-link warnings (IMPL001→REQ001 stays green with drifted child endpoint)
+- **Table-cell impact:** edgeHash analogue: one-sided (parent-only); SEG's two-endpoint edgeHash has no counterpart — headline cell
+
+### P5 — status edit ⇒ nothing
+
+- **Verdict:** CONFIRMED
+- **Observed:** `status: proposed → accepted` ⇒ validation fully clean (0 warnings)
+- **Table-cell impact:** Field roles: partially present — `attributes.reviewed` allowlist = committed/tracked split for extended attrs
+
+### P6 — rationale edit ⇒ unreviewed; child links suspect?
+
+- **Verdict:** CONFIRMED (lean held)
+- **Observed:** Config verified (`reviewed: [rationale]`). Rationale edit ⇒ `REQ001: unreviewed changes` + suspect on IMPL001→REQ001 AND ADR001→REQ001
+- **Table-cell impact:** Link stamps reuse the item stamp incl. extended reviewed attrs; no item-review/link-suspicion divergence
+
+### P7 — SYS edit ⇒ one-hop suspect only
+
+- **Verdict:** CONFIRMED
+- **Observed:** SYS001 text edit ⇒ `SYS001: unreviewed changes` + `REQ001: suspect link: SYS001` ONLY — ADR001/IMPL001 links stay green. `doorstop clear REQ001 SYS001` removes the suspect (SYS001 stays unreviewed — item review is a second, separate manual act)
+- **Table-cell impact:** Transitive suspicion: absent. Auto-clear: vacuous (nothing derived). Affirmation is two manual acts: link clear + item review
+
+### P8 — source body edit ⇒ invisible drift
+
+- **Verdict:** CONFIRMED (incl. sha addendum)
+- **Observed:** (a) body rewrite, keyword kept ⇒ validation fully clean; (b) keyword line deleted ⇒ `ERROR: … external reference not found`, exit 1 (errors gate; warnings don't). Addendum (source-read + behavioral): `references:` + `extensions: item_sha_required` stores a whole-file sha256 **at review time** (`review()` in `core/item.py`); validation (`find_references()`) checks existence only, never recomputes/compares — file edit with sha enabled still validates clean; sha silently updates on next review (5931b0ee… → 7df8e0be…)
+- **Table-cell impact:** Sharpest cell: parser-as-locator **without the hash half** — even the opt-in sha is review bookkeeping, not drift detection; content drift stays invisible either way
+
+### P9 — impl_violates_adr inexpressible
+
+- **Verdict:** REFUTED on the letter, CONFIRMED in spirit
+- **Observed:** Source inspection (stronger than the planned doc read): `extensions: item_validator` (document.py:835–870) dynamically imports a Python file exposing `item_validator(**kwargs)`, invoked per item, yields issues. No declarative/rule facility anywhere
+- **Table-cell impact:** A *hook* exists (arbitrary per-item Python plugin) — but no rule language: expressing impl_violates_adr = writing the verdict layer yourself in Turing-complete, unauditable code. Sharpens the DEC-007 contrast rather than weakening it
+
+### P10 — publish = report, not proof
+
+- **Verdict:** CONFIRMED
+- **Observed:** `doorstop publish all ./pub` ⇒ HTML docs + index + traceability.csv/html; only integrity-string hits are bundled jquery/bootstrap; CSV = bare UID rows; no stamps/hashes/signature in any published artifact
+- **Table-cell impact:** Sealed proofs: absent. Composition: absent (nothing to compose). Verifier must trust the working copy
 
 ## Surprises / notes
 
