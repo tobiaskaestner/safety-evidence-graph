@@ -35,15 +35,26 @@ requirements traceability for open-source safety projects (RTEMS, Space ROS):
 **This forces honesty.** Several things the first draft of this seed called novel are
 *already shipping* in these tools and MUST NOT be claimed:
 
+All three overlap entries are now **hands-on verified** (2026-07-04, Doorstop 3.1 /
+OFT 4.5.0; pre-registered spikes, evidence in `seg_tool_landscape.md` WP-1/WP-2):
+
 - content fingerprinting with **field selection** (normative vs non-normative) — that
-  is Doorstop's fingerprint; it is also our `hash_fields` vs `tracked` split.
+  is Doorstop's fingerprint; it is also our `hash_fields` vs `tracked` split (verified
+  P5/P6: `attributes.reviewed` is a real committed/tracked split). **But the overlap is
+  item-level only:** Doorstop never content-binds *referenced source* — the `ref`
+  keyword is existence-checked, and even the opt-in `references:` sha is review-time
+  bookkeeping that validation never recomputes (P8). SEG's raw-byte-span source binding
+  (DEC-003) is a delta, not overlap.
 - **affirmation / review stamps** and **break-on-change** — Doorstop's review stamps and
-  OFT's revision-pinned coverage breaking on an upstream bump.
-- **transitive propagation + auto-clear** — OFT's deep-coverage tracer is stateless and
-  whole-chain, so transitive coverage failure *and* automatic clearing-on-re-trace are
-  arguably already present. (Trigger differs — OFT uses a manual revision integer, SEG a
-  content hash — but the architectural shape is a cousin. The precise transitive-*break*
-  semantics in OFT warrant a hands-on check before any claim.)
+  OFT's revision-pinned coverage breaking on an upstream bump. Verified, with a
+  sharpening: Doorstop's link stamp is a *one-sided* copy of the parent item's stamp —
+  child-endpoint drift is invisible (P4); OFT's break is *two-sided* but fires only on
+  a manual integer bump — content edits are silent (O3a).
+- **transitive propagation + auto-clear** — verified **present** in OFT (O1/O3b): deep
+  coverage is a stateless whole-chain fixpoint, a break propagates in both directions,
+  and re-trace clears everything trivially because nothing is stored. Absent in
+  Doorstop (P7: strictly one-hop). The former hands-on-check hedge is resolved; the
+  shape must not be claimed.
 
 ## 3. The redrawn novelty boundary (what genuinely survives)
 
@@ -90,11 +101,17 @@ The defensible kernel is **the binding of a programmable verdict layer and a der
 suspicion closure to a recomputable cryptographic commitment over the whole graph**
 (local `edgeHash` + a global `flat-sealed` design root, DEC-014) — i.e.
 contributions 1+2 fused. The suspicion lifecycle itself (states, direct vs transitive,
-derivation, auto-clear) is *shared in shape* with OFT's stateless coverage tracer; what
-is ours is (a) its trigger being a content-hash *drift* event rather than a manual
-revision bump, and (b) its integration with a global recomputable proof and a
-user-authored verdict rule set. Claim the *integration and the verdict/commitment
-seams*, not the lifecycle in isolation.
+derivation, auto-clear) is *shared in shape* with OFT's stateless coverage tracer —
+now verified hands-on (WP-2). What is ours, exactly (each backed by a spike probe):
+(a) the **trigger** is a content-hash *drift* event, not a manual revision bump (OFT
+passes a reworded requirement silently, O3a); (b) the **combination of stored and
+derived**: SEG keeps content-bound, two-sided edge affirmations *and* derives a
+suspicion closure on top — Doorstop stores stamps but derives nothing (one-hop only,
+P7), OFT derives everything but stores nothing (no affirmation concept exists, O3b);
+and (c) the closure runs over an **evidence subgraph neither tool can represent** —
+a test *outcome* has no home in OFT's model at all (O7). Plus the integration with a
+global recomputable proof and a user-authored verdict rule set. Claim the *integration
+and the verdict/commitment seams*, not the lifecycle in isolation.
 
 ## 5. The borrowed substrate (cite, don't claim)
 
@@ -145,8 +162,13 @@ Finkelstein).
   a global recomputable proof, and assume-guarantee composition." A comparison/migration
   story (can SEG ingest a Doorstop tree? can it reproduce OFT's coverage as one verdict
   ruleset?) would be a strong evaluation.
-- **Verify directly:** OFT's transitive-break + re-trace-clear semantics, to fix exactly
-  how much of the suspicion lifecycle is shared vs novel.
+- ~~Verify directly: OFT's transitive-break + re-trace-clear semantics~~ **Done**
+  (2026-07-04, WP-2 in `seg_tool_landscape.md`): present, whole-chain, two-sided,
+  trivially auto-clearing — §2/§4 wording updated accordingly. The comparison also
+  yielded two claim-safe bonuses: OFT has *no* extensibility at all while Doorstop's
+  only hook is arbitrary Python — SEG's auditable stratified Datalog sits exactly
+  between "nothing" and "anything"; and the drift axis has three verified settings
+  (one-sided hash / two-sided counter / two-sided hash).
 - Composability is **prototyped, not productized**: the round-trip rests on the GAPS
   G1–G12 idealizations — signing/authenticity stubbed (G6), the `forward` affirmation
   idealized (G9 residue), `sha1` a stand-in content-ref (DEC-028) — and the assessor

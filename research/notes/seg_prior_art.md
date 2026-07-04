@@ -224,6 +224,14 @@ on an upstream revision bump; a stateless tracer (recomputes every run).
 **The overlap (must NOT be claimed as novel).** Content fingerprinting with field
 selection; affirmation/review stamps; break-on-change; and — because OFT's tracer is
 stateless and whole-chain — transitive coverage failure with automatic clear-on-re-trace.
+**Hands-on verified** (2026-07-04, Doorstop 3.1 / OFT 4.5.0; pre-registered spikes,
+`seg_tool_landscape.md` WP-1/WP-2), with three sharpenings the delta list below relies
+on: Doorstop's stamps are one-sided (parent-only) and its referenced source is never
+content-bound (even the opt-in sha is review-time bookkeeping); OFT's whole-chain break
+fires only on a manual revision bump (content edits pass silently) and it stores
+nothing — no affirmation concept exists; and a test *outcome* is unrepresentable in
+OFT's model (a `utest` item asserts existence, not a result) and has no Doorstop item
+type either — the design/evidence split is absent in both tools.
  
 **The SEG delta (the redrawn novelty).** (1) a *programmable* stratified-Datalog verdict
 layer vs their *hardwired* coverage check; (2) a *global, recomputable* commitment over
