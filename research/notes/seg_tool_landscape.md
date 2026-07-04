@@ -68,7 +68,7 @@ Axes A2–A5 carry Paper 2 (facet bundling, novelty); A6–A7 carry Paper 1 (Pra
 | A4 verdict | hardwired checks; `item_validator` = per-item arbitrary-Python plugin, no rule language (P9) | recursive deep coverage PRESENT (O1, stateless fixpoint, coverage polarity); no rule/plugin/hook facility at all (O4); TestOutcome unrepresentable (O7) | no verdict at all — coverage screens are display-only (S6); **TEST_RESULT nodes with PASSED/FAILED representable** (S7, unique) but nothing consumes them; whole-graph Python plugin hook (S9) | | **declarative bounded-depth shape validation, SHACL-cited severities** (N2); per-need eval constraints, derived state exports (N3); no recursion/fixpoint (hard nest bound), no verdict object |
 | A5 commitment/proof | absent — publish = HTML/CSV report, no stamps/hash/signature (P10) | absent — reports carry no integrity artifact (O8) | absent — HTML/JSON/ReqIF carry no integrity artifact (S8) | | absent (N8) |
 | A6 exchange | none observed (publish/export are reports; import/export not deep-probed) | partial — ReqM2 XML exchange with `dstversion` pins, but textual: no content binding, no scope commitment (O8) | richest in set — ReqIF import+export, JSON, Excel; roles survive; textual, no commitment (S8) | | needs.json + needimport + **needs_external_needs by-reference cross-project links** (unique) — zero integrity/pin (N7) |
-| A7 ecosystem | RTEMS, Space ROS (prior-art record, not spike-verified) | itsallcode; OSS safety projects (prior-art record, not spike-verified) | **Zephyr verified locally**: doc/reqmgmt, shared .sgra grammar, ZEP-SRS UIDs, strictdoc>=0.9.1 | | Sphinx docs-as-code world; **used by SEG itself** (Phase-B reqs worktree) |
+| A7 ecosystem | Space ROS (docs-verified); **RTEMS evaluated-and-rejected** — six limitations mapping onto P1/P9 (→ comparison §3) | Exasol projects; **Eclipse Ankaios** (docs-verified) | **Zephyr verified locally** (doc/reqmgmt); linux-strictdoc PoC (ELISA SPDX-Req tags) | ELISA (Red Hat; deployed instance) | Eclipse S-CORE (docs-verified); **used by SEG itself** (Phase-B reqs worktree) — adoption details: `seg_tool_comparison.md` §2 |
 | A8 architecture | CLI over VCS working copy; stamps stored in item YAML; stateless recompute vs stamps; auto-stages edits into git index | stateless CLI tracer (Java); recomputes every run from sources; exit code = verdict | static-site generator + web server (Python); stateless rebuild each export; documents incl. junit/gcov reports; errors gate exit, nothing else does | | Sphinx extension; build-time, stateless; jsonschema_rs validation each build; `-W` gates |
 
 ---
@@ -259,9 +259,11 @@ pre-registered. Headlines:
 ## 5. Output & downstream use
 
 - Each WP fills its Findings + its matrix column; claims cite the WP section.
-- When the matrix is full enough: distill (a) the Prague positioning paragraph
-  (Paper 1 — A6/A7-led) and (b) the facet-bundling table (Paper 2 — A2–A5-led), and
-  update `seg_prior_art.md` closest-applied + `seg_paper_seed.md` §2/§8 (retire the
-  "hands-on check pending" caveat once WP-2 answers it).
+- **The distilled synthesis lives in `seg_tool_comparison.md`** (decision 2026-07-04:
+  a separate document, NOT folded into `seg_prior_art.md`) — verified spectra,
+  OSS-adoption research (Space ROS/RTEMS/Exasol/Ankaios/ELISA/S-CORE), the RTEMS
+  case study, and the per-paper use. This note stays the working WP/evidence doc.
+- `seg_paper_seed.md` §2/§4/§8 were consolidated against WP-1/WP-2 (commit 9f6a9d1);
+  a second consolidation pass after WP-4 (BASIL) closes the set.
 - New citations to add on completion: StrictDoc, BASIL, sphinx-needs (repo+version,
-  as with OFT).
+  as with OFT) + the adoption sources in `seg_tool_comparison.md` §5.
