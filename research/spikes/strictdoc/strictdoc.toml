@@ -3,8 +3,18 @@ title = "SEG StrictDoc Spike"
 
 features = [
   "REQUIREMENT_TO_SOURCE_TRACEABILITY",
+  "REQIF",
 ]
 
 include_source_paths = [
   "src/*.c",
+  "tests/*.py",
+  "reports/*.junit.xml",
+]
+
+# Scope the doc tree to the fixture; without this StrictDoc 0.25 also ingests
+# the kit's own README/PREDICTIONS/RESULTS markdown (format-fix finding, S0).
+include_doc_paths = [
+  "docs/**",
+  "reports/**",
 ]

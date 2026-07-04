@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+  <testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="0.05">
+    <testcase classname="tests.test_scheduler" name="test_lock_not_preempted" time="0.01"/>
+    <testcase classname="tests.test_scheduler" name="test_lock_reentrant" time="0.01">
+      <failure message="assertion failed">lock counter not restored</failure>
+    </testcase>
+  </testsuite>
+</testsuites>

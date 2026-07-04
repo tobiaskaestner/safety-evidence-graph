@@ -20,6 +20,10 @@ self-containedly, plus roles, custom element tags, and source traceability.
 - `docs/tests.sdoc` — custom tag `TEST` (relation `Parent ROLE verifies`). TST001.
 - `src/scheduler.c` — `@relation(REQ001, scope=file)` + `@relation(ADR001, scope=file)`
   markers (the impl is an *annotated source range*, not a node — itself a finding).
+- `tests/test_scheduler.py` + `reports/report.pytest.junit.xml` — S7 fixture: an
+  annotated test file and a two-case JUnit report (one pass, one failure). NB reports
+  are *documents* (must be under `include_doc_paths`), suffix-dispatched
+  (`.pytest.junit.xml`).
 
 ## Run
 1. `pip install strictdoc` (rehearsed on 0.25.0 — record your version in RESULTS.md).

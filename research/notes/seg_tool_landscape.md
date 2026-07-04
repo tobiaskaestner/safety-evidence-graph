@@ -62,14 +62,14 @@ Axes A2–A5 carry Paper 2 (facet bundling, novelty); A6–A7 carry Paper 1 (Pra
 
 | Axis | Doorstop | OFT | StrictDoc | BASIL | sphinx-needs |
 |---|---|---|---|---|---|
-| A1 identity | typed YAML items per doc dir; links untyped `UID: stamp`, typed only by target doc (P1); cross-doc links first-class (P2) | artifact-type-in-ID (`req~name~rev`); typed coverage links; one auto-named impl item per tag (O2) | | | |
-| A2 fingerprint | item stamp over text/ref/links/extended-reviewed attrs; committed/tracked split for extended attrs (P5/P6); source refs NOT content-bound — opt-in sha is review bookkeeping (P8) | none — no content hash anywhere; manual revision integer is the only anchor (O3a) | | | |
-| A3 change/drift | one-hop, parent-only suspicion (P3/P4); no transitive propagation, auto-clear vacuous (P7); manual link-clear + item-review | manual-trigger, two-sided, whole-chain break (dual `orphaned`+`outdated`, O3b); re-trace auto-clears; nothing stored, no affirmation concept | | | |
-| A4 verdict | hardwired checks; `item_validator` = per-item arbitrary-Python plugin, no rule language (P9) | recursive deep coverage PRESENT (O1, stateless fixpoint, coverage polarity); no rule/plugin/hook facility at all (O4); TestOutcome unrepresentable (O7) | | | |
-| A5 commitment/proof | absent — publish = HTML/CSV report, no stamps/hash/signature (P10) | absent — reports carry no integrity artifact (O8) | | | |
-| A6 exchange | none observed (publish/export are reports; import/export not deep-probed) | partial — ReqM2 XML exchange with `dstversion` pins, but textual: no content binding, no scope commitment (O8) | | | |
-| A7 ecosystem | RTEMS, Space ROS (prior-art record, not spike-verified) | itsallcode; OSS safety projects (prior-art record, not spike-verified) | | | |
-| A8 architecture | CLI over VCS working copy; stamps stored in item YAML; stateless recompute vs stamps; auto-stages edits into git index | stateless CLI tracer (Java); recomputes every run from sources; exit code = verdict | | | |
+| A1 identity | typed YAML items per doc dir; links untyped `UID: stamp`, typed only by target doc (P1); cross-doc links first-class (P2) | artifact-type-in-ID (`req~name~rev`); typed coverage links; one auto-named impl item per tag (O2) | SDoc docs; **user-defined element tags** + typed fields via [GRAMMAR] (S2); relations typed {Parent,Child,File} + declared ROLE — validated, carried, semantics-free (S1); impl = annotated source range, not a node | | |
+| A2 fingerprint | item stamp over text/ref/links/extended-reviewed attrs; committed/tracked split for extended attrs (P5/P6); source refs NOT content-bound — opt-in sha is review bookkeeping (P8) | none — no content hash anywhere; manual revision integer is the only anchor (O3a) | none stored; MID = uuid4 anchor; content-md5 exists only for the on-demand DIFF report + cache (S4); no field-role split | | |
+| A3 change/drift | one-hop, parent-only suspicion (P3/P4); no transitive propagation, auto-clear vacuous (P7); manual link-clear + item-review | manual-trigger, two-sided, whole-chain break (dual `orphaned`+`outdated`, O3b); re-trace auto-clears; nothing stored, no affirmation concept | **none** — no review state, no pin, edits silent (S3); markers silently droppable (S5); DIFF = on-demand two-tree changelog | | |
+| A4 verdict | hardwired checks; `item_validator` = per-item arbitrary-Python plugin, no rule language (P9) | recursive deep coverage PRESENT (O1, stateless fixpoint, coverage polarity); no rule/plugin/hook facility at all (O4); TestOutcome unrepresentable (O7) | no verdict at all — coverage screens are display-only (S6); **TEST_RESULT nodes with PASSED/FAILED representable** (S7, unique) but nothing consumes them; whole-graph Python plugin hook (S9) | | |
+| A5 commitment/proof | absent — publish = HTML/CSV report, no stamps/hash/signature (P10) | absent — reports carry no integrity artifact (O8) | absent — HTML/JSON/ReqIF carry no integrity artifact (S8) | | |
+| A6 exchange | none observed (publish/export are reports; import/export not deep-probed) | partial — ReqM2 XML exchange with `dstversion` pins, but textual: no content binding, no scope commitment (O8) | richest in set — ReqIF import+export, JSON, Excel; roles survive; textual, no commitment (S8) | | |
+| A7 ecosystem | RTEMS, Space ROS (prior-art record, not spike-verified) | itsallcode; OSS safety projects (prior-art record, not spike-verified) | **Zephyr verified locally**: doc/reqmgmt, shared .sgra grammar, ZEP-SRS UIDs, strictdoc>=0.9.1 | | |
+| A8 architecture | CLI over VCS working copy; stamps stored in item YAML; stateless recompute vs stamps; auto-stages edits into git index | stateless CLI tracer (Java); recomputes every run from sources; exit code = verdict | static-site generator + web server (Python); stateless rebuild each export; documents incl. junit/gcov reports; errors gate exit, nothing else does | | |
 
 ---
 
@@ -175,18 +175,43 @@ reset between probes via the kit's embedded git.
 **Findings.** —
 
 ### WP-3 — StrictDoc
-**Status:** open
+**Status:** done (2026-07-04, S1–S9 on 0.25.0; kit commit 5486f76 + format fixes).
+**Findings (full evidence in the kit's RESULTS.md).** 7 confirmed, S9 refuted on the
+letter (a whole-graph Python plugin hook exists), S4 confirmed with a surprise
+(content-md5 powers the on-demand DIFF changelog — a report, not an integrity
+mechanism). Headlines:
+- **The grammar is a real, enforced structural definition language** (S2:
+  `SingleChoice`, required fields, custom element tags, declared relation roles — all
+  parse-time-enforced; roles carried through JSON/ReqIF but semantics-free, S1). The
+  applied existence proof for SEG contribution #4's *structural* half; the delta is
+  the definition compiling to verdict + commitment machinery.
+- **Drift axis position: none** (S3: no review state, no stamps, no pin; S5: source
+  markers are content-blind locators, silently droppable).
+- **The evidence wall relocates** (S7): JUnit/Robot/gcov readers make test results
+  *representable* as TEST_RESULT nodes with PASSED/FAILED — unique in the WP set —
+  but nothing consumes pass/fail (no roll-up, exit 0 on FAILED) and binding is
+  path-only (no staleness). Representation present; semantics + freshness absent.
+- **No verdict of any kind** (S6: report-only coverage screens; weaker than OFT's
+  hardwired check) — extensibility = whole-graph arbitrary-Python plugin (S9).
+- **Exchange: richest in the set** (S8: ReqIF both directions + JSON; textual, zero
+  integrity artifacts).
+Zephyr connection verified locally: `doc/reqmgmt` (shared `.sgra` grammar, `Parent`
+relations, `ZEP-SRS-` UIDs, pinned `strictdoc>=0.9.1`).
 **Goal.** Establish what StrictDoc actually is and does; verify the Zephyr connection
 (motivating-instance adjacency for both papers).
-**Questions.**
-1. Verify the basics: storage format (SDoc?), item model, link model.
-2. Any content hashing, change tracking, or review/approval state? (Expected: little —
-   verify, don't assume.)
-3. Coverage/validity: what checks does it run; hardwired or configurable?
-4. Exchange: ReqIF? needs.json? SPDX? What does Zephyr use it for, concretely (which
-   repo/branch — find the actual usage)?
-**Method.** `pip install strictdoc`; init a sample project; exercise trace/export
-commands. Locate Zephyr's StrictDoc usage in the Zephyr org (web check).
+**Questions.** The kit's pre-registered **S1–S9**
+(`research/spikes/strictdoc/PREDICTIONS.md`) supersede the regenerated questions.
+Known already from kit rehearsal (0.25.0) + the Zephyr repo
+(`/wrk/z/ws-safety/doc/reqmgmt`, pins `strictdoc>=0.9.1`): SDoc format with a
+**user-definable [GRAMMAR]** (typed fields incl. `SingleChoice`, required-ness, custom
+element tags, declared relation roles) — Zephyr imports a shared `.sgra` grammar and
+uses `Parent` relations with `ZEP-SRS-` UIDs. Headline predictions: the grammar is a
+real *structural* definition→validator story (S2 — applied-field half of SEG
+contribution #4, minus semantics); test reports are *representable* (JUnit/Robot
+readers ship) with the evidence wall relocating to semantics+freshness (S7); drift
+axis position = none at all (S3).
+**Method.** Run the kit per its README (`strictdoc export`, probes in order, reset
+`git checkout HEAD -- docs/ src/ strictdoc.toml`).
 **Findings.** —
 
 ### WP-4 — BASIL
