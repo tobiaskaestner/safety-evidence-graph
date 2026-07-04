@@ -62,14 +62,14 @@ Axes A2–A5 carry Paper 2 (facet bundling, novelty); A6–A7 carry Paper 1 (Pra
 
 | Axis | Doorstop | OFT | StrictDoc | BASIL | sphinx-needs |
 |---|---|---|---|---|---|
-| A1 identity | typed YAML items per doc dir; links untyped `UID: stamp`, typed only by target doc (P1); cross-doc links first-class (P2) | | | | |
-| A2 fingerprint | item stamp over text/ref/links/extended-reviewed attrs; committed/tracked split for extended attrs (P5/P6); source refs NOT content-bound — opt-in sha is review bookkeeping (P8) | | | | |
-| A3 change/drift | one-hop, parent-only suspicion (P3/P4); no transitive propagation, auto-clear vacuous (P7); manual link-clear + item-review | | | | |
-| A4 verdict | hardwired checks; `item_validator` = per-item arbitrary-Python plugin, no rule language (P9) | | | | |
-| A5 commitment/proof | absent — publish = HTML/CSV report, no stamps/hash/signature (P10) | | | | |
-| A6 exchange | none observed (publish/export are reports; import/export not deep-probed) | | | | |
-| A7 ecosystem | RTEMS, Space ROS (prior-art record, not spike-verified) | | | | |
-| A8 architecture | CLI over VCS working copy; stamps stored in item YAML; stateless recompute vs stamps; auto-stages edits into git index | | | | |
+| A1 identity | typed YAML items per doc dir; links untyped `UID: stamp`, typed only by target doc (P1); cross-doc links first-class (P2) | artifact-type-in-ID (`req~name~rev`); typed coverage links; one auto-named impl item per tag (O2) | | | |
+| A2 fingerprint | item stamp over text/ref/links/extended-reviewed attrs; committed/tracked split for extended attrs (P5/P6); source refs NOT content-bound — opt-in sha is review bookkeeping (P8) | none — no content hash anywhere; manual revision integer is the only anchor (O3a) | | | |
+| A3 change/drift | one-hop, parent-only suspicion (P3/P4); no transitive propagation, auto-clear vacuous (P7); manual link-clear + item-review | manual-trigger, two-sided, whole-chain break (dual `orphaned`+`outdated`, O3b); re-trace auto-clears; nothing stored, no affirmation concept | | | |
+| A4 verdict | hardwired checks; `item_validator` = per-item arbitrary-Python plugin, no rule language (P9) | recursive deep coverage PRESENT (O1, stateless fixpoint, coverage polarity); no rule/plugin/hook facility at all (O4); TestOutcome unrepresentable (O7) | | | |
+| A5 commitment/proof | absent — publish = HTML/CSV report, no stamps/hash/signature (P10) | absent — reports carry no integrity artifact (O8) | | | |
+| A6 exchange | none observed (publish/export are reports; import/export not deep-probed) | partial — ReqM2 XML exchange with `dstversion` pins, but textual: no content binding, no scope commitment (O8) | | | |
+| A7 ecosystem | RTEMS, Space ROS (prior-art record, not spike-verified) | itsallcode; OSS safety projects (prior-art record, not spike-verified) | | | |
+| A8 architecture | CLI over VCS working copy; stamps stored in item YAML; stateless recompute vs stamps; auto-stages edits into git index | stateless CLI tracer (Java); recomputes every run from sources; exit code = verdict | | | |
 
 ---
 
@@ -135,10 +135,26 @@ letter. Headlines:
 Open remainder: the SEG-ingests-a-Doorstop-tree mapping sketch (old Q4).
 
 ### WP-2 — OpenFastTrace
-**Status:** open — spike kit adopted (2026-07-04); **kit never executed anywhere**
-(authored against the OFT 4.2.0 user guide; the jar host was unreachable in the
-authoring sandbox), so O0 (import sanity) is genuinely open and format fixes are
-themselves findings.
+**Status:** done (2026-07-04, O0–O8 on OFT 4.5.0 / Java 25; zero format fixes —
+the docs-authored kit parsed first try). **Settles the standing paper-seed §8
+suspicion-lifecycle check.** Full evidence in the kit's RESULTS.md. Headlines:
+- **The recursive verdict IS present** (O1): deep coverage is a stateless fixpoint;
+  a missing tag propagates `not ok` whole-chain, including upward. SEG's novelty is
+  therefore NOT the fixpoint — it is content-bound two-sided affirmation +
+  user-definable stratified semantics + the evidence subgraph (O7).
+- **Drift = honor-system integer, but two-sided when triggered** (O3): content edits
+  with the revision kept are silent (no content hash anywhere); a bump gives dual
+  `orphaned`/`outdated` statuses on every stale coverer, whole-chain break, and
+  re-trace clears everything with no stored state — **no affirmation concept exists**.
+  The three-setting drift axis (Doorstop one-sided hash / OFT two-sided counter /
+  SEG two-sided hash) is now evidence-backed.
+- **No verdict programmability at all** (O4): the CLI is `trace`+`convert`; no rule,
+  plugin, or hook facility — stricter than Doorstop's Python escape hatch.
+- **TestOutcome is unrepresentable** (O5/O6/O7): no result field exists in CLI,
+  format, or aspec schema; Status is stored but inert; the only workaround exiles
+  pass/fail into CI glue. The design/evidence split is absent in both tools.
+- **ReqM2 is a real exchange format, but textual** (O8): `dstversion` pins travel;
+  no content binding, no scope commitment, no hash/signature anywhere.
 **Goal.** The standing paper-seed §8 check: pin down transitive-break +
 re-trace-clear semantics, so the suspicion-lifecycle claim is worded exactly right.
 **Questions.** The kit's pre-registered **O0–O8**
