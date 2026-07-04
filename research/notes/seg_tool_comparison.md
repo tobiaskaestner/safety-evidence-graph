@@ -91,6 +91,22 @@ The trajectory adopt → hit the P1/P9 walls → build-your-own is the strongest
 signal in the set: the walls the spikes measured are the ones real safety projects
 leave the tool over.
 
+**What they built (WP-6 bounded source-read, rtems-central @ 8ace630 — evidence in
+`seg_tool_landscape.md` WP-6).** The churn outcome fixes the walls — links carry
+roles; the type system is *self-describing* (`type: spec` items interpreted by a
+generic verifier — a structurally-realized meta-model dogfood) — and, most
+strikingly, **independently reinvents SEG's commitment mechanics as build
+machinery**: per-item SHA-256 content digests, links that store the linked item's
+digest and fire on mismatch, and a global SHA-512 over the sorted digests of the
+whole item set (the "overall item cache hash" — structurally a flat-sealed root).
+All of it drives *build invalidation* for the qualification data package, not
+assurance: there is no human affirmation, no suspect state, no programmable verdict,
+and no sealed artifact a third party can verify. The sharpest way to say it: when
+the field's best self-help reinvents hash-pinned links and a flat recomputable root,
+it stops at incremental builds — the assurance semantics SEG attaches to exactly
+these mechanics (affirmation, derived suspicion, user-authored verdicts, the sealed
+proof) remain the delta.
+
 ## 4. Use in the papers
 
 - **Paper 1 (Prague).** Lead the comparison with §2's cluster observation (the
@@ -114,6 +130,9 @@ leave the tool over.
 - Eclipse S-CORE docs page (eclipse.dev/score/docs.html).
 - Not re-verified this session: the Exasol-testcontainers OFT statement came from a
   search snippet — open the repo doc before citing.
+- rtems-central / rtemsspec: cite repo + commit 8ace630 (shallow clone read
+  2026-07-04); the six Doorstop limitations and the spec-items model are also in the
+  RTEMS Software Engineering manual (eng/req/tooling, eng/req/items).
 
 ## 6. Sources (as retrieved 2026-07-04)
 

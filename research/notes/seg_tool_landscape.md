@@ -256,6 +256,48 @@ pre-registered. Headlines:
 
 ---
 
+### WP-6 — RTEMS specification items / rtemsspec (bounded read; no kit, no matrix column)
+**Status:** open (registered 2026-07-04)
+**Goal.** Characterize the *churn outcome*: what RTEMS built after rejecting Doorstop
+(comparison doc §3) — extends the case study from "why they left" to "what they built".
+Not a candidate tool (RTEMS-internal toolchain), so no spike kit and no matrix column;
+findings land in `seg_tool_comparison.md` §3.
+**Questions.**
+1. Link model: typed links with roles/attributes (`role`, `enabled-by`) — the P1 wall?
+2. Type-based validation rules: declarative or Python — the P9 wall; new point on the
+   extensibility spectrum?
+3. Any content-hash / stamp / drift mechanism retained from Doorstop — or did drift
+   detection get dropped with the tool?
+4. Spec→code/tests/doc generation — the "definition compiles to artifacts" story
+   (contribution-#4 adjacency).
+**Method.** Docs + source read: RTEMS Software Engineering manual (eng/req/items.html,
+eng/req/tooling.html) + `rtemsspec` in rtems-central (shallow clone, read-only).
+Findings marked *not exercised* (no build).
+**Findings (2026-07-04, rtems-central @ 8ace630; source-read, not exercised).**
+1. **Q1 — the P1 wall is fixed:** every link is `{role, uid}` (`interface-function`,
+   `constraint`, `interface-placement`, …), plus refinement links carrying
+   `spec-key`/`spec-value`; items carry `enabled-by` expressions.
+2. **Q2 — a self-describing declarative type system:** `type: spec` items define item
+   types (typed attributes, `mandatory-attributes`, a `spec-refinement` hierarchy
+   keyed on attribute values); `specverify.py` is a *generic interpreter* of those
+   items. The meta-model is dogfooded in its own item format — the applied
+   realization of DEC-007's "express the built-in type as the first definition",
+   structural half only (no verdict rules; coverage/completeness checks live in
+   hardcoded tooling scripts).
+3. **Q3 — content hashing retained and upgraded, but repurposed:** per-item SHA-256
+   (`items.py data_digest`, canonical over the item data); **links store the digest
+   of the linked item** and `has_changed` fires on mismatch (packagebuild); and an
+   **"overall item cache hash"** — SHA-512 over the *sorted digests of all items* —
+   a global, flat, recomputable commitment over the spec set (rtems.py). All of it
+   serves *build invalidation* in the qualification-data-package pipeline. No
+   review/affirmation, no suspect state, no seal (grep: none).
+4. **Q4 — definition compiles to artifacts:** `spec2modules.py` /
+   `rtems_spec_to_x.py` / `validation.py` generate C interfaces, validation test
+   code, and docs from items; `runtests`/`testoutputparser` execute and parse test
+   outputs inside the pipeline (their relation to any requirement-level verdict was
+   not examined in this bounded read). Compile targets are code/tests/docs — not
+   validators or verdicts.
+
 ## 5. Output & downstream use
 
 - Each WP fills its Findings + its matrix column; claims cite the WP section.
