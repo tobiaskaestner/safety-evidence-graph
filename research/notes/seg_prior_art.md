@@ -175,6 +175,14 @@ audience (IEC 61508 / safety certification) lives here.
 York, 1998); GSN Community Standard (Assurance Case Working Group, v3 2021/2023);
 Bishop & Bloomfield, "A Methodology for Safety Case Development" (CAE, 1998);
 OMG, *Structured Assurance Case Metamodel (SACM)* v2.x (2021).
+
+**Lineage reading (2026-07-06).** This layer is one of *two* historical lineages
+that converge on SEG's problem — see "The two lineages" section below, which
+elaborates the history, places Eclipse TSF in this layer (a scored,
+hash-disciplined GSN), and reconciles this layer's "SEG is structurally a SACM
+assurance case" with the duality note's "SEG does not reify the argument": SEG
+*generates* the case (a derived projection), it does not store one
+(`seg_tsf_duality.md` §6).
  
 ## Seam — Composition / assume-guarantee (DEC-010)
  
@@ -243,10 +251,99 @@ object; (4) a *graph-type definition that compiles to engines* vs their *convent
 Using Version Control" (2014); OpenFastTrace (itsallcode, open-source software; cite
 repository + version); and the traceability lineage — Gotel & Finkelstein, "An Analysis
 of the Requirements Traceability Problem" (RE 1994); CoEST / Cleland-Huang et al. on
-traceability.
+traceability. The lineage's history and its convergence with the assurance-case
+lineage are elaborated in "The two lineages" below.
  
 ---
- 
+
+## The two lineages — the field's history read through SEG/TSF (2026-07-06)
+
+**What this is.** The historical synthesis behind `seg_tsf_duality.md` §4: SEG's
+problem sits at the confluence of two research lineages with complementary
+primitives and complementary pathologies. Companion: the duality note (why the
+frameworks at the two poles are near-duals); this section owns the *history*.
+
+### Lineage A — requirements traceability (the artifact lineage → SEG's pole)
+
+Began as defense-procurement bookkeeping, not theory: US military software
+standards of the 1970s–80s (DOD-STD-2167A and kin) required hand-maintained
+traceability matrices as deliverables. **Gotel & Finkelstein 1994** is the founding
+*analytic* paper — traceability defined as "the ability to describe and follow the
+life of a requirement, in both a forwards and backwards direction": an ontology of
+**artifacts and navigation**, in which a trace link takes you somewhere but asserts
+nothing checkable. Their diagnosis — links decay, and nobody knows who vouched for
+them — named the disease the tool lineage still has. Waypoints after: **Ramesh &
+Jarke 2001** (reference meta-models, typed-link taxonomies — the ancestor of typed
+edges and of sphinx-needs' link vocabulary); **CoEST** and the **Grand Challenges of
+Traceability** (Cleland-Huang/Gotel/Zisman et al., 2012) — the field's own admission
+that **trusted** and **ubiquitous** traceability are unsolved; and a fifteen-year
+sub-community on automated trace *recovery* (IR/ML link guessing) — attacking the
+*cost* of decay, not its semantics.
+
+Under SEG's perspective: the five spiked tools, RTEMS, and dotstop's mechanical
+layer are direct industrial descendants; the drift axis measured in
+`seg_tool_comparison.md` §1 *is* Gotel & Finkelstein's decay problem, forty years
+on, unsolved in four of five tools. SEG reads as this lineage taking its own grand
+challenges literally: "trusted" → affirmation + commitment; decay → content-hash
+drift; and — the step the lineage never took — links acquire truth conditions
+(typed edges as claim schemas; verdict rules as their semantics).
+
+### Lineage B — argumentation / assurance cases (the argument lineage → TSF's pole)
+
+Philosophical root: **Toulmin 1958**, against reducing practical argument to
+deductive syllogism — six roles (Claim, Data/Grounds, Warrant, Backing, Qualifier,
+Rebuttal), with warrants field-dependent and defeasible: a human stands behind each
+inference step. Operationalized under UK goal-based regulation (nuclear; offshore
+oil after Piper Alpha 1988 / the Cullen report): the operator must *argue* safety
+with evidence — the "safety case." Notations: **GSN** (Kelly & McDermid, York;
+Kelly 1998), **CAE** (Adelard), unified in **OMG SACM**; **modular GSN** (away
+goals, argument contracts between case modules) is the composition ancestor —
+TSF's needs graph has a named GSN ancestor.
+
+The lineage documented its own pathologies: **(a)** nothing checks the argument —
+warrants are prose (TSF verbatim: "we cannot lint, test or otherwise automatically
+verify the underlying logic"); **(b)** confirmation bias — Leveson's critique; the
+**Haddon-Cave Nimrod Review (2009)** made it official after a fatal accident
+(safety cases as compliance paperwork); **(c)** stale evidence — the case is a
+document, the system moves, GSN/CAE/SACM don't notice; **(d)** quantified
+confidence — a contested subfield (Bloomfield/Littlewood; SEI eliminative
+induction — Goodenough/Weinstock/Klein; Denney/Pai/Habli confidence maps) with no
+consensus on whether numbers propagate through argument structures. TSF's
+calibrated-SME mean-propagation is a new entry in *that* debate; the semiring
+critique (`seg_tsf_duality.md` §6.3) has two decades of precedent there.
+
+### The crossing
+
+Toulmin's six roles, realized at both poles:
+
+| Toulmin role | TSF realizes it as | SEG realizes it as |
+|---|---|---|
+| Claim | Statement node | derived atom (never materialized) |
+| Data | Premise + hashed Reference | EDB fact = content-anchored node |
+| Warrant | Link — human-reviewed prose | Datalog rule — mechanical, committed |
+| Backing | SME calibration/review | affirmation + ruleset under commitment |
+| Qualifier | score ∈ [0,1] | three-state verdict |
+| Rebuttal | suspect-on-change | suspect state / drift |
+
+Two readings. The **rebuttal row is the convergence**: both poles mechanize
+Toulmin's rebuttal as content drift — the hashing/suspect/review layer where
+dotstop and SEG coincide, the artifact lineage's one exportable technology. The
+**warrant row is the divergence**: TSF keeps the warrant human (faithful to
+Toulmin; inheriting pathology (a)); SEG mechanizes it as a rule — which is what
+lets the qualifier be a *verdict* instead of a subjective number, at the price of
+covering only mechanizable warrants. Each pole's pathologies are repaired by the
+other lineage's technology; each framework is one lineage's answer to the other's
+open problems.
+
+**Honesty flag (standing caution — check before any "first" claim).** "Generate
+the argument mechanically" has kin *inside* lineage B: Rushby's formalized safety
+cases / Evidential Tool Bus, and Denney & Pai's **AdvoCATE** (auto-generates GSN
+fragments from formal-verification results). Closest prior art to the
+"TSF-report-as-projection" idea (`seg_tool_landscape.md` WP-7 Q8) — read before
+claiming the projection as novel.
+
+---
+
 ## Consolidated bibliography (BibTeX-ready stubs — verify keys before paper)
  
 - **Toulmin1958** — S. Toulmin, *The Uses of Argument*, Cambridge Univ. Press, 1958.
@@ -308,10 +405,48 @@ traceability.
   "SHACL: A Description Logic in Disguise," LPNMR 2022, LNCS 13416.
 - **GSN2023** — Assurance Case Working Group, "Goal Structuring Notation Community
   Standard," v3, 2023.
+
+Added 2026-07-06 (two-lineages section + duality note; ALL unverified stubs):
+
+- **RameshJarke2001** — B. Ramesh, M. Jarke, "Toward Reference Models for
+  Requirements Traceability," IEEE TSE 27(1), 2001. (typed-link taxonomies)
+- **ClelandHuangGotelZisman2012** — J. Cleland-Huang, O. Gotel, A. Zisman (eds.),
+  *Software and Systems Traceability*, Springer, 2012. (CoEST)
+- **GotelEtAl2012GrandChallenges** — O. Gotel et al., "The Grand Challenge of
+  Traceability (v1.0)," in *Software and Systems Traceability*, Springer, 2012.
+  (trusted/ubiquitous traceability — verify exact chapter authors)
+- **HaddonCave2009** — C. Haddon-Cave, *The Nimrod Review*, HMSO, 2009.
+  (safety-cases-as-paperwork critique)
+- **Leveson2011SafetyCases** — N. Leveson, "The Use of Safety Cases in
+  Certification and Regulation," MIT ESD working paper, 2011. (verify venue/year)
+- **GoodenoughWeinstockKlein2012** — J. Goodenough, C. Weinstock, A. Klein,
+  "Toward a Theory of Assurance Case Confidence," SEI CMU/SEI-2012-TR-002, 2012.
+  (eliminative induction; verify report number)
+- **BloomfieldLittlewoodConfidence** — R. Bloomfield, B. Littlewood — confidence /
+  multi-legged dependability arguments (exact paper TBD: DSN 2003 "Multi-legged
+  Arguments" or the later confidence-in-claims line; pick during hardening).
+- **DenneyPaiAdvoCATE** — E. Denney, G. Pai (et al.), "AdvoCATE: An Assurance Case
+  Automation Toolset" (SAFECOMP 2012 workshops; or the later ASE-journal tool
+  paper — pick during hardening). (argument auto-generation kin — WP-7 Q8)
+- **Rushby2010Formalism** — J. Rushby, "Formalism in Safety Cases," SSS 2010;
+  companion: the Evidential Tool Bus line. (argument mechanization kin)
+- **Kelly2001ModularGSN** — T. Kelly, compositional/modular safety case
+  construction (exact cite TBD; away goals, argument contracts). (composition
+  ancestor of TSF's needs graph and modular exchange)
+- **GreenKarvounarakisTannen2007** — T. J. Green, G. Karvounarakis, V. Tannen,
+  "Provenance Semirings," PODS 2007. (the duality note §6 universal object;
+  survey the negation/monus follow-ups before citing for stratified rulesets)
+- **EclipseTSF** — Eclipse Trustable Software Framework, pages.eclipse.dev/
+  eclipse/tsf/tsf + gitlab.eclipse.org/eclipse/tsf/tsf (retrieved 2026-07-06;
+  pin trudag version at WP-7 spike time).
+
 ### Gaps to fill before submission
-- Requirements traceability lineage (Gotel & Finkelstein 1994; CoEST) — SEG's
-  refines/verifies/implements is also the traceability problem; add if the paper
-  leans on tracing.
+- Requirements traceability lineage — **elaborated 2026-07-06** ("The two
+  lineages" section); remaining work is stub verification (Ramesh & Jarke,
+  grand-challenges chapter authors).
+- Argument-generation kin (Rushby ETB, Denney & Pai AdvoCATE) — **read before
+  claiming the TSF-report projection (WP-7 Q8) as novel**; currently
+  title-level knowledge only.
 - IEC 61508 itself + any existing tool-qualification / evidence-management prior art.
 - ShEx primary citation (exact author/year/venue) — currently a stub.
 - Verkle trees (if `flat`/`deep` discussion wants the modern commitment frontier).

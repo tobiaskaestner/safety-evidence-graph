@@ -114,6 +114,14 @@ what each pole reifies above it.** It also retro-explains RTEMS (WP-6): a pure
 artifact-lineage project reinvented the same mechanics and, having no argument pole
 at all, stopped there.
 
+**Elaborated (2026-07-06):** the full history of both lineages — waypoints,
+each lineage's self-documented pathologies, the Toulmin-role table realized at both
+poles (rebuttal row = the mechanics convergence; warrant row = the divergence), and
+the honesty flag on argument-generation kin (Rushby ETB, Denney & Pai AdvoCATE, the
+closest prior art to Q8's TSF-report-as-projection) — now lives in
+`seg_prior_art.md`, "The two lineages" section. That section owns the history; this
+note owns the structural argument.
+
 ## 5. Downstream use
 
 If this framing survives the spike (WP-7 Q1–Q7 test the mechanical overlap; Q8 tests
