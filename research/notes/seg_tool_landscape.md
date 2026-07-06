@@ -301,7 +301,8 @@ Findings marked *not exercised* (no build).
 
 ### WP-7 — Eclipse TSF / trudag / dotstop (framework-level comparison + spike)
 **Status:** registered 2026-07-06; docs-read done (preliminary findings below,
-*not exercised*); spike agreed — kit to be pre-registered before execution.
+*not exercised*); kit pre-registered + baseline rehearsed on trudag 0.4.0
+(`research/spikes/tsf/`, commit 83b4927) — execution pending.
 **Goal.** Position SEG against the one *framework*-level entrant: TSF is not another
 point on the tool spectra but the other pole of the same design space — an argument
 graph with artifacts at the fringe, vs SEG's artifact graph with the argument at the
