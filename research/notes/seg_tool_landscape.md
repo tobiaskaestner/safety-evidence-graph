@@ -32,6 +32,7 @@ own repo/docs/behaviour before any claim hardens; the first question of every WP
 | StrictDoc | New candidate (2026-07-04) | Used in the Zephyr project (user-provided — verify) |
 | BASIL | New candidate (2026-07-04) | ELISA (elisa-tech/basil) — the community driving the SPDX FuSa profile |
 | sphinx-needs | Same niche; used by SEG itself (reqs worktree, Phase B) | Sphinx docs-as-code world |
+| TSF (trudag/dotstop) | New candidate (2026-07-06) — the only *framework*-level entrant; closest structural overlap found (two-sided hashed links, suspect-until-review, scored evidence) | Eclipse TSF project (Codethink lineage); same Eclipse/LF safety cluster as the adoption table |
 
 ## 2. Comparison axes
 
@@ -257,7 +258,7 @@ pre-registered. Headlines:
 ---
 
 ### WP-6 — RTEMS specification items / rtemsspec (bounded read; no kit, no matrix column)
-**Status:** open (registered 2026-07-04)
+**Status:** done (2026-07-04, source-read @ 8ace630; commit 2ff42a4)
 **Goal.** Characterize the *churn outcome*: what RTEMS built after rejecting Doorstop
 (comparison doc §3) — extends the case study from "why they left" to "what they built".
 Not a candidate tool (RTEMS-internal toolchain), so no spike kit and no matrix column;
@@ -298,6 +299,79 @@ Findings marked *not exercised* (no build).
    not examined in this bounded read). Compile targets are code/tests/docs — not
    validators or verdicts.
 
+### WP-7 — Eclipse TSF / trudag / dotstop (framework-level comparison + spike)
+**Status:** registered 2026-07-06; docs-read done (preliminary findings below,
+*not exercised*); spike agreed — kit to be pre-registered before execution.
+**Goal.** Position SEG against the one *framework*-level entrant: TSF is not another
+point on the tool spectra but the other pole of the same design space — an argument
+graph with artifacts at the fringe, vs SEG's artifact graph with the argument at the
+fringe. Two deliverables beyond the usual matrix column: (a) settle the **drift-axis
+endpoint caveat** — `seg_tool_comparison.md` §1 currently ends the drift axis at
+"two-sided content hash (SEG `edgeHash`)" as SEG-only, and dotstop's hashed links sit
+at or near that point; (b) update the design summary's **§15 TSF hypothesis**
+("integrity is a precondition checker for trust scoring") — written before TSF grew
+its own hashing layer, superseded by the instance-of-meta-model reading below.
+**Preliminary (docs-read, pages.eclipse.dev retrieved 2026-07-06 — verify all in spike).**
+- Model: **Statements** (truth-apt) linked by logical support into a DAG; positional
+  taxonomy (Expectation = root, Premise = leaf, Assertion = between); artifacts attach
+  only at leaves via hashed References (file / gitlab / source-span / artifact-subgraph)
+  or algorithmic Validations; fixed normative content on top (tenets TT-*, TA-*).
+- Overlap cluster (unmatched by any WP-1…5 tool): dotstop links carry
+  `sha = hash of concatenated file contents` (**two-sided content hash**); "any change
+  to a Statement makes it Suspect, until it is reviewed by a human" (**suspect +
+  affirmation**); "ultimately humans, not machines, have to decide whether the Links
+  are valid" (**the FSM doctrine, stated independently**); leaf scores are *consumed*
+  by a roll-up (**crosses the evidence wall**); remote graphs split into Resolved
+  (frozen, pre-computed) + **Needs graph ("Assumptions of Use")** under namespaced
+  import (**the `(G, A, I)` skeleton**).
+- Divergence cluster: aggregation is probabilistic-quantitative (calibrated SME
+  scores, mean/weighted-sum propagation) vs SEG's logical-qualitative verdicts — and
+  TSF's *declared* link semantics (implication) does not match its *score* semantics
+  (mean); **pre-computed scores travel** in the resolved graph (record) vs SEG's
+  verdict-never-travels (recompute) — the sharpest single contrast; TSF ships content
+  (tenet/TA catalogue) where SEG ships an empty meta-model; no global seal /
+  third-party verification story found (absence unconfirmed).
+- Lineage: dotstop is Doorstop-descended ("fully deprecated doorstop as a viable
+  backend") — a **second Doorstop-churn datapoint** after RTEMS (§3 of the comparison
+  doc), and this one churned toward content-hashed links.
+- The duality/lineage synthesis behind this WP is captured in
+  **`seg_tsf_duality.md`** (argument pole vs artifact pole; record-vs-recompute and
+  human-placement as forced consequences; the two-lineages convergence) — hypothesis
+  status, cite only after the spike.
+- Layering hypothesis to test: **TSF is a candidate instance of SEG's meta-model**
+  (DEC-007) — statement types as node types, support as one hashed+affirmed edge type,
+  `acyclic` on, scoring as the (hardwired) verdict-ruleset slot; the score recurrence
+  looks expressible in clingo via scaled-integer `#sum` aggregates. Strain point:
+  real-valued calibrated confidence — a Paper 2 open question (new facet or not?).
+**Questions (probe seeds for the kit's PREDICTIONS.md).**
+1. Drift trigger & sidedness: edit each endpoint of a link in turn — does the link go
+   suspect from both sides, on *content* change alone (no manual bump)? Places TSF on
+   the drift axis; settles the §1 endpoint caveat.
+2. Suspicion closure: does suspicion propagate *transitively* beyond the adjacent
+   link, and does re-review of the changed item auto-clear derived suspicion
+   (DEC-005 analog) — or is it per-link and manual?
+3. Affirmation storage: what does "reviewed/cleared" persist — a content-bound stamp
+   (hash at review time)? Two-sided? Where does it live (item file vs `.dot`)?
+4. Source binding: do file / source-span references content-bind (changed artifact
+   flags the premise)? Span granularity vs DEC-003 raw-byte-span hashing.
+5. Scoring semantics: reproduce the mean/graphalyzer propagation by hand; is it
+   deterministic; **does suspect state gate the score** (does suspect evidence still
+   count?) — the §15-hypothesis question in operational form.
+6. Commitment: any single recomputable root over the graph or the published artifact;
+   any signature — or immutability by convention only.
+7. Composition round-trip: publish a remote graph, import under a namespace — do
+   pre-computed scores travel and get trusted (record-vs-recompute, GAPS G5 analog)?
+   Does drift in referenced remote items really "prompt a review"?
+8. Meta-model hosting (analysis probe, may outlive the spike): express TSF's model as
+   a SEG definition and its score recurrence as a clingo ruleset — the "SEG hosts
+   TSF" bridge, the stronger analog of paper-seed §8's reproduce-OFT-coverage idea.
+**Method.** As WP-3/WP-5: pre-registered kit at `research/spikes/tsf/` (PREDICTIONS.md
+frozen before execution, RESULTS.md during), fixture mirroring the SEG worked fragment
+recast as statements; install trudag/dotstop (PyPI or gitlab.eclipse.org/eclipse/tsf),
+pin the version in RESULTS. Matrix column added on execution (unlike WP-6, this *is*
+exercisable tooling). Q8 lands in notes + paper seed, not the matrix.
+**Findings.** — (spike pending; docs-read preliminaries above are not findings)
+
 ## 5. Output & downstream use
 
 - Each WP fills its Findings + its matrix column; claims cite the WP section.
@@ -308,4 +382,10 @@ Findings marked *not exercised* (no build).
 - `seg_paper_seed.md` §2/§4/§8 were consolidated against WP-1/WP-2 (commit 9f6a9d1);
   a second consolidation pass after WP-4 (BASIL) closes the set.
 - New citations to add on completion: StrictDoc, BASIL, sphinx-needs (repo+version,
-  as with OFT) + the adoption sources in `seg_tool_comparison.md` §5.
+  as with OFT) + the adoption sources in `seg_tool_comparison.md` §5; TSF
+  (pages.eclipse.dev/eclipse/tsf/tsf + gitlab.eclipse.org/eclipse/tsf/tsf,
+  trudag version-pinned at spike time).
+- WP-7 outcomes propagate to **three** standing edits: the drift-axis endpoint caveat
+  in `seg_tool_comparison.md` §1, the dotstop second-churn-datapoint extension to its
+  §3, and the §15 TSF-hypothesis update in
+  `development/design/knowledge_graph_design_summary.md` (owner: FSM — cross-worktree).
