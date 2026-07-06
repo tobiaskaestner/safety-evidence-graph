@@ -128,3 +128,109 @@ other's semantics.
 Not yet folded anywhere: pending the WP-7 spike, this document is the only home of
 the duality/lineage claim; do not cite it from the papers until the probe results are
 in.
+
+---
+
+## 6. Addendum (same session) — formalization attempt: not a duality, a universal object
+
+Prompted by the question whether the "duality" admits a categorical formulation
+(co-/contravariant functor). Outcome: **the duality label should stay in scare
+quotes** — the formal home is provenance semirings, not category theory — and the
+formalization *strengthens* the practical story. Status: analysis, carries the same
+pre-spike caveat as the rest of this document.
+
+### 6.1 Why it is not a contravariant duality
+
+Candidate categories: **Seg** with objects `(D, P)` — finite structure (artifact
+graph) + stratified program (verdict ruleset) — and **Arg** with objects finite
+labeled statement-DAGs (TSF graphs). There is a natural **covariant** functor
+`G : Seg → Arg`: unfold `(D, P)` into its derivation DAG (derived atoms ↦ statements,
+rule applications ↦ links, EDB facts ↦ premises, goals ↦ expectations); instance
+homomorphisms transport derivations (naturality of the immediate-consequence
+operator). The §3 embedding asymmetry becomes precise here: `G`'s essential image is
+only the *uniform* DAGs — unfoldings of finitely many rule schemas — while a
+hand-authored TSF graph is an arbitrary finite argument. Recovering a generator from
+an arbitrary argument is theory induction, which is not functorial; so `G` has no
+adjoint on all of **Arg**. Embedding-like functor with a characterizable image: yes.
+Duality: no.
+
+Genuine contravariance exists but is *internal to SEG*: the rules-vs-instances
+Galois connection (strengthen the ruleset ⇒ fewer passing graphs; enlarge the graph
+class ⇒ fewer common valid rules) — the classical Th/Mod polarity. SEG's definition
+language is a theory presentation; artifact graphs are its models. Paper-2 formal
+positioning material, but not the TSF↔SEG relation.
+
+### 6.2 The provenance triangle (the correct picture)
+
+In the provenance-semiring framework (Green, Karvounarakis & Tannen, PODS 2007 —
+**positive** Datalog; see §6.5), the provenance of a derived atom is a polynomial in
+`ℕ[X]`, one indeterminate per ground fact, and:
+
+1. **the polynomial's expression DAG is exactly a TSF-shaped argument graph**
+   (derived atoms = statements, monomials = alternative supporting arguments,
+   factors = premises);
+2. **the polynomial is universal**: every concrete semantics is a semiring
+   homomorphism out of it. Boolean evaluation = derivability (SEG's verdict shape);
+   evaluation in `(ℝ, +, ×)` with edge weights = weighted path sums — and TSF's
+   mean-propagation is precisely this with edge weight `1/outdegree` (graphalyzer's
+   `s(v) = c(v)(r(v) + Σ w·s(u))` unfolds on a DAG to a weighted sum over
+   root-to-leaf paths).
+
+So: not two poles with a functor between them, but a **triangle with a universal
+object at the apex** — `(D, P)` *generates* the provenance polynomial; verdict and
+score are two *evaluations* of it in different semirings. SEG keeps the generator
+and evaluates without materializing the polynomial; TSF hand-authors (an
+approximation of) the polynomial's expression DAG and evaluates it numerically,
+without ever possessing a generator. §1–§2's duality talk was the two projections of
+this triangle.
+
+### 6.3 Three §2 observations upgraded to lemmas-or-better
+
+- **Record-vs-recompute, derived not asserted:** a polynomial is data and can ship —
+  but shipping forfeits the warrant that it *is* the polynomial of `(D, P)`; only
+  regeneration from the committed generator restores it. DEC-017's
+  "verdict-never-travels" falls out of the algebra.
+- **The TSF semantics mismatch, made precise:** TSF declares links as implication
+  (Boolean semiring) but scores in the real weighted semiring; the only homomorphism
+  connecting the two is the **support map** (score > 0 ⟺ Boolean-derivable, positive
+  weights). The score *refines* derivability; its magnitude carries no
+  implication-compatible meaning — "a change of semiring with no mediating
+  homomorphism beyond support."
+- **The verdict is the shadow of the score:** the same support homomorphism read
+  constructively — any TSF-style score assignment collapses to a SEG-style verdict,
+  never conversely. §1's layering, exact.
+
+### 6.4 The dividend (what is cheap on which side)
+
+- **Cheap on the unfolded/TSF side:** sensitivity and prioritization ("which leaf
+  most improves the root" = polynomial derivative on the expression DAG);
+  explanation (why-provenance). This is the one thing TSF's methodology is genuinely
+  good at ("identify where effort should focus next").
+- **Cheap on the generator/SEG side:** universality (one ruleset, every instance),
+  re-verification (recompute the LFP), drift as a fact-level event, compression
+  (program ≪ its unfolding).
+- **Engineering consequence:** the argument view is a **derived, write-only
+  projection** — exactly the shape the projection-core ADR licenses. SEG can *emit*
+  a TSF-shaped argument graph (derivation DAG + chosen semiring evaluation) as
+  another projection target beside SHACL and SPDX. This upgrades WP-7 Q8 from "can
+  SEG host TSF's model" to "**can SEG generate a TSF trustable report from a verdict
+  run**" — integration-by-projection, the ratified role-2 identity
+  (`seg_paper_seed.md` §1a).
+
+### 6.5 Obstructions (record as Paper-2 open questions, do not gloss)
+
+1. The `ℕ[X]` universality theorem is for **positive** Datalog; SEG's rulesets are
+   **stratified with negation** — provenance under negation needs extended
+   structures (semirings with monus, dual-indeterminate polynomials), an unfinished
+   corner of the literature.
+2. SEG's three-state rollup (total/conditional/unsatisfied) needs a value structure
+   beyond Boolean — plausibly a three-element semiring-like structure; unproven.
+
+If either fails, the triangle survives informally but loses theorem status. The
+methodological residue of the physics analogies survives in exactly one form:
+**generate and verify on the program side; unfold and explain on the argument
+side.**
+
+Citation stub to harden before use: Green, Karvounarakis, Tannen, "Provenance
+Semirings", PODS 2007 (verify pages/DOI; survey follow-ups for the negation/monus
+line before citing them).

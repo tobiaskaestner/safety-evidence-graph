@@ -365,6 +365,9 @@ its own hashing layer, superseded by the instance-of-meta-model reading below.
 8. Meta-model hosting (analysis probe, may outlive the spike): express TSF's model as
    a SEG definition and its score recurrence as a clingo ruleset — the "SEG hosts
    TSF" bridge, the stronger analog of paper-seed §8's reproduce-OFT-coverage idea.
+   **Sharpened (2026-07-06, `seg_tsf_duality.md` §6):** the stronger form is
+   generation, not hosting — can SEG *emit* a TSF-shaped argument graph (derivation
+   DAG + semiring evaluation) as a write-only projection from a verdict run?
 **Method.** As WP-3/WP-5: pre-registered kit at `research/spikes/tsf/` (PREDICTIONS.md
 frozen before execution, RESULTS.md during), fixture mirroring the SEG worked fragment
 recast as statements; install trudag/dotstop (PyPI or gitlab.eclipse.org/eclipse/tsf),
