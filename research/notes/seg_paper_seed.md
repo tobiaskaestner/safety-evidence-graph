@@ -10,6 +10,9 @@ log had authorized (DEC-012 c4, DEC-013 c3, DEC-014 c2 — flat-sealed root, no
 "two-mode/deep"), folded in the composability/exchange results (DEC-015…028 + the SPDX
 round-trip prototype), and restructured §9 to the two-paper plan (Prague first; ZiSE
 dropped).
+**Revised (2026-07-06):** ratified reframing of SEG's identity — one identity in
+three roles (comparison instrument / integrating engine / composition payoff), with
+the pull-vs-novelty split made explicit. §1 extended, §9 Paper-1 lead updated.
 
 ---
 
@@ -17,6 +20,44 @@ dropped).
 
 SEG is a **cryptographically-committed, drift-tracking assurance case with a
 programmable verdict layer and assume-guarantee composition**.
+
+### 1a. Position — one identity, three roles (ratified 2026-07-06, post tool-landscape)
+
+1. **A reasoning framework for evidence in assurance cases — demonstrated, not
+   aspirational.** The tool-landscape axes (A1–A8) were derived from SEG's facet
+   vocabulary and *discriminated* five tools that all self-describe as
+   "traceability" (`seg_tool_comparison.md` §1); RTEMS' six documented limitations
+   and their rebuild map onto the same facets (WP-6). Claim the conceptual model as
+   the instrument that produced the spectra — never as an abstract "framework to
+   discuss evidence" (unfalsifiable puffery; cf. the §9 Paper-2 vocabulary caution).
+2. **An integrating engine, not a competing tool.** The field lacks exactly four
+   semantics — two-sided content binding, stored affirmation + derived suspicion,
+   programmable (recursive) verdicts, whole-case commitment (§3) — and is good at
+   everything else. SEG owns the four and does not reinvent the rest: it
+   consumes/projects to **sphinx-needs** for authoring/rendering (dogfooded in
+   Phase B; SEG's extractor supplies the source-binding half sphinx-needs lacks,
+   N5), treats evidence-format ingestion as solved territory (StrictDoc's
+   JUnit/Robot/gcov readers show the shape, S7), and serializes exchange as SPDX.
+   **Trust-boundary caveat (binding):** integration never moves the TCB — existing
+   tools are input adapters and projection targets only (AC-003/014 seams); hashes
+   stay over raw source byte spans and the parser only locates (DEC-003). Consuming
+   a needs.json *as the content source* would silently inherit the drift-blindness
+   N4/N7 measured.
+3. **Composition over SPDX is the payoff — strongest *pull*, not the novelty
+   core.** The composition gap is the widest measured (A5 "absent" across the
+   matrix; the field's only cross-project mechanism is drift-blind, N7; exchanges
+   are textual, O8/S8) and the ecosystem is demonstrably reaching for SPDX
+   (linux-strictdoc `SPDX-Req`) — lead Paper 1 with it. The strongest *novelty*
+   claim stays one layer down: the suspicion lifecycle bound to the commitment
+   layer (§4), which composition is *built from* — the sealed `(G, A, I)` contract
+   means something only because content binding makes drift detectable, and
+   recompute-not-trust works only because verdicts are reproducible from committed
+   content. WP-6 is the proof of the layering: RTEMS independently reinvented the
+   *mechanics* (hash-pinned links, flat recomputable root) and stopped at build
+   invalidation — the assurance semantics remain the delta. Headlining composition
+   without the core invites two misreadings: SEG as yet-another exchange format
+   (SPDX is the format — open thread #8), and the single-project value (where
+   adoption starts) undersold.
 
 ## 2. Closest applied prior art (the baseline to beat)
 
@@ -194,8 +235,12 @@ Producing and Consuming SPDX Functional Safety Cases"* (2026-06-22). Audience:
 cross-project safety, standards / supply-chain literate. Centerpiece = **ecosystem
 position + interoperability + composition**, now backed by the round-trip prototype
 rather than unverified claims:
-- Lead with the **OFT/Doorstop comparison** (this audience uses them) and the redrawn
-  boundary (§2–§4).
+- Lead with the **tool-landscape comparison** — five tools plus the RTEMS churn
+  study, and the adoption cluster is literally this audience (ELISA, Zephyr,
+  Eclipse SDV, space; `seg_tool_comparison.md` §2–§3) — and the redrawn boundary
+  (§2–§4). Position SEG per §1a role 2: the **engine behind the tools they already
+  run** (integrates with sphinx-needs/StrictDoc, owns only the four missing
+  semantics), not a replacement.
 - **SPDX 3.x FuSa is the interchange schema; SEG is the engine it lacks** — computes
   verdicts, detects drift, emits the recomputable commitment. The old "SPDX can't model
   safety evidence" line is dead (verified — open thread #8); the honest distinction is
@@ -226,7 +271,9 @@ Centerpiece = **twin contributions**, with vocabulary as the *instrument* behind
 
 - **Do NOT pitch it as "a common vocabulary"** — a reviewer hears "terminology." The
   glossary is how we *found* the axes; pitch the **design space with named,
-  dependency-linked axes**. Vocabulary is the instrument, not the headline.
+  dependency-linked axes**. Vocabulary is the instrument, not the headline. The
+  executed tool landscape (WP-1…WP-6) is now the demonstration that the instrument
+  discriminates (§1a role 1) — cite the verified spectra as its output.
 - **Existing tools = facet-*bundling* points.** Doorstop/OFT aren't merely points in the
   space — they collapse several facets into one switch (the `strong` bundle), which is
   *why* they can't reach regions like programmable verdicts. The `calls` contradiction is
