@@ -336,8 +336,9 @@ they conflict).**
   entire score calculus (mean + suspect-gate + unscored-is-zero) reproduced
   as ~10 stratified clingo rules with exact numeric parity
   (`research/spikes/tsf/t8_clingo_score.lp`: 73333/53333 = trudag's
-  0.73333/0.53333). Novelty caveat: Rushby/AdvoCATE check still gates any
-  generation claim.
+  0.73333/0.53333). Novelty caveat **resolved 2026-07-07** (primary reads,
+  `seg_prior_art.md` two-lineages honesty flag): generation-as-such is occupied;
+  claim generation *from a committed, drift-tracked graph, live under change*.
 - Probe hygiene: two initial no-op-sed probes caught and re-run verified
   (RESULTS "hygiene note") — rule: no null-result reading without a verified
   non-empty diff.

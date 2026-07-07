@@ -260,11 +260,20 @@ side.**
   hypothesis (integrity gates trust scoring) — an unreviewed statement
   contributes zero. Routed to the FSM (cross-worktree).
 - Still open: the §6.5 obstructions (the T8 program is stratified with only
-  default negation on `reviewed` — the negation obstruction is untouched);
-  the Rushby/AdvoCATE kin check still gates any generation-novelty claim; and
+  default negation on `reviewed` — the negation obstruction is untouched); and
   the embedding asymmetry was only exercised in the direction that works (the
   fixture is uniform by construction — no hand-authored non-uniform TSF graph
   was probed to watch the reverse direction fail).
+- ~~The Rushby/AdvoCATE kin check~~ **resolved 2026-07-07** (primary reads;
+  outcome in `seg_prior_art.md`, two-lineages honesty flag): generation-as-such
+  is occupied (Basir/Denney/Fischer 2009, AdvoCATE, ETB); the surviving claim is
+  generation **from a content-committed, drift-tracked, affirmation-gated graph,
+  live under change**. Two bonuses for this note: Rushby's `good_doc` is an
+  identified affirmation-as-axiom gating derivation — the B factor of §6.7 with
+  an independent 2010 pedigree, minus content binding; and **ETB's Datalog is
+  the positive fragment**, so the suspect-gate (`not reviewed(X)`) is outside
+  its language — the §6.7 factorization needs exactly the stratified step the
+  kin does not have.
 
 ### 6.7 The factorization observation (2026-07-07, from T5 — beyond what was predicted)
 

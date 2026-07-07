@@ -335,12 +335,36 @@ covering only mechanizable warrants. Each pole's pathologies are repaired by the
 other lineage's technology; each framework is one lineage's answer to the other's
 open problems.
 
-**Honesty flag (standing caution — check before any "first" claim).** "Generate
-the argument mechanically" has kin *inside* lineage B: Rushby's formalized safety
-cases / Evidential Tool Bus, and Denney & Pai's **AdvoCATE** (auto-generates GSN
-fragments from formal-verification results). Closest prior art to the
-"TSF-report-as-projection" idea (`seg_tool_landscape.md` WP-7 Q8) — read before
-claiming the projection as novel.
+**Honesty flag — RESOLVED (primary-source read, 2026-07-07).** "Generate the
+argument mechanically" is **occupied territory** — do not claim it: Basir/Denney/
+Fischer derived safety cases from automatically constructed proofs (2009);
+AdvoCATE auto-generates GSN fragments by pattern instantiation over hazard/
+requirements tables and by translating AutoCert proof output, composing them
+with manual argument (ASE-journal manuscript read in full); ETB represents the
+assurance argument *as* the Datalog derivation of claims from evidence, with
+replayability and identification of "the evidence artifacts such as files (and
+file contents) used in the derivation" (VMCAI 2013 / semantics 2014, read).
+**What the read establishes as the surviving delta** (each checked against the
+sources): (a) **no content binding of evidence anywhere** — the 64-page AdvoCATE
+manuscript has zero occurrences of hash/checksum/stale/fresh; its "evolution" is
+a coarse-grained lifecycle vision; ETB identifies file contents for *replay*,
+not for drift — "maintain the argument against changes to inputs" is stated as
+desirable, not mechanized; (b) **no affirmation lifecycle** — Rushby's `good_doc`
+predicate (SSS 2010, read) is the closest kin: an *identified* reviewer
+judgement asserted as an axiom that gates derivation (structurally SEG's
+affirmation and TSF's B factor!) — but it is not content-bound and nothing
+retracts it when the documented artifact changes; **cite it when introducing
+affirmation**; (c) **ETB Datalog is the positive fragment** ("we restrict
+ourselves to the positive fragment") — suspect-gating needs default negation
+(the WP-7 T8 program's `not reviewed(X)`), so SEG's stratified verdict layer is
+strictly beyond ETB's language, not just its usage; (d) no commitment/seal, no
+signature, no cross-organization recompute story in any of the three. So the
+claimable form: **not** "we generate arguments" but "the argument view is one
+lawful projection out of a content-committed, drift-tracked, affirmation-gated
+graph — and stays live under change rather than being generated once."
+Watch item: the ETB line is moving toward maintenance — "Towards Continuous
+Assurance Case Creation for ADS with the ETB" (arXiv:2403.01918, 2024;
+abstract-level only, full text unread) — re-check before Paper 2 submission.
 
 ---
 
@@ -425,11 +449,34 @@ Added 2026-07-06 (two-lineages section + duality note; ALL unverified stubs):
 - **BloomfieldLittlewoodConfidence** — R. Bloomfield, B. Littlewood — confidence /
   multi-legged dependability arguments (exact paper TBD: DSN 2003 "Multi-legged
   Arguments" or the later confidence-in-claims line; pick during hardening).
-- **DenneyPaiAdvoCATE** — E. Denney, G. Pai (et al.), "AdvoCATE: An Assurance Case
-  Automation Toolset" (SAFECOMP 2012 workshops; or the later ASE-journal tool
-  paper — pick during hardening). (argument auto-generation kin — WP-7 Q8)
-- **Rushby2010Formalism** — J. Rushby, "Formalism in Safety Cases," SSS 2010;
-  companion: the Evidential Tool Bus line. (argument mechanization kin)
+- **DenneyPaiPohl2012AdvoCATE** — E. Denney, G. Pai, J. Pohl, "AdvoCATE: An
+  Assurance Case Automation Toolset," SAFECOMP 2012 Workshops (SASSUR), LNCS
+  7613, Springer, 2012. **[verified 2026-07-07 via search; venue/volume from
+  publisher listing]**
+- **DenneyPai2018ToolSupport** — E. Denney, G. Pai, "Tool Support for Assurance
+  Case Development," Automated Software Engineering (journal; NASA NTRS
+  20170011550 manuscript **read in full 2026-07-07** — zero hash/staleness
+  content; verify final vol/pages before cite). (argument auto-generation kin)
+- **BasirDenneyFischer2009** — N. Basir, E. Denney, B. Fischer, "Deriving Safety
+  Cases from Automatically Constructed Proofs," 4th IET Intl. Conf. on System
+  Safety, London, 2009. **[found as Rushby's ref [2]; the origin of the
+  generation line — verify pages]**
+- **Rushby2010Formalism** — J. Rushby, "Formalism in Safety Cases," in *Making
+  Systems Safer* (Proc. 18th Safety-Critical Systems Symposium), pp. 3–17,
+  Springer, 2010. **[read in full 2026-07-07]** — NB the `good_doc` affirmation
+  kin; cite when introducing affirmation.
+- **CruanesEtAl2013ETB** — S. Cruanes, G. Hamon, S. Owre, N. Shankar, "Tool
+  Integration with the Evidential Tool Bus," VMCAI 2013, LNCS 7737,
+  pp. 275–294. (ETB; paywalled — capability claims taken from the 2014
+  semantics paper instead)
+- **CruanesEtAl2014ETBSemantics** — S. Cruanes, S. Heymans, I. Mason, S. Owre,
+  N. Shankar, "The Semantics of Datalog for the Evidential Tool Bus (Extended
+  Abstract)," Futatsugi Festschrift (Specification, Algebra, and Software),
+  LNCS 8373, Springer, 2014. **[read in full 2026-07-07]** — positive-fragment
+  restriction stated on p.4.
+- **ETBContinuous2024** — "Towards Continuous Assurance Case Creation for ADS
+  with the Evidential Tool Bus," arXiv:2403.01918, 2024. (watch item;
+  abstract-level only — full text unread)
 - **Kelly2001ModularGSN** — T. Kelly, compositional/modular safety case
   construction (exact cite TBD; away goals, argument contracts). (composition
   ancestor of TSF's needs graph and modular exchange)
@@ -444,9 +491,11 @@ Added 2026-07-06 (two-lineages section + duality note; ALL unverified stubs):
 - Requirements traceability lineage — **elaborated 2026-07-06** ("The two
   lineages" section); remaining work is stub verification (Ramesh & Jarke,
   grand-challenges chapter authors).
-- Argument-generation kin (Rushby ETB, Denney & Pai AdvoCATE) — **read before
-  claiming the TSF-report projection (WP-7 Q8) as novel**; currently
-  title-level knowledge only.
+- Argument-generation kin — **RESOLVED 2026-07-07** (primary reads: Rushby
+  SSS10, ETB semantics 2014, AdvoCATE ASE manuscript; outcome + claimable
+  wording in the two-lineages section's honesty flag). Remaining: read
+  arXiv:2403.01918 (ETB continuous-assurance, 2024) before Paper 2 submission;
+  verify BasirDenneyFischer2009 pages and DenneyPai2018 final vol/pages.
 - IEC 61508 itself + any existing tool-qualification / evidence-management prior art.
 - ShEx primary citation (exact author/year/venue) — currently a stub.
 - Verkle trees (if `flat`/`deep` discussion wants the modern commitment frontier).
