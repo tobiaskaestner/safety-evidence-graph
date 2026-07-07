@@ -46,6 +46,12 @@ Update it at the end of each research session.
 5. **Signed external projection (in-toto / DSSE / Sigstore).**
    The one projection consumer not yet pressure-tested; tied to DEC-010 composability
    and the in-toto actor-authentication gap. → `seg_adr_projection_core.md` §8.
+   NEW INPUT (2026-07-07): **Cyberlogic** (Ruess/Shankar, read) supplies the
+   ready-made logic for exactly this half — attestation modality, certificates
+   as realizers, trust only as scoped explicit axioms; DEC-026's assessor
+   certificate and DEC-017's never-adopt-the-verdict-axiom discipline both
+   anchor cleanly. → `seg_prior_art.md` Seam section (assessment + three
+   consequences).
 
 6. **Paper skeleton.**
    Contribution claim is sharpened (the novel core = suspicion lifecycle + its binding

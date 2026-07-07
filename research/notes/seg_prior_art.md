@@ -208,6 +208,30 @@ proof — a *cryptographically verifiable* assume-guarantee link, with cross-gra
 *staleness* (version-pin) as a first-class concern that classical AG theory does
 not model. The "recompute the Merkle vs also require a signature" question is the
 same actor-authentication gap in-toto documents.
+
+**The authority half now has a ready-made logic (Cyberlogic — read 2026-07-07,
+RuessShankar2023Cyberlogic).** Intuitionistic FOL with an attestation modality:
+`c : K ▷ φ` — a certificate c (signature over φ or its hash) *realizes* principal
+K's attestation of φ; attestation never implies validity; **trust exists only as
+an explicit, scoped axiom `k ▷ φ ⇒ φ`**; delegation, revocation, and timed
+attestation are definable; distributed proof search assembles tree-like,
+poly-time-checkable certificates. Three consequences for SEG: (1) **DEC-026's
+assessor certificate gets a semantics for free** — "signature over (hash(case),
+BOM)" is literally `c : Assessor ▷ φ(hash(case), BOM)`; anchor it there instead
+of inventing one. (2) **The DEC-017 thesis has a crisp logical form**: a SEG
+consumer *never* adopts the trust axiom `K ▷ verdict(x) ⇒ verdict(x)` — roll-up
+verdicts are recomputed, not trusted — while affirmations of ground facts may be
+adopted under scoped axioms gated by the seal check (DEC-023/024's resolution
+discipline, stated logically). (3) The **staleness axes are complementary**:
+cyberlogic's revocation/timed attestation handle *authority* going stale; SEG's
+drift handles *content* going stale; neither subsumes the other. What cyberlogic
+does NOT have (checked): artifact graphs, content drift, suspicion, verdict
+semantics over evidence, assurance-case structure — it is the trust/PKI logic
+layer, complementary the way SPDX is on the schema side. Watch: the ETB
+implementation now "supports Cyberlogic-like attestations based on IPFS"
+(authority + content addressing converging from the other side); and CyberGSN
+(BeyeneCarlan2021, unread stub) already couples this logic to safety-case
+notation.
  
 **Leading references.** Benveniste, Caillaud, Nickovic, Passerone, Raclet,
 Reinkemeier, Sangiovanni-Vincentelli, Damm, Henzinger, Larsen, "Contracts for
@@ -505,9 +529,18 @@ Added 2026-07-06 (two-lineages section + duality note; ALL unverified stubs):
   evidence; change-impact incremental re-derivation; no affirmation state, no
   negation, no seal.
 - **RuessShankar2023Cyberlogic** — H. Ruess, N. Shankar, "Evidential
-  Transactions with Cyberlogic," 2023. (authority/attestation semantics —
-  exchange-story kin; **unread**, check before Paper 1 hardens the
-  signing/certificate story)
+  Transactions with Cyberlogic," SRI CSL Technical Report SRI-CSL-2023-01 /
+  arXiv:2304.00060, 2023. **[read 2026-07-07 — complementary, not competing;
+  assessment in the Seam section]** — intuitionistic FOL + attestation modality
+  `K ▷ φ`; certificates as realizers (`c : K ▷ φ` = signature over φ or its
+  hash); attestation ⇏ validity; trust ONLY as explicit axiom `k ▷ φ ⇒ φ`;
+  delegation/revocation/timed attestation definable; distributed proof search
+  builds tree-like certificates (poly-time checkable; scaling caveats).
+- **BeyeneCarlan2021CyberGSN** — T. A. Beyene, C. Carlan, "CyberGSN: A
+  Semi-formal Language for Specifying Safety Cases," DSN-W 2021, pp. 63–66.
+  (cyberlogic-adjacent safety-case language — the bridge artifact between the
+  authority logic and lineage B; **unread**, low priority, skim before Paper 1
+  related work freezes)
 - **Kelly2001ModularGSN** — T. Kelly, compositional/modular safety case
   construction (exact cite TBD; away goals, argument contracts). (composition
   ancestor of TSF's needs graph and modular exchange)
@@ -528,8 +561,11 @@ Added 2026-07-06 (two-lineages section + duality note; ALL unverified stubs):
   section's honesty flag — NB the 2024 read *sharpened* the wording: mechanical
   liveness-under-change is occupied; claim the assurance-state half).
   Remaining: verify BasirDenneyFischer2009 pages and DenneyPai2018 final
-  vol/pages; read RuessShankar2023Cyberlogic before the Paper-1
-  signing/certificate story hardens.
+  vol/pages. ~~Read RuessShankar2023Cyberlogic~~ **done 2026-07-07**
+  (complementary; assessment in the Seam section — DEC-026 gets its semantics,
+  DEC-017 its logical form). New (low priority): skim CyberGSN
+  (BeyeneCarlan2021) before Paper-1 related work freezes; watch ETB's
+  IPFS-based attestation layer.
 - IEC 61508 itself + any existing tool-qualification / evidence-management prior art.
 - ShEx primary citation (exact author/year/venue) — currently a stub.
 - Verkle trees (if `flat`/`deep` discussion wants the modern commitment frontier).
