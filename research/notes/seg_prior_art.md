@@ -551,6 +551,10 @@ Added 2026-07-06 (two-lineages section + duality note; ALL unverified stubs):
 - **GreenKarvounarakisTannen2007** — T. J. Green, G. Karvounarakis, V. Tannen,
   "Provenance Semirings," PODS 2007. (the duality note §6 universal object;
   survey the negation/monus follow-ups before citing for stratified rulesets)
+- **AmsterdamerDeutchTannen2011** — Y. Amsterdamer, D. Deutch, V. Tannen,
+  "Provenance for Aggregate Queries," PODS 2011. (semimodule extension —
+  required for the triangle's *score* edge, duality note §6.5.3/§6.8; stub,
+  verify pages)
 Second-order stubs (cited *by* papers read this session, not themselves read —
 the dynamic-assurance-case cluster + one pathology support; skim only if Paper 2's
 related work needs them):

@@ -233,6 +233,12 @@ this triangle.
    corner of the literature.
 2. SEG's three-state rollup (total/conditional/unsatisfied) needs a value structure
    beyond Boolean — plausibly a three-element semiring-like structure; unproven.
+3. *(added 2026-07-07, from §6.8)* **Aggregation outgrows plain `ℕ[X]`**: TSF's
+   mean uses counting and division, and aggregation provenance needs the
+   semimodule extension (Amsterdamer–Deutch–Tannen, PODS 2011). Mild: on a DAG
+   with per-edge weights it degenerates to the weighted linear polynomial, so
+   nothing claimed here breaks — but a formal citation of the triangle's score
+   edge needs ADT 2011 alongside GKT 2007.
 
 If either fails, the triangle survives informally but loses theorem status. The
 methodological residue of the physics analogies survives in exactly one form:
@@ -264,6 +270,87 @@ side.**
   the embedding asymmetry was only exercised in the direction that works (the
   fixture is uniform by construction — no hand-authored non-uniform TSF graph
   was probed to watch the reverse direction fail).
+
+### 6.8 The polynomial, constructed and justified (2026-07-07)
+
+What §6.2 asserts abstractly, built from the ground up — and why "polynomial" is
+forced, not chosen. (Pedagogically the best route into the triangle; candidate
+opening for Paper 2's formal section.)
+
+**The construction.** Tag every ground base fact with its own indeterminate
+(`affirmed(e12) ↦ x₁`, `outcome(t7, passed) ↦ x₂`, …); derived atoms earn their
+annotations by two rules: *within one rule instance, multiply* (joint use);
+*across alternative derivations, add*. A derived atom's annotation is then an
+element of `ℕ[X]`, and every syntactic feature means something:
+
+- each **monomial** = one derivation: the multiset of base facts one proof
+  jointly consumes;
+- an **exponent** = the same fact used twice within one proof;
+- a **coefficient** k = k structurally distinct proofs over the same leaf
+  multiset;
+- the polynomial = **the proof forest, summed**: Σ over proof trees of Π over
+  leaves; its expression DAG (with sharing) is the argument structure of §6.2.
+
+For a physicist: a partition-function-like generating object — formal sum over
+configurations (proofs) of products of local weights (leaf indeterminates);
+every concrete semantics is an observable, i.e. an evaluation.
+
+**Worked on the T8 fixture (score reading).** Mean-propagation is a weighted
+sum with edge weights 1/outdegree, so the root polynomial is degree one:
+
+> T(EXP-SCHED) = ⅔·x_impl + ⅓·x_test
+
+(⅔ because PREM-IMPL reaches the root along two paths). Evaluating at
+x_impl = 0.8, x_test = 0.6 gives 0.7333 — trudag's exact output. The
+double-counting observed empirically in T5a is now a **coefficient**: a static
+syntactic property, readable before any evaluation.
+
+**Why a polynomial — freeness.** `ℕ[X]` is the *free commutative semiring* on
+X. Universal property (GKT 2007): for any commutative semiring K and valuation
+ν : X → K there is a **unique** homomorphism `ℕ[X] → K` extending ν, commuting
+with query semantics. Compute the polynomial once; every semantics is a
+specialization: Booleans → derivability (verdict shape); weighted reals → TSF's
+score; ℕ → proof counting; Viterbi → best-case confidence; tropical → cheapest
+evidence path; support → why-provenance ("which affirmed facts does this rest
+on"). Initial-object statement: all semantics factor through `ℕ[X]` uniquely.
+
+**Why exactly the semiring laws — squeezed from both sides:**
+- *From above (soundness):* the raw proof forest (free term algebra) is too
+  fine — it distinguishes what the positive fragment provably cannot (body
+  order, interleavings). Quotient by exactly the query-equivalence laws
+  (associativity, commutativity, distributivity, units) and `ℕ[X]` is what
+  remains: **the proof forest in its coarsest semantically sound normal form**.
+- *From below (completeness):* any further law loses a target. Idempotence
+  (x + x = x) kills counting and probability — two proofs ARE more than one.
+  Additive inverses would mean evidence can *cancel* — false in the positive
+  fragment (and exactly what negation breaks; §6.5.1 is real, not
+  bookkeeping). Semiring, no inverses, no idempotence: precisely the laws
+  every target shares, not one more. Forced, the way a free group is forced.
+
+**Two precision gains for SEG/TSF:**
+1. **Structure/judgement separation.** The polynomial is fixed by graph
+   topology + ruleset; the *valuation* carries the judgement. The T5b suspect
+   gate is purely a valuation event (ν(x_test): 0.6 ↦ 0; same polynomial;
+   0.5333) — so §6.7's factorization is exact **at the leaves**
+   (ν(xᵢ) = Bᵢ·Rᵢ), then propagated linearly; the node-level phrasing is the
+   loose version. SEG's machinery respects the split exactly: the commitment
+   (edgeHash, sealed root) pins the *polynomial*; affirmation/evidence state
+   feeds the *valuation*. Two orthogonal change axes.
+2. **TSF's calculus is the degree-1 fragment.** Mean-propagation never
+   multiplies two facts — every monomial is linear; the calculus is linear
+   algebra (weighted path sums; (I−W)⁻¹). Hence trudag's cheap
+   `--sensitivity`: for a linear polynomial ∂T/∂xᵢ is a *constant* (the
+   path-weight sum — ⅔ for x_impl above), independent of all other leaves.
+   SEG verdict rules are genuinely polynomial: a `covers` discharge requiring
+   an affirmed edge AND a passing outcome AND a fresh source hash is a
+   degree-3 monomial; alternative discharge routes add monomials — so
+   sensitivities have interaction terms, and why-provenance (monomial
+   support) is non-trivially informative: the list an assessor wants.
+
+**Caveat routed to §6.5.3:** the mean's counting/division is an *aggregate*;
+aggregation provenance needs the semimodule extension (ADT 2011). Degenerates
+gracefully here; cite it alongside GKT 2007 whenever the score edge is
+formalized.
 - ~~The Rushby/AdvoCATE kin check~~ **resolved 2026-07-07, sharpened by the
   ETB-2024 read** (all four primaries read; outcome in `seg_prior_art.md`,
   two-lineages honesty flag): generation-as-such is occupied (Basir/Denney/
