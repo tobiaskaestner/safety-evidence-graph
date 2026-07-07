@@ -261,7 +261,45 @@ side.**
   contributes zero. Routed to the FSM (cross-worktree).
 - Still open: the §6.5 obstructions (the T8 program is stratified with only
   default negation on `reviewed` — the negation obstruction is untouched);
-  the Rushby/AdvoCATE kin check still gates any generation-novelty claim.
+  the Rushby/AdvoCATE kin check still gates any generation-novelty claim; and
+  the embedding asymmetry was only exercised in the direction that works (the
+  fixture is uniform by construction — no hand-authored non-uniform TSF graph
+  was probed to watch the reverse direction fail).
+
+### 6.7 The factorization observation (2026-07-07, from T5 — beyond what was predicted)
+
+§6.3 predicted a one-way collapse: the support homomorphism makes the verdict
+the *shadow* of the score. T5 found something stronger about TSF's actual
+evaluation: the suspect-gate means it is **not** a pure real-semiring path sum —
+it computes, in effect,
+
+> **T(s) = B(s) · R(s)**
+
+the product of a **Boolean integrity factor** B (is the statement review-clean?
+unreviewed ⇒ 0) with the **weighted-real mean recurrence** R. The two channels
+(§6.6 "radicalized" bullet) are composed by *multiplication*, with the Boolean
+factor exactly where the design summary's §15 hypothesis put it: "a clean
+integrity state is necessary but not sufficient for a high trust score" **is**
+this factorization — B can zero the product; B alone never raises it. What was
+a 2026-era hypothesis about how SEG's layers should relate turns out to be a
+structural fact about how a scored-argument system composes its integrity
+channel with its confidence channel; in triangle terms, TSF's evaluation
+semiring is the *product* of the Boolean one with the weighted-real one, and
+the support homomorphism of §6.3 is recovered as projection onto the first
+factor. (Verified concretely: the T8 ruleset realizes B as one gate rule;
+dropping `reviewed(prem_test)` reproduces trudag's 0.53333 exactly.)
+
+Two consequences worth carrying forward:
+- **For the §15 update (FSM's edit):** the better statement is not "hypothesis
+  confirmed" but "hypothesis is a factorization law, independently implemented
+  by TSF" — with the one-directionality sharpening (B gates R; R is invisible
+  to B, and in TSF the R-inputs are not even content-bound, §6.6).
+- **For SEG (Paper 2 candidate question):** SEG's own verdict is pure B — the
+  three-state rollup lives entirely in the integrity/logic factor. If a SEG
+  definition ever wants a quantitative confidence layer (the §6.5 value-
+  structure question), the factorized form says where it goes: a second factor
+  *under* the same gate, never a replacement for it — and the R-inputs must be
+  committed content, fixing TSF's unbound-score defect by construction.
 
 Citation stub to harden before use: Green, Karvounarakis, Tannen, "Provenance
 Semirings", PODS 2007 (verify pages/DOI; survey follow-ups for the negation/monus

@@ -435,4 +435,5 @@ exercisable tooling). Q8 lands in notes + paper seed, not the matrix.
   TSF-hypothesis update in `development/design/knowledge_graph_design_summary.md`
   (owner: FSM — cross-worktree; **T5 gives the content**: TSF independently
   implements the hypothesis — suspect gates the score, unreviewed contributes 0 —
-  while its trust number itself sits outside the affirmation boundary).
+  while its trust number itself sits outside the affirmation boundary; the
+  sharpened form is the factorization law T = B·R, `seg_tsf_duality.md` §6.7).
