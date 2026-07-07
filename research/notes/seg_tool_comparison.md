@@ -7,7 +7,8 @@ evidence lives in `seg_tool_landscape.md` (WPs, axes, matrix) and the per-kit
 RESULTS.md files under `research/spikes/` (pre-registered probes, raw output).
 
 **Verified basis.** Doorstop 3.1 (P1–P10), OpenFastTrace 4.5.0 (O0–O8), StrictDoc
-0.25.0 (S1–S9), sphinx-needs 8.1.1 (N1–N8) — all probe-cited; BASIL (WP-4) pending.
+0.25.0 (S1–S9), sphinx-needs 8.1.1 (N1–N8), TSF/trudag 0.4.0 (T1–T8) — all
+probe-cited; BASIL (WP-4) pending.
 
 ---
 
@@ -18,11 +19,18 @@ RESULTS.md files under `research/spikes/` (pre-registered probes, raw output).
   **one-sided content hash** (Doorstop P3/P4: link stamp = copy of the parent item's
   stamp; child drift invisible) → **two-sided manual counter** (OFT O3: content edits
   silent, revision bump breaks whole-chain, dual `orphaned`/`outdated`) →
-  **two-sided content hash** (SEG `edgeHash`).
+  **two-sided content hash** — **occupied by TSF/dotstop too** (T1: drift on content
+  change alone, both sides, stored stamps; caveat landed 2026-07-07). Within that
+  endpoint, SEG's remaining drift delta is *granularity* (raw source byte spans,
+  DEC-003, vs dotstop's normalized whole-item content) and the derived closure
+  (next bullet).
 - **Stored vs derived** — Doorstop stores stamps but derives nothing (one-hop, P7);
   OFT derives everything but stores nothing (no affirmation concept, O3b); StrictDoc
-  and sphinx-needs neither store nor derive. SEG is alone in combining a stored,
-  content-bound human affirmation with a derived suspicion closure.
+  and sphinx-needs neither store nor derive; **TSF stores two-sided anonymous
+  stamps but derives no closure** (T2: adjacent-only, per-link manual clear, no
+  auto-clear on re-affirmation). SEG's combination claim survives **on the derived
+  half**: a stored, content-bound, *identified* affirmation + a derived transitive
+  suspicion closure with auto-clear (DEC-005) remains unmatched.
 - **Extensibility spectrum** — what a user can make the tool check:
   nothing (OFT O4) → per-item arbitrary Python (Doorstop P9 `item_validator`) →
   whole-graph arbitrary Python (StrictDoc S9 `StrictDocPlugin`) → **declarative
@@ -33,18 +41,35 @@ RESULTS.md files under `research/spikes/` (pre-registered probes, raw output).
 - **Evidence wall** — a test *outcome* with a value: unrepresentable (OFT O7;
   Doorstop by absence) → representable-but-inert (StrictDoc S7: JUnit/Robot/gcov
   readers produce TEST_RESULT nodes; nothing consumes PASSED/FAILED; path-only
-  binding, no freshness) → convention-only (sphinx-needs N6). No tool computes
-  anything from evidence; none binds it to the source state it attests.
-- **Source binding** — locator-without-hash everywhere it exists at all: Doorstop
-  `ref`/`references` (existence checked; opt-in sha is review-time bookkeeping, P8);
-  StrictDoc `@relation` ranges (silently droppable, S5); OFT coverage tags (part of
-  the item model); sphinx-needs none (N5 — SEG's own extractor supplies this half in
-  Phase B). SEG's raw-byte-span hashing (DEC-003) has no counterpart.
+  binding, no freshness) → convention-only (sphinx-needs N6) → **consumed,
+  suspect-gated, hardwired** (TSF T5: SME [0,1] scores roll up as a mean, an
+  unreviewed statement contributes zero — the first non-SEG crossing of the wall,
+  2026-07-07). Among the *tools* the wall stands; the framework entrant crosses it
+  with a fixed probabilistic calculus. SEG's delta at this spectrum is now
+  *programmability* (user-authored verdicts) + content-bound freshness of the
+  evidence itself, not the crossing as such.
+- **Source binding** — locator-without-hash everywhere it exists among the tools:
+  Doorstop `ref`/`references` (existence checked; opt-in sha is review-time
+  bookkeeping, P8); StrictDoc `@relation` ranges (silently droppable, S5); OFT
+  coverage tags (part of the item model); sphinx-needs none (N5 — SEG's own
+  extractor supplies this half in Phase B). **TSF is the exception** (T4):
+  `file` references content-hash the artifact into the item hash — a
+  referenced-file edit flips the premise and its links; and `SourceSpanReference`
+  is DEC-003's locate-then-hash shape as an abstract DIY extension base. SEG's
+  remaining delta: *built-in* span granularity + the parser-locates-only TCB
+  discipline.
 - **Exchange/composition** — reports only (Doorstop P10) → one-way textual ReqM2
   with `dstversion` pins (OFT O8) → ReqIF both directions + JSON (StrictDoc S8) →
   **by-reference cross-project links** (sphinx-needs N7 `needs_external_needs`) —
-  and the last is fully drift-blind: a rewritten external guarantee rebuilds with
-  zero warnings. Nothing carries a commitment, a scope, or a discharge concept.
+  the last fully drift-blind: a rewritten external guarantee rebuilds with zero
+  warnings. **TSF extends the spectrum** (T6/T7): its export artifact carries
+  per-item hashes, pre-computed scores, AND a flat recomputable root
+  (`/resolved/sha`, beyond rtemsspec: scores included) — and *nothing verifies any
+  of it on consumption*: schema-check-only import, tampered scores/texts pass
+  silently, no signature; honest re-publish does prompt downstream review. The
+  richest integrity *transport* in the set, with no *verification* — the
+  record-vs-recompute foil at maximal strength (DEC-017, GAPS G5). Nothing in the
+  field carries a checked commitment, a scope, or a discharge concept.
 
 ## 2. Adoption in OSS projects (researched 2026-07-04, web; evidence strength marked)
 
@@ -90,6 +115,16 @@ need," and wrote their own Python tool "drawing heavy inspiration from Doorstop"
 The trajectory adopt → hit the P1/P9 walls → build-your-own is the strongest market
 signal in the set: the walls the spikes measured are the ones real safety projects
 leave the tool over.
+
+**The churn is now a series (2026-07-07).** TSF's dotstop is the *second*
+independent Doorstop-descendant: "similar to doorstop, but uses a decoupled
+representation of the edges and nodes … we have fully deprecated doorstop as a
+viable backend" — and it churned specifically toward **content-hashed two-sided
+links + suspect-until-review** (WP-7 T1/T3), i.e. toward SEG's mechanics, just as
+rtemsspec did (§3 above, WP-6). Two unrelated safety-adjacent projects leaving the
+same tool independently rebuilt the same missing layer; neither built the
+assurance semantics above it (rtemsspec: build invalidation only; TSF: an
+unverified-on-consumption trust roll-up, WP-7 T6/T7).
 
 **What they built (WP-6 bounded source-read, rtems-central @ 8ace630 — evidence in
 `seg_tool_landscape.md` WP-6).** The churn outcome fixes the walls — links carry
@@ -154,5 +189,8 @@ proof) remain the delta.
 - Eclipse S-CORE docs (sphinx-needs docs-as-code toolchain):
   <https://eclipse.dev/score/docs.html>
 - sphinx-needs product site (vendor claims only): <https://www.sphinx-needs.com/>
+- Eclipse TSF docs: <https://pages.eclipse.dev/eclipse/tsf/tsf/> (retrieved
+  2026-07-06); repo: <https://gitlab.eclipse.org/eclipse/tsf/tsf> — spiked at
+  trudag 0.4.0 @ 58f38df0 (WP-7, 2026-07-07).
 - Zephyr StrictDoc usage: verified locally at `/wrk/z/ws-safety/doc/reqmgmt`
   (no URL needed; the west workspace copy is the evidence).

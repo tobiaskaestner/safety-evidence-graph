@@ -239,6 +239,30 @@ methodological residue of the physics analogies survives in exactly one form:
 **generate and verify on the program side; unfold and explain on the argument
 side.**
 
+### 6.6 Spike results (2026-07-07, WP-7 T1–T8 — the hypothesis status upgrades)
+
+- **The score-calculus edge of the triangle is demonstrated**: TSF's entire
+  verdict layer (mean propagation + suspect-gate + unscored-is-zero) reproduced
+  as ~10 stratified clingo rules with exact numeric parity
+  (`research/spikes/tsf/t8_clingo_score.lp`; 73333/53333 vs trudag's
+  0.73333/0.53333 on the same fixture states). The suspect-gate rule composes the
+  two channels exactly as §6.3's support-homomorphism reading predicted.
+- **The mechanics convergence (§4) is now probe-verified**, with the divergence
+  sharper than predicted: TSF's affirmation is an *anonymous* content stamp
+  (T3), its trust number sits *outside* the affirmation boundary (T5 — the
+  score is never affirmed), and its record-side commitment travels *unverified*
+  (T6/T7: a real recomputable root that nothing checks). Each is the §2 table's
+  corresponding row, radicalized.
+- **The §6.4 dividend ships as product**: `export --sensitivity` — sensitivity
+  analysis on the unfolded side, exactly the "cheap on the expression DAG"
+  prediction.
+- **Bonus for §15-of-the-design-summary**: TSF independently implements the old
+  hypothesis (integrity gates trust scoring) — an unreviewed statement
+  contributes zero. Routed to the FSM (cross-worktree).
+- Still open: the §6.5 obstructions (the T8 program is stratified with only
+  default negation on `reviewed` — the negation obstruction is untouched);
+  the Rushby/AdvoCATE kin check still gates any generation-novelty claim.
+
 Citation stub to harden before use: Green, Karvounarakis, Tannen, "Provenance
 Semirings", PODS 2007 (verify pages/DOI; survey follow-ups for the negation/monus
 line before citing them).

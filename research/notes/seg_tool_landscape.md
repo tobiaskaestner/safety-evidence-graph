@@ -61,16 +61,16 @@ Axes A2–A5 carry Paper 2 (facet bundling, novelty); A6–A7 carry Paper 1 (Pra
 
 ## 3. The matrix (fill per WP; cite the WP's Findings for every cell)
 
-| Axis | Doorstop | OFT | StrictDoc | BASIL | sphinx-needs |
-|---|---|---|---|---|---|
-| A1 identity | typed YAML items per doc dir; links untyped `UID: stamp`, typed only by target doc (P1); cross-doc links first-class (P2) | artifact-type-in-ID (`req~name~rev`); typed coverage links; one auto-named impl item per tag (O2) | SDoc docs; **user-defined element tags** + typed fields via [GRAMMAR] (S2); relations typed {Parent,Child,File} + declared ROLE — validated, carried, semantics-free (S1); impl = annotated source range, not a node | | rst directives; config-defined need types + named directed link vocabulary w/ auto back-links, dead-link warnings (N1) |
-| A2 fingerprint | item stamp over text/ref/links/extended-reviewed attrs; committed/tracked split for extended attrs (P5/P6); source refs NOT content-bound — opt-in sha is review bookkeeping (P8) | none — no content hash anywhere; manual revision integer is the only anchor (O3a) | none stored; MID = uuid4 anchor; content-md5 exists only for the on-demand DIFF report + cache (S4); no field-role split | | none — needs.json exports full content unhashed; no field-role split (N4) |
-| A3 change/drift | one-hop, parent-only suspicion (P3/P4); no transitive propagation, auto-clear vacuous (P7); manual link-clear + item-review | manual-trigger, two-sided, whole-chain break (dual `orphaned`+`outdated`, O3b); re-trace auto-clears; nothing stored, no affirmation concept | **none** — no review state, no pin, edits silent (S3); markers silently droppable (S5); DIFF = on-demand two-tree changelog | | **none, incl. cross-project** — edits silent (N4); rewritten external need rebuilds clean (N7); dead-link warnings only |
-| A4 verdict | hardwired checks; `item_validator` = per-item arbitrary-Python plugin, no rule language (P9) | recursive deep coverage PRESENT (O1, stateless fixpoint, coverage polarity); no rule/plugin/hook facility at all (O4); TestOutcome unrepresentable (O7) | no verdict at all — coverage screens are display-only (S6); **TEST_RESULT nodes with PASSED/FAILED representable** (S7, unique) but nothing consumes them; whole-graph Python plugin hook (S9) | | **declarative bounded-depth shape validation, SHACL-cited severities** (N2); per-need eval constraints, derived state exports (N3); no recursion/fixpoint (hard nest bound), no verdict object |
-| A5 commitment/proof | absent — publish = HTML/CSV report, no stamps/hash/signature (P10) | absent — reports carry no integrity artifact (O8) | absent — HTML/JSON/ReqIF carry no integrity artifact (S8) | | absent (N8) |
-| A6 exchange | none observed (publish/export are reports; import/export not deep-probed) | partial — ReqM2 XML exchange with `dstversion` pins, but textual: no content binding, no scope commitment (O8) | richest in set — ReqIF import+export, JSON, Excel; roles survive; textual, no commitment (S8) | | needs.json + needimport + **needs_external_needs by-reference cross-project links** (unique) — zero integrity/pin (N7) |
-| A7 ecosystem | Space ROS (docs-verified); **RTEMS evaluated-and-rejected** — six limitations mapping onto P1/P9 (→ comparison §3) | Exasol projects; **Eclipse Ankaios** (docs-verified) | **Zephyr verified locally** (doc/reqmgmt); linux-strictdoc PoC (ELISA SPDX-Req tags) | ELISA (Red Hat; deployed instance) | Eclipse S-CORE (docs-verified); **used by SEG itself** (Phase-B reqs worktree) — adoption details: `seg_tool_comparison.md` §2 |
-| A8 architecture | CLI over VCS working copy; stamps stored in item YAML; stateless recompute vs stamps; auto-stages edits into git index | stateless CLI tracer (Java); recomputes every run from sources; exit code = verdict | static-site generator + web server (Python); stateless rebuild each export; documents incl. junit/gcov reports; errors gate exit, nothing else does | | Sphinx extension; build-time, stateless; jsonschema_rs validation each build; `-W` gates |
+| Axis | Doorstop | OFT | StrictDoc | BASIL | sphinx-needs | TSF (trudag 0.4.0) |
+|---|---|---|---|---|---|---|
+| A1 identity | typed YAML items per doc dir; links untyped `UID: stamp`, typed only by target doc (P1); cross-doc links first-class (P2) | artifact-type-in-ID (`req~name~rev`); typed coverage links; one auto-named impl item per tag (O2) | SDoc docs; **user-defined element tags** + typed fields via [GRAMMAR] (S2); relations typed {Parent,Child,File} + declared ROLE — validated, carried, semantics-free (S1); impl = annotated source range, not a node | | rst directives; config-defined need types + named directed link vocabulary w/ auto back-links, dead-link warnings (N1) | statement items `PREFIX-ID.md` (frontmatter+truth-apt text); positional taxonomy (root=Expectation, leaf=Premise); links decoupled in `.dotstop.dot`; git-mandatory |
+| A2 fingerprint | item stamp over text/ref/links/extended-reviewed attrs; committed/tracked split for extended attrs (P5/P6); source refs NOT content-bound — opt-in sha is review bookkeeping (P8) | none — no content hash anywhere; manual revision integer is the only anchor (O3a) | none stored; MID = uuid4 anchor; content-md5 exists only for the on-demand DIFF report + cache (S4); no field-role split | | none — needs.json exports full content unhashed; no field-role split (N4) | sha256 over *normalized* item content (name+text+normative+**reference shas**); link sha over both endpoint hashes; `score:` frontmatter EXCLUDED from hash (T5) |
+| A3 change/drift | one-hop, parent-only suspicion (P3/P4); no transitive propagation, auto-clear vacuous (P7); manual link-clear + item-review | manual-trigger, two-sided, whole-chain break (dual `orphaned`+`outdated`, O3b); re-trace auto-clears; nothing stored, no affirmation concept | **none** — no review state, no pin, edits silent (S3); markers silently droppable (S5); DIFF = on-demand two-tree changelog | | **none, incl. cross-project** — edits silent (N4); rewritten external need rebuilds clean (N7); dead-link warnings only | **two-sided content-hash drift, no manual bump** (T1); status derived by compare — revert auto-clears, born-reviewed; adjacent-only, per-link manual clear, no closure/no re-affirmation auto-clear (T2); stamps anonymous (T3) |
+| A4 verdict | hardwired checks; `item_validator` = per-item arbitrary-Python plugin, no rule language (P9) | recursive deep coverage PRESENT (O1, stateless fixpoint, coverage polarity); no rule/plugin/hook facility at all (O4); TestOutcome unrepresentable (O7) | no verdict at all — coverage screens are display-only (S6); **TEST_RESULT nodes with PASSED/FAILED representable** (S7, unique) but nothing consumes them; whole-graph Python plugin hook (S9) | | **declarative bounded-depth shape validation, SHACL-cited severities** (N2); per-need eval constraints, derived state exports (N3); no recursion/fixpoint (hard nest bound), no verdict object | hardwired probabilistic roll-up: SME [0,1] leaf scores → mean propagation, **suspect-gated (unreviewed⇒0)**, stateless recompute (T5) — **evidence wall crossed**, not programmable (validator extension point) |
+| A5 commitment/proof | absent — publish = HTML/CSV report, no stamps/hash/signature (P10) | absent — reports carry no integrity artifact (O8) | absent — HTML/JSON/ReqIF carry no integrity artifact (S8) | | absent (N8) | **`/resolved/sha`: flat recomputable root over graph+scores — as data only**: schema-check import, tamper passes, unsigned (T6/T7) |
+| A6 exchange | none observed (publish/export are reports; import/export not deep-probed) | partial — ReqM2 XML exchange with `dstversion` pins, but textual: no content binding, no scope commitment (O8) | richest in set — ReqIF import+export, JSON, Excel; roles survive; textual, no commitment (S8) | | needs.json + needimport + **needs_external_needs by-reference cross-project links** (unique) — zero integrity/pin (N7) | export/import artifacts (resolved+needs graphs); `ArtifactReference` cross-project binding — honest re-publish prompts downstream review; tampered artifact undetected; scores travel, adoption SME-mediated (T7) |
+| A7 ecosystem | Space ROS (docs-verified); **RTEMS evaluated-and-rejected** — six limitations mapping onto P1/P9 (→ comparison §3) | Exasol projects; **Eclipse Ankaios** (docs-verified) | **Zephyr verified locally** (doc/reqmgmt); linux-strictdoc PoC (ELISA SPDX-Req tags) | ELISA (Red Hat; deployed instance) | Eclipse S-CORE (docs-verified); **used by SEG itself** (Phase-B reqs worktree) — adoption details: `seg_tool_comparison.md` §2 | Eclipse TSF (Codethink lineage); dotstop is Doorstop-descended ("fully deprecated doorstop") — **second churn datapoint** (comparison §3) |
+| A8 architecture | CLI over VCS working copy; stamps stored in item YAML; stateless recompute vs stamps; auto-stages edits into git index | stateless CLI tracer (Java); recomputes every run from sources; exit code = verdict | static-site generator + web server (Python); stateless rebuild each export; documents incl. junit/gcov reports; errors gate exit, nothing else does | | Sphinx extension; build-time, stateless; jsonschema_rs validation each build; `-W` gates | CLI over git worktree (hard requirement); stateless recompute + stored stamps in `.dotstop.dot`; markdown report publish; sensitivity analysis built into export |
 
 ---
 
@@ -300,9 +300,49 @@ Findings marked *not exercised* (no build).
    validators or verdicts.
 
 ### WP-7 — Eclipse TSF / trudag / dotstop (framework-level comparison + spike)
-**Status:** registered 2026-07-06; docs-read done (preliminary findings below,
-*not exercised*); kit pre-registered + baseline rehearsed on trudag 0.4.0
-(`research/spikes/tsf/`, commit 83b4927) — execution pending.
+**Status:** done (2026-07-07, T1–T8 on trudag 0.4.0 @ 58f38df0; kit commit
+83b4927; full evidence in the kit's RESULTS.md).
+**Findings (headlines; the docs-read preliminaries below are superseded where
+they conflict).**
+- **T1/T3 — TSF joins SEG at the drift-axis endpoint:** two-sided content-hash
+  links, drift on content change alone (no manual bump), stored anonymous
+  stamps (the sha IS the stamp; `sha_link` covers both endpoint item hashes).
+  Granularity: normalized item content, not raw bytes (whitespace edits
+  invisible); status is derived by comparison — reverts auto-clear; items are
+  born reviewed. → comparison §1 endpoint caveat LANDS.
+- **T2 — no suspicion closure:** adjacent links only; per-link manual clearing;
+  no auto-clear on descendant re-affirmation (contrast DEC-005). SEG's "stored
+  affirmation + derived closure" combination survives on the derived half.
+- **T4 — first content-bound source reference in the set:** referenced-file
+  edits flip the premise and both incident links (reference sha folded into
+  the item hash); `SourceSpanReference` = DEC-003's locate-then-hash shape as
+  an abstract DIY extension base (span granularity not built-in).
+- **T5 — the evidence wall is crossed AND the §15 hypothesis is implemented:**
+  SME leaf scores (frontmatter, [0,1]) roll up as a hardwired mean, recomputed
+  statelessly; **suspect state gates the score** (unreviewed ⇒ 0, propagates:
+  0.73333 → 0.53333 observed) — prediction refuted the informative way; and
+  `score:` is OUTSIDE the item hash — the trust number is never affirmed.
+  → design summary §15 routed to FSM: an independent implementation of the
+  hypothesis.
+- **T6/T7 — commitment as data, not as invariant (the record-vs-recompute
+  foil, maximal strength):** the export artifact carries `/resolved/sha`, a
+  flat recomputable root over graph + scores (beyond rtemsspec: results
+  included) — and NOTHING verifies it: schema-check-only import; a tampered
+  score or guarantee text inside the artifact passes silently
+  (`ArtifactReference` binds to *stored* shas, never recomputed); honest
+  re-publish DOES prompt downstream review. Scores travel; adoption is
+  SME-mediated; no signature; needs/assumptions half not exercised.
+- **T8 — hosting/generation demonstrated at the semantics level:** TSF's
+  entire score calculus (mean + suspect-gate + unscored-is-zero) reproduced
+  as ~10 stratified clingo rules with exact numeric parity
+  (`research/spikes/tsf/t8_clingo_score.lp`: 73333/53333 = trudag's
+  0.73333/0.53333). Novelty caveat: Rushby/AdvoCATE check still gates any
+  generation claim.
+- Probe hygiene: two initial no-op-sed probes caught and re-run verified
+  (RESULTS "hygiene note") — rule: no null-result reading without a verified
+  non-empty diff.
+
+**Registration (2026-07-06, superseded where marked):**
 **Goal.** Position SEG against the one *framework*-level entrant: TSF is not another
 point on the tool spectra but the other pole of the same design space — an argument
 graph with artifacts at the fringe, vs SEG's artifact graph with the argument at the
@@ -374,7 +414,7 @@ frozen before execution, RESULTS.md during), fixture mirroring the SEG worked fr
 recast as statements; install trudag/dotstop (PyPI or gitlab.eclipse.org/eclipse/tsf),
 pin the version in RESULTS. Matrix column added on execution (unlike WP-6, this *is*
 exercisable tooling). Q8 lands in notes + paper seed, not the matrix.
-**Findings.** — (spike pending; docs-read preliminaries above are not findings)
+**Findings.** See the Findings block at the top of this WP (2026-07-07).
 
 ## 5. Output & downstream use
 
@@ -390,6 +430,9 @@ exercisable tooling). Q8 lands in notes + paper seed, not the matrix.
   (pages.eclipse.dev/eclipse/tsf/tsf + gitlab.eclipse.org/eclipse/tsf/tsf,
   trudag version-pinned at spike time).
 - WP-7 outcomes propagate to **three** standing edits: the drift-axis endpoint caveat
-  in `seg_tool_comparison.md` §1, the dotstop second-churn-datapoint extension to its
-  §3, and the §15 TSF-hypothesis update in
-  `development/design/knowledge_graph_design_summary.md` (owner: FSM — cross-worktree).
+  in `seg_tool_comparison.md` §1 (**landed 2026-07-07**), the dotstop
+  second-churn-datapoint extension to its §3 (**landed 2026-07-07**), and the §15
+  TSF-hypothesis update in `development/design/knowledge_graph_design_summary.md`
+  (owner: FSM — cross-worktree; **T5 gives the content**: TSF independently
+  implements the hypothesis — suspect gates the score, unreviewed contributes 0 —
+  while its trust number itself sits outside the affirmation boundary).
