@@ -351,6 +351,13 @@ on"). Initial-object statement: all semantics factor through `ℕ[X]` uniquely.
 aggregation provenance needs the semimodule extension (ADT 2011). Degenerates
 gracefully here; cite it alongside GKT 2007 whenever the score edge is
 formalized.
+
+**Runnable companion (2026-07-08):**
+`research/prototypes/demos/seg_demo_provenance_polynomial.py` — this section's
+construction executed and self-checked on a minimal SEG verdict (two discharge
+legs + roll-up + the redundancy rule audit): the polynomial built symbolically
+over ℕ[X], then evaluated as Boolean verdict, proof count, Viterbi confidence,
+and drift-gated valuation. All §6.8 claims assert-guarded.
 - ~~The Rushby/AdvoCATE kin check~~ **resolved 2026-07-07, sharpened by the
   ETB-2024 read** (all four primaries read; outcome in `seg_prior_art.md`,
   two-lineages honesty flag): generation-as-such is occupied (Basir/Denney/

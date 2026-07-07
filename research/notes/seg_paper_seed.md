@@ -191,6 +191,13 @@ Finkelstein).
 - The three-party SPDX FuSa round-trip (`research/prototypes/spdx-v3.1-exchange/`) —
   producer → supplier → integrator; three BOMs conforming under federated SHACL; the
   seal rejects a dropped assumption and a swapped implementation (DEC-020/028).
+- `seg_demo_provenance_polynomial.py` — the provenance triangle
+  (`seg_tsf_duality.md` §6.2/§6.8) made runnable: a minimal SEG verdict's
+  polynomial built symbolically over ℕ[X], self-checked, then evaluated as
+  Boolean verdict / proof count / Viterbi confidence / drift-gated valuation;
+  includes the exponent-detects-degenerate-redundancy rule audit. Companion:
+  `research/spikes/tsf/t8_clingo_score.lp` (TSF's score calculus as a
+  ruleset, exact numeric parity with trudag).
 - Six standing clingo gates behind DEC-018…024 (obligation, contract vector, forward ×2,
   compliant-item, conformsTo), each proven verdict-invariant before its decision landed.
 
