@@ -494,17 +494,21 @@ Added 2026-07-06 (two-lineages section + duality note; ALL unverified stubs):
 - **GoodenoughWeinstockKlein2012** — J. Goodenough, C. Weinstock, A. Klein,
   "Toward a Theory of Assurance Case Confidence," SEI CMU/SEI-2012-TR-002, 2012.
   (eliminative induction; verify report number)
-- **BloomfieldLittlewoodConfidence** — R. Bloomfield, B. Littlewood — confidence /
-  multi-legged dependability arguments (exact paper TBD: DSN 2003 "Multi-legged
-  Arguments" or the later confidence-in-claims line; pick during hardening).
+- **LittlewoodWright2007MultiLegged** — B. Littlewood, D. Wright, "The Use of
+  Multi-legged Arguments to Increase Confidence in Safety Claims for
+  Software-based Systems: A Study Based on a BBN Analysis of an Idealised
+  Example," IEEE TSE 33(5), pp. 347–365, 2007 (resolved via Rushby's ref [17];
+  was the "BloomfieldLittlewoodConfidence — exact paper TBD" stub). (confidence
+  quantification cluster)
 - **DenneyPaiPohl2012AdvoCATE** — E. Denney, G. Pai, J. Pohl, "AdvoCATE: An
   Assurance Case Automation Toolset," SAFECOMP 2012 Workshops (SASSUR), LNCS
   7613, Springer, 2012. **[verified 2026-07-07 via search; venue/volume from
   publisher listing]**
 - **DenneyPai2018ToolSupport** — E. Denney, G. Pai, "Tool Support for Assurance
-  Case Development," Automated Software Engineering (journal; NASA NTRS
-  20170011550 manuscript **read in full 2026-07-07** — zero hash/staleness
-  content; verify final vol/pages before cite). (argument auto-generation kin)
+  Case Development," Automated Software Engineering 25(3), pp. 435–499, 2018
+  (vol/pages from ETB-2024's bibliography [10]; NASA NTRS 20170011550
+  manuscript **read in full 2026-07-07** — zero hash/staleness content).
+  (argument auto-generation kin)
 - **BasirDenneyFischer2009** — N. Basir, E. Denney, B. Fischer, "Deriving Safety
   Cases from Automatically Constructed Proofs," 4th IET Intl. Conf. on System
   Safety, London, 2009. **[found as Rushby's ref [2]; the origin of the
@@ -520,8 +524,8 @@ Added 2026-07-06 (two-lineages section + duality note; ALL unverified stubs):
 - **CruanesEtAl2014ETBSemantics** — S. Cruanes, S. Heymans, I. Mason, S. Owre,
   N. Shankar, "The Semantics of Datalog for the Evidential Tool Bus (Extended
   Abstract)," Futatsugi Festschrift (Specification, Algebra, and Software),
-  LNCS 8373, Springer, 2014. **[read in full 2026-07-07]** — positive-fragment
-  restriction stated on p.4.
+  LNCS 8373, pp. 256–275, Springer, 2014 (pages from cyberlogic's [CHM+14]).
+  **[read in full 2026-07-07]** — positive-fragment restriction stated on p.4.
 - **SorokinEtAl2024ETBContinuous** — L. Sorokin, R. Bouchekir, T. A. Beyene,
   B. H.-C. Liao, A. Molin, "Towards Continuous Assurance Case Creation for ADS
   with the Evidential Tool Bus," arXiv:2403.01918, 2024 (fortiss/DENSO, FOCETA;
@@ -547,6 +551,28 @@ Added 2026-07-06 (two-lineages section + duality note; ALL unverified stubs):
 - **GreenKarvounarakisTannen2007** — T. J. Green, G. Karvounarakis, V. Tannen,
   "Provenance Semirings," PODS 2007. (the duality note §6 universal object;
   survey the negation/monus follow-ups before citing for stratified rulesets)
+Second-order stubs (cited *by* papers read this session, not themselves read —
+the dynamic-assurance-case cluster + one pathology support; skim only if Paper 2's
+related work needs them):
+
+- **Warg2019ContinuousAssurance** — F. Warg, H. Blom, J. Borg, R. Johansson,
+  "Continuous Deployment for Dependable Systems with Continuous Assurance
+  Cases," ISSREW 2019, pp. 318–325. (from ETB-2024's related work — the
+  dynamic-assurance-case line)
+- **Ramakrishna2020ACG** — S. Ramakrishna, C. Hartsell, A. Dubey, P. Pal,
+  G. Karsai, "A Methodology for Automating Assurance Case Generation,"
+  arXiv:2003.05388, 2020. (ETB-2024 positions ETB against it: ACG generates
+  from a manually curated evidence store, "lacks a mechanism to support
+  dynamic safety assurance")
+- **Hawkins2021AMLAS** — R. Hawkins, C. Paterson, C. Picardi, Y. Jia,
+  R. Calinescu, I. Habli, "Guidance on the Assurance of Machine Learning in
+  Autonomous Systems (AMLAS)," 2021. (pattern-instantiation methodology for
+  ML components; ETB-2024 notes it does not cover automated maintenance)
+- **Greenwell2006Fallacies** — W. S. Greenwell, J. C. Knight, C. M. Holloway,
+  J. J. Pease, "A Taxonomy of Fallacies in System Safety Arguments," 24th
+  Intl. System Safety Conference, 2006. (from Rushby's refs — empirical
+  support for lineage-B pathology (a): real cases contain flawed reasoning)
+
 - **EclipseTSF** — Eclipse Trustable Software Framework, pages.eclipse.dev/
   eclipse/tsf/tsf + gitlab.eclipse.org/eclipse/tsf/tsf (retrieved 2026-07-06;
   pin trudag version at WP-7 spike time).
@@ -560,8 +586,8 @@ Added 2026-07-06 (two-lineages section + duality note; ALL unverified stubs):
   continuous-assurance; outcome + final claim wording in the two-lineages
   section's honesty flag — NB the 2024 read *sharpened* the wording: mechanical
   liveness-under-change is occupied; claim the assurance-state half).
-  Remaining: verify BasirDenneyFischer2009 pages and DenneyPai2018 final
-  vol/pages. ~~Read RuessShankar2023Cyberlogic~~ **done 2026-07-07**
+  Remaining: verify BasirDenneyFischer2009 pages (~~DenneyPai2018 vol/pages~~
+  resolved: ASE 25(3), 435–499). ~~Read RuessShankar2023Cyberlogic~~ **done 2026-07-07**
   (complementary; assessment in the Seam section — DEC-026 gets its semantics,
   DEC-017 its logical form). New (low priority): skim CyberGSN
   (BeyeneCarlan2021) before Paper-1 related work freezes; watch ETB's
