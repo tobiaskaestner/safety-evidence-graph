@@ -362,9 +362,33 @@ signature, no cross-organization recompute story in any of the three. So the
 claimable form: **not** "we generate arguments" but "the argument view is one
 lawful projection out of a content-committed, drift-tracked, affirmation-gated
 graph — and stays live under change rather than being generated once."
-Watch item: the ETB line is moving toward maintenance — "Towards Continuous
-Assurance Case Creation for ADS with the ETB" (arXiv:2403.01918, 2024;
-abstract-level only, full text unread) — re-check before Paper 2 submission.
+
+**Watch item CLOSED (full read 2026-07-07) — with a sharpening.** The 2024 ETB
+paper (Sorokin/Bouchekir/Beyene, fortiss + DENSO; AVP case study; ETB2 at
+git.fortiss.org/etb2) goes further than expected: evidence artifacts are
+"managed internally by ETB using a **hash identifier**" (content hashes visible
+in their Fig. 6 output), and §3.6 has real **incremental maintenance** — a
+"lightweight static dependency computation procedure" computes the impacted
+sub-tree on updates, splitting *directly impacted* goals (always re-run) from
+*indirectly impacted* ones (re-run only if a direct re-run changed an
+artifact). So the "stays live under change" clause is **partially occupied in
+its mechanical sense** — rtemsspec-style recompute-on-change, now on the
+argument side. The delta list, re-checked against this paper: **no affirmation
+or review state** (updates trigger re-runs; nothing is attested, nothing is
+suspect; workflow validation "have to be done manually by the user", no
+recorded state); **positive Datalog** throughout (goal conjunctions; no
+negation — the B factor remains inexpressible); **no commitment/seal** over
+the claims DB; distribution = multi-node evidence collection under mutual
+trust (no cross-org semantics; no verdict-travel concern surfaces because
+nodes simply trust claims); confidence argumentation explicitly future work.
+**Final claim wording:** the argument view is a projection out of a
+content-committed graph that stays live under change *with assurance-state
+semantics* — the projection knows what a human vouched for, what that vouching
+no longer covers (suspect), and carries a seal a third party recomputes.
+Mechanical re-derivation alone is now prior art twice over (rtemsspec WP-6;
+ETB-2024). New lead from their bibliography, stubbed below: Ruess & Shankar,
+"Evidential transactions with cyberlogic" (2023) — authority/attestation
+semantics ("K says P"); brushes the *exchange* story; unread.
 
 ---
 
@@ -474,9 +498,16 @@ Added 2026-07-06 (two-lineages section + duality note; ALL unverified stubs):
   Abstract)," Futatsugi Festschrift (Specification, Algebra, and Software),
   LNCS 8373, Springer, 2014. **[read in full 2026-07-07]** — positive-fragment
   restriction stated on p.4.
-- **ETBContinuous2024** — "Towards Continuous Assurance Case Creation for ADS
-  with the Evidential Tool Bus," arXiv:2403.01918, 2024. (watch item;
-  abstract-level only — full text unread)
+- **SorokinEtAl2024ETBContinuous** — L. Sorokin, R. Bouchekir, T. A. Beyene,
+  B. H.-C. Liao, A. Molin, "Towards Continuous Assurance Case Creation for ADS
+  with the Evidential Tool Bus," arXiv:2403.01918, 2024 (fortiss/DENSO, FOCETA;
+  ETB2: git.fortiss.org/etb2). **[read in full 2026-07-07]** — hash-identified
+  evidence; change-impact incremental re-derivation; no affirmation state, no
+  negation, no seal.
+- **RuessShankar2023Cyberlogic** — H. Ruess, N. Shankar, "Evidential
+  Transactions with Cyberlogic," 2023. (authority/attestation semantics —
+  exchange-story kin; **unread**, check before Paper 1 hardens the
+  signing/certificate story)
 - **Kelly2001ModularGSN** — T. Kelly, compositional/modular safety case
   construction (exact cite TBD; away goals, argument contracts). (composition
   ancestor of TSF's needs graph and modular exchange)
@@ -491,11 +522,14 @@ Added 2026-07-06 (two-lineages section + duality note; ALL unverified stubs):
 - Requirements traceability lineage — **elaborated 2026-07-06** ("The two
   lineages" section); remaining work is stub verification (Ramesh & Jarke,
   grand-challenges chapter authors).
-- Argument-generation kin — **RESOLVED 2026-07-07** (primary reads: Rushby
-  SSS10, ETB semantics 2014, AdvoCATE ASE manuscript; outcome + claimable
-  wording in the two-lineages section's honesty flag). Remaining: read
-  arXiv:2403.01918 (ETB continuous-assurance, 2024) before Paper 2 submission;
-  verify BasirDenneyFischer2009 pages and DenneyPai2018 final vol/pages.
+- Argument-generation kin — **RESOLVED 2026-07-07, all four primaries read**
+  (Rushby SSS10, ETB semantics 2014, AdvoCATE ASE manuscript, ETB-2024
+  continuous-assurance; outcome + final claim wording in the two-lineages
+  section's honesty flag — NB the 2024 read *sharpened* the wording: mechanical
+  liveness-under-change is occupied; claim the assurance-state half).
+  Remaining: verify BasirDenneyFischer2009 pages and DenneyPai2018 final
+  vol/pages; read RuessShankar2023Cyberlogic before the Paper-1
+  signing/certificate story hardens.
 - IEC 61508 itself + any existing tool-qualification / evidence-management prior art.
 - ShEx primary citation (exact author/year/venue) — currently a stub.
 - Verkle trees (if `flat`/`deep` discussion wants the modern commitment frontier).

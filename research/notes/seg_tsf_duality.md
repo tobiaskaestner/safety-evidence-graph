@@ -264,16 +264,20 @@ side.**
   the embedding asymmetry was only exercised in the direction that works (the
   fixture is uniform by construction — no hand-authored non-uniform TSF graph
   was probed to watch the reverse direction fail).
-- ~~The Rushby/AdvoCATE kin check~~ **resolved 2026-07-07** (primary reads;
-  outcome in `seg_prior_art.md`, two-lineages honesty flag): generation-as-such
-  is occupied (Basir/Denney/Fischer 2009, AdvoCATE, ETB); the surviving claim is
-  generation **from a content-committed, drift-tracked, affirmation-gated graph,
-  live under change**. Two bonuses for this note: Rushby's `good_doc` is an
-  identified affirmation-as-axiom gating derivation — the B factor of §6.7 with
-  an independent 2010 pedigree, minus content binding; and **ETB's Datalog is
-  the positive fragment**, so the suspect-gate (`not reviewed(X)`) is outside
-  its language — the §6.7 factorization needs exactly the stratified step the
-  kin does not have.
+- ~~The Rushby/AdvoCATE kin check~~ **resolved 2026-07-07, sharpened by the
+  ETB-2024 read** (all four primaries read; outcome in `seg_prior_art.md`,
+  two-lineages honesty flag): generation-as-such is occupied (Basir/Denney/
+  Fischer 2009, AdvoCATE, ETB), and ETB-2024 additionally occupies *mechanical*
+  liveness-under-change (hash-identified evidence + change-impact incremental
+  re-derivation — rtemsspec's move on the argument side). The surviving claim
+  is the **assurance-state half**: the projection knows what a human vouched
+  for and what that vouching no longer covers, and carries a recomputable seal.
+  Two bonuses for this note: Rushby's `good_doc` is an identified
+  affirmation-as-axiom gating derivation — the B factor of §6.7 with an
+  independent 2010 pedigree, minus content binding; and **ETB's Datalog is the
+  positive fragment (2014 and 2024 alike)**, so the suspect-gate
+  (`not reviewed(X)`) is outside its language — the §6.7 factorization needs
+  exactly the stratified step the kin does not have.
 
 ### 6.7 The factorization observation (2026-07-07, from T5 — beyond what was predicted)
 

@@ -336,9 +336,10 @@ they conflict).**
   entire score calculus (mean + suspect-gate + unscored-is-zero) reproduced
   as ~10 stratified clingo rules with exact numeric parity
   (`research/spikes/tsf/t8_clingo_score.lp`: 73333/53333 = trudag's
-  0.73333/0.53333). Novelty caveat **resolved 2026-07-07** (primary reads,
-  `seg_prior_art.md` two-lineages honesty flag): generation-as-such is occupied;
-  claim generation *from a committed, drift-tracked graph, live under change*.
+  0.73333/0.53333). Novelty caveat **resolved 2026-07-07, all four primaries
+  read incl. ETB-2024** (`seg_prior_art.md` two-lineages honesty flag):
+  generation-as-such AND mechanical liveness-under-change are occupied; claim
+  the assurance-state half (affirmation-aware, suspect-aware, sealed).
 - Probe hygiene: two initial no-op-sed probes caught and re-run verified
   (RESULTS "hygiene note") — rule: no null-result reading without a verified
   non-empty diff.
