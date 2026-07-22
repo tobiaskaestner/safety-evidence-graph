@@ -944,9 +944,23 @@ DEC-001, DEC-002).
   but a candidate for consolidation to a single term in a future schema pass.
 ---
  
-## 15. Separate Session: TSF Layer Exploration
- 
-See `tsf_layer_exploration_plan.md`. Key hypothesis: the integrity layer is
-a precondition checker for the trust scoring layer. A clean integrity state
-is necessary but not sufficient for a high trust score.
+## 15. TSF — hypothesis resolved (2026-07)
+
+The exploration this section anticipated has been run (WP-7 spike, trudag
+0.4.0, pre-registered probes T1–T8 — `research/notes/seg_tool_landscape.md`;
+the plan file once referenced here did not survive the repo migration). The
+hypothesis — *the integrity layer is a precondition checker for the trust
+scoring layer; a clean integrity state is necessary but not sufficient for a
+high trust score* — is **confirmed and sharpened to a factorization law**:
+TSF's own implementation computes T(s) = B(s)·R(s), a Boolean integrity
+factor gating a real confidence recurrence — an unreviewed statement
+contributes zero (probe T5), and B alone never raises a score ("necessary
+but not sufficient" is exactly this factorization). The coupling is
+one-directional, and TSF's trust numbers sit *outside* its affirmation
+boundary (never content-bound) — a defect SEG avoids by construction: any
+future quantitative confidence layer enters as a second factor under the
+same gate, with its inputs committed (`research/notes/seg_tsf_duality.md`
+§6.7). The broader relationship — TSF as a candidate instance of SEG's
+meta-model; the argument view as a derived, write-only projection — lives in
+the duality note (§1–§6) and the WP-7 record.
  
