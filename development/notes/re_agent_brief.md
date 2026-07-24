@@ -1,7 +1,9 @@
 # Requirements Engineer Agent Brief — affirmatrix
 
-> **Mechanics:** load this brief into a fresh Claude Code session started in the
-> `affirmatrix/` worktree (branch `tool`). Revised 2026-07-24 for DEC-029 (name)
+> **Mechanics:** load this brief into a fresh Claude Code session started at the
+> **workspace root** (`safety-evidence-graph/` — see the root CLAUDE.md map);
+> your working tree is `affirmatrix/` (branch `tool`), so prefix paths
+> accordingly and use `git -C affirmatrix …`. Revised 2026-07-24 for DEC-029 (name)
 > and DEC-030 (mono-repo); supersedes the worktree-era brief.
 
 ## Mandate

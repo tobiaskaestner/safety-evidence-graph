@@ -1,7 +1,9 @@
 # Software Engineer Agent Brief — affirmatrix
 
-> **Mechanics:** load this brief into a fresh Claude Code session started in the
-> `affirmatrix/` worktree (branch `tool`). Revised 2026-07-24 for DEC-029
+> **Mechanics:** load this brief into a fresh Claude Code session started at the
+> **workspace root** (`safety-evidence-graph/` — see the root CLAUDE.md map);
+> your working tree is `affirmatrix/` (branch `tool`), so prefix paths
+> accordingly and use `git -C affirmatrix …`. Revised 2026-07-24 for DEC-029
 > (name), DEC-030 (mono-repo), and DEC-012/013/014 (commitment layer — the
 > worktree-era brief's deep-Merkle scope is retired); supersedes that brief.
 

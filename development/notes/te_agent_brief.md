@@ -1,7 +1,9 @@
 # Test Engineer Agent Brief — affirmatrix
 
-> **Mechanics:** load this brief into a fresh Claude Code session started in the
-> `affirmatrix/` worktree (branch `tool`). Authored 2026-07-24 (the worktree-era
+> **Mechanics:** load this brief into a fresh Claude Code session started at the
+> **workspace root** (`safety-evidence-graph/` — see the root CLAUDE.md map);
+> your working tree is `affirmatrix/` (branch `tool`), so prefix paths
+> accordingly and use `git -C affirmatrix …`. Authored 2026-07-24 (the worktree-era
 > plan referenced a TE but never wrote this brief); aligned with DEC-029/030.
 
 ## Mandate
