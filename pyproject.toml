@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "affirmatrix"
+version = "0.0.1.dev0"
+description = "Sealed, drift-tracking safety evidence graphs with human affirmation and recomputable verdicts"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+authors = [{ name = "Tobias Kaestner" }]
+keywords = ["safety", "assurance-case", "traceability", "evidence", "sphinx-needs", "spdx"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Quality Assurance",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "ruff>=0.8",
+    { include-group = "docs" },
+]
+docs = [
+    "sphinx>=8",
+    "sphinx-needs>=5",
+    "sphinx-autobuild",
+    "pyyaml>=6",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/affirmatrix"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests", "doc"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

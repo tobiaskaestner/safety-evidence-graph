@@ -1,0 +1,19 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Virtual environments
+.venv/
+
+# Test / lint caches
+.pytest_cache/
+.ruff_cache/
+.coverage
+
+# Doc build output (python -m doc builds into build/)
+doc/**/_build/
