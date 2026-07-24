@@ -41,6 +41,7 @@ holds it. This index is the cross-cutting map.
 | 027 | research | Explicit SEG node typing in the BOM (`seg:type=guarantee`) |
 | 028 | research | Implementation pin folded into the contract member (`sha1` stand-in) |
 | 029 | research | Project name: **affirmatrix**; "SEG/safety evidence graph" stays the artifact term |
+| 030 | dev | Affirmatrix repo = mono-repo (orphan branch `tool`); four-branch topology demoted to conformance fixture (refines 002) |
 
 ## Supersession & cross-stream links
 

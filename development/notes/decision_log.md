@@ -278,3 +278,49 @@ the diff feature itself is reversible and can come later.
   the judgment at those directly/doubly-outdated sites.
 ---
  
+
+## DEC-030 — The affirmatrix tool repo is a mono-repo (orphan branch `tool` in the Phase-B workspace); the four-branch topology is demoted to conformance fixture
+
+**Status:** Accepted, 2026-07-24 (refines DEC-002; workspace/topology only — no engine change)
+
+**Decision.**
+- The **affirmatrix** tool (DEC-029) is developed as an ordinary **mono-repo** on a
+  fresh **orphan branch `tool`**, checked out as worktree `affirmatrix/` in the
+  Phase-B workspace. Clean-room history from commit one (no research history
+  carried); Apache-2.0; publishable by pushing the branch to its own origin.
+- Stream separation is carried inside the mono-repo by:
+  (a) **content hashes** — the engine's identity mechanism never depended on git
+  topology (AC-014 seam; `seg.yaml` may map repoA…repoG to one root);
+  (b) **scoped version tags** per document (cygnus pattern, `docs/srs/v*`) — the
+  document-root granularity DEC-023's compatibility check consumes;
+  (c) **path-based ownership** (CODEOWNERS/review rules) replacing branch
+  ownership; agent briefs' "stay in your worktree" becomes "stay in your paths".
+- The existing `a-reqs`/`b-impl`/`c-results`/`g-graph` worktrees are **retained
+  and demoted** from primary workspace to **multi-repo conformance fixture**: the
+  four-stream topology remains a supported configuration, exercised by
+  integration tests in CI. DEC-002 is refined, not repealed.
+- Documentation topology: cygnus-style federation — one registry
+  (`doc/documents.yaml`), thin per-document conf shims, shared typed-needs
+  config; documents: manual (Diátaxis + arc42 + ADRs), requirement-specification,
+  test-specification, test-report. Build orchestration is a first-party
+  `python -m doc` driver (two-stage index/build passes) — no CMake.
+
+**Rationale.**
+- OSS contributor ergonomics: clone-and-build must not require a four-worktree
+  dance. Cygnus demonstrates requirement/test/report documents federate cleanly
+  inside one repo with registry-derived cross-references.
+- Everything DEC-002's branches enforced has a mono-repo carrier (hashes, scoped
+  tags, path ownership) EXCEPT one: the topology made requirement+impl coupling
+  physically impossible, enforcing "requirements lead code". **Accepted loss:**
+  that ordering moves from topology into process/review discipline.
+- **Guarded risk:** the multi-repo flagship case must not rot in a mono-repo
+  daily loop — hence the fixture demotion rather than deletion; the four-stream
+  workspace is CI-exercised, not abandoned.
+
+**Consequences.**
+1. New worktree `affirmatrix/` (branch `tool`, orphan) scaffolded from the
+   firmhold skeleton + cygnus doc federation; repo-local ADR-0001 (name,
+   mapping to DEC-029) and ADR-0002 (this topology, mapping to DEC-030).
+2. The Phase-B agent briefs need a path-scope revision when Phase B resumes.
+3. `seg.yaml` gains a mono-repo mapping variant once the engine lands in the
+   tool repo.
