@@ -1,0 +1,60 @@
+# Central cross-document reference registry (cygnus pattern, simplified).
+#
+# Every Sphinx document in this doc set is described here ONCE. Each conf.py
+# loads this file through doc/_extensions/docrefs.py and derives all of its
+# cross-document wiring from it:
+#
+#   * intersphinx_mapping     -> every OTHER document
+#   * needs_external_needs    -> every OTHER document with `needs: true`
+#   * reference_groups        -> cross-document navigation (html_context)
+#
+# To add a document: add a directory with a thin conf.py shim, and one entry
+# here. Nothing else changes. The `python -m doc` driver builds the set in two
+# passes so the derived cross-references resolve (stage 1 publishes
+# objects.inv + needs.json for every document; stage 2 rebuilds against them).
+#
+# Fields per document:
+#   title    Human-readable name (navigation).
+#   group    Id of a declared group (navigation section).
+#   prefix   intersphinx namespace + needs id prefix. Unique across registry.
+#   needs    true -> the document exports needs.json and is importable as
+#            sphinx-needs external needs by every other document.
+#   version_scope   Scoped git-tag namespace for the document's own version
+#            line (git describe --match "<scope>/v*"), e.g. "docs/srs".
+
+base_url: "http://localhost:8000/"
+
+groups:
+  - id: manual
+    title: "Manual"
+  - id: specifications
+    title: "Specifications"
+  - id: evidence
+    title: "Evidence"
+
+documents:
+  - id: manual
+    title: "Manual"
+    group: manual
+    prefix: man
+    needs: false
+
+  - id: requirement-specification
+    title: "Requirement Specification"
+    group: specifications
+    prefix: srs
+    needs: true
+    version_scope: docs/srs
+
+  - id: test-specification
+    title: "Test Specification"
+    group: specifications
+    prefix: sts
+    needs: true
+    version_scope: docs/sts
+
+  - id: test-report
+    title: "Test Report"
+    group: evidence
+    prefix: str
+    needs: true

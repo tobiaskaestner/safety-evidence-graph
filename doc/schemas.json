@@ -1,0 +1,45 @@
+{
+  "$schema": "https://sphinx-needs.readthedocs.io/en/latest/schema.json",
+  "schemas": [
+    {
+      "id": "sreq-refines-sys",
+      "severity": "warning",
+      "message": "A software requirement should refine a system requirement",
+      "select": {
+        "properties": { "type": { "const": "sreq" } }
+      },
+      "validate": {
+        "network": {
+          "refines": {
+            "contains": {
+              "local": {
+                "properties": { "type": { "const": "sys" } }
+              }
+            },
+            "minContains": 1
+          }
+        }
+      }
+    },
+    {
+      "id": "tspec-verifies-req",
+      "severity": "warning",
+      "message": "A test specification should verify a requirement",
+      "select": {
+        "properties": { "type": { "const": "tspec" } }
+      },
+      "validate": {
+        "network": {
+          "verifies": {
+            "contains": {
+              "local": {
+                "properties": { "type": { "enum": ["sreq", "sys"] } }
+              }
+            },
+            "minContains": 1
+          }
+        }
+      }
+    }
+  ]
+}

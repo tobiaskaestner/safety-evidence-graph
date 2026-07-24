@@ -1,0 +1,60 @@
+# Shared sphinx-needs configuration for all affirmatrix documents.
+# Loaded by conf_common.py via needs_from_toml.
+#
+# Need types follow the SEG ID conventions (design of record):
+#   SEG-SYS-nnn (system requirement), SEG-SREQ-nnn (software requirement),
+#   SEG-TS-nnn (test specification). Link types carry the SEG edge vocabulary;
+#   sphinx-needs gives them navigation semantics only — the verdict semantics
+#   live in the affirmatrix engine (that split is the point of the tool).
+
+[needs]
+id_required = true
+id_regex = "^[A-Z0-9_-]{5,}"
+
+[[needs.types]]
+directive = "sys"
+title = "System Requirement"
+prefix = "SEG-SYS-"
+color = "#BFD8D2"
+style = "node"
+
+[[needs.types]]
+directive = "sreq"
+title = "Software Requirement"
+prefix = "SEG-SREQ-"
+color = "#DF744A"
+style = "node"
+
+[[needs.types]]
+directive = "tspec"
+title = "Test Specification"
+prefix = "SEG-TS-"
+color = "#DCB239"
+style = "node"
+
+[[needs.types]]
+directive = "outcome"
+title = "Test Outcome"
+prefix = "SEG-OUT-"
+color = "#9856a5"
+style = "node"
+
+# ---------------------------------------------------------------------------
+# Link types — the SEG edge vocabulary (navigation only; semantics in-engine)
+# ---------------------------------------------------------------------------
+
+[needs.links.refines]
+incoming = "is refined by"
+outgoing = "refines"
+
+[needs.links.verifies]
+incoming = "is verified by"
+outgoing = "verifies"
+
+[needs.links.implements]
+incoming = "is implemented by"
+outgoing = "implements"
+
+[needs.links.reports]
+incoming = "is reported by"
+outgoing = "reports"
