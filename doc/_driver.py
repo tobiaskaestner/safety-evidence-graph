@@ -108,6 +108,22 @@ def cmd_live(args: argparse.Namespace) -> None:
     raise SystemExit(subprocess.run(cmd, env=env).returncode)
 
 
+def cmd_serve(args: argparse.Namespace) -> None:
+    """Serve the built federation (deploy tree) over HTTP."""
+    import http.server
+
+    if not DEPLOY.exists():
+        sys.exit("nothing built yet — run `python -m doc build` first")
+    handler = http.server.SimpleHTTPRequestHandler
+
+    class Handler(handler):
+        def __init__(self, *a, **kw):
+            super().__init__(*a, directory=str(DEPLOY), **kw)
+
+    print(f"serving {DEPLOY} at http://localhost:{args.port}/ (landing: /manual/html/)")
+    http.server.ThreadingHTTPServer(("", args.port), Handler).serve_forever()
+
+
 def cmd_clean(args: argparse.Namespace) -> None:
     targets = args.docs or doc_ids(registry())
     for doc in targets:
@@ -135,6 +151,10 @@ def main(argv: list[str] | None = None) -> None:
     p_live = sub.add_parser("live", help="sphinx-autobuild live preview for one document")
     p_live.add_argument("doc")
     p_live.set_defaults(func=cmd_live)
+
+    p_serve = sub.add_parser("serve", help="serve the built federation over HTTP")
+    p_serve.add_argument("-p", "--port", type=int, default=8000)
+    p_serve.set_defaults(func=cmd_serve)
 
     p_clean = sub.add_parser("clean", help="remove build intermediates and deploy output")
     p_clean.add_argument("docs", nargs="*")
