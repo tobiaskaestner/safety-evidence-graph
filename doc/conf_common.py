@@ -53,6 +53,7 @@ def configure(namespace: dict, doc_dir: str | Path, project: str | None = None) 
         html_context={"reference_groups": docrefs.nav_groups(registry, folder)},
         html_theme="sphinx_rtd_theme",
         html_theme_options={"logo_only": False, "navigation_depth": 2},
+        html_logo=str(DOC_ROOT / "images" / "affirmatrix-logo-small.png"),
         # sphinx_rtd_dark_mode: start light, toggle lives in the sidebar
         default_dark_mode=False,
         templates_path=[str(DOC_ROOT / "_templates")],
