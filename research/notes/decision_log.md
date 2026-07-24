@@ -886,3 +886,51 @@ facet and DEC-012's retirement of `deep`)
 - The pin binds *which* implementation, not that it *satisfies* the guarantee — entailment remains the assessor's judgement (DEC-026).
 - The integrator does not yet wire the pinned implementation into its own `uses`/graph; only extraction + seal verification are implemented.
 - Document roots changed versus all prior bundles; any externally recorded pins from earlier snapshots are stale by construction.
+
+## DEC-029 — Project name: **affirmatrix**; "SEG / safety evidence graph" remains the artifact term
+
+**Status:** Accepted, 2026-07-24 (vocabulary/identity only — no verdict-rule change, no gate required)
+
+**Decision.**
+- The tool/project this research stage feeds (Phase B, `development/`) is named
+  **affirmatrix**. All future code, imports, CLI entry points, package names, and
+  public identity use `affirmatrix` (`affirmatrix.core`, …) in place of the working
+  name `seg`.
+- **"Safety evidence graph" (SEG) is retained as the *artifact* term** — the thing
+  the tool builds and seals — exactly as firmware is to firmhold: *affirmatrix
+  manages safety evidence graphs.* Research notes keep "SEG" in their established
+  technical sense; no retroactive rewrite.
+- Formation: Latin agent noun, *affirmatrix* — "she who affirms" (cf. executrix,
+  testatrix) — built on **affirmation**, the project's own term of art and the
+  landscape's verified missing mechanism (WP-1…7: no surveyed tool has a
+  content-bound human affirmation).
+
+**Rationale.**
+- **Concept ownership.** "Attest(ation)" belongs to the supply-chain vocabulary
+  (in-toto/SLSA); *affirmation* is SEG's distinctive mechanism — the name claims
+  the delta, not a neighbor's concept.
+- **Etymological kinship with the sibling project.** *affirmare* = *ad + firmare*,
+  from *firmus* — the same root as firmware/firmhold. firmhold keeps things firm;
+  affirmatrix makes things firm.
+- **The pun is load-bearing:** *a-firm-matrix* — a graph made firm — describes the
+  sealed evidence graph itself.
+- **Naming path** (candidates checked free on PyPI at decision time unless noted):
+  vouchsafe (killed: active Vouchsafe identity platform, GitHub org + npm taken),
+  fidelix (killed twice: Fidelix Oy building-automation company, Assemblin group;
+  and an existing Fidelix Linux distribution — a collision inside the very
+  Linux-safety ecosystem SEG addresses), attestrix (viable runner-up; minor
+  identity-project feature-name echo), vouchelix (viable, fully clean coinage).
+- **Availability sweep (2026-07-24):** affirmatrix free on PyPI, npm, GitHub
+  user/org; only two zero-star personal "daily affirmations" repos in GitHub
+  search. crates.io not confirmed (API blocked; check at registration time).
+
+**Consequences.**
+1. Secure the namespaces promptly (PyPI, GitHub org, domain as desired) — human
+   action, not yet done at decision time.
+2. Accepted risk: the "daily affirmations" wellness echo on first-page search
+   until the project outranks two dormant hobby repos.
+3. The Phase B scaffold adopts the firmhold documentation blueprint (Diátaxis +
+   arc42-shaped explanation + numbered ADRs + glossary); this entry maps to that
+   scaffold's ADR-0001 when the tool repo is created.
+4. Anyone searching working-name references (`seg`, briefs, commit history) needs
+   the mental mapping `seg → affirmatrix`; this entry is that mapping.

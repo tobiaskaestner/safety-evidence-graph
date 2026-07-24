@@ -40,6 +40,7 @@ holds it. This index is the cross-cutting map.
 | 026 | research | Assessor certificate = signature over `(hash(case), BOM)`; case ≠ Safety BOM |
 | 027 | research | Explicit SEG node typing in the BOM (`seg:type=guarantee`) |
 | 028 | research | Implementation pin folded into the contract member (`sha1` stand-in) |
+| 029 | research | Project name: **affirmatrix**; "SEG/safety evidence graph" stays the artifact term |
 
 ## Supersession & cross-stream links
 
