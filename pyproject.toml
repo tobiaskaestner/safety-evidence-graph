@@ -29,6 +29,8 @@ docs = [
     "sphinx>=8",
     "sphinx-needs>=5",
     "sphinx-autobuild",
+    "sphinx-rtd-theme",
+    "sphinx-rtd-dark-mode",
     "pyyaml>=6",
 ]
 

@@ -77,11 +77,11 @@ def nav_groups(registry: dict, me: str) -> list[dict]:
     base = _base_url(registry)
     groups = []
     for group in registry.get("groups", []):
-        docs = [
-            {"title": d["title"], "url": f"{base}/{d['id']}/html/", "current": d["id"] == me}
+        links = [
+            {"label": d["title"], "href": f"{base}/{d['id']}/html/", "current": d["id"] == me}
             for d in registry["documents"]
             if d.get("group") == group["id"]
         ]
-        if docs:
-            groups.append({"title": group["title"], "documents": docs})
+        if links:
+            groups.append({"title": group["title"], "links": links})
     return groups

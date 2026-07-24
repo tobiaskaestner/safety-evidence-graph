@@ -40,6 +40,7 @@ def configure(namespace: dict, doc_dir: str | Path, project: str | None = None) 
         extensions=[
             "sphinx.ext.intersphinx",
             "sphinx_needs",
+            "sphinx_rtd_dark_mode",  # RTD theme + light/dark switcher (firmhold)
         ],
         exclude_patterns=["_build"],
         # -- sphinx-needs: shared typed-needs configuration -------------------
@@ -50,5 +51,9 @@ def configure(namespace: dict, doc_dir: str | Path, project: str | None = None) 
         intersphinx_mapping=docrefs.intersphinx_for(registry, folder),
         needs_external_needs=docrefs.external_needs_for(registry, folder),
         html_context={"reference_groups": docrefs.nav_groups(registry, folder)},
-        html_theme=os.environ.get("AFFIRMATRIX_HTML_THEME", "alabaster"),
+        html_theme="sphinx_rtd_theme",
+        html_theme_options={"logo_only": False, "navigation_depth": 2},
+        # sphinx_rtd_dark_mode: start light, toggle lives in the sidebar
+        default_dark_mode=False,
+        templates_path=[str(DOC_ROOT / "_templates")],
     )

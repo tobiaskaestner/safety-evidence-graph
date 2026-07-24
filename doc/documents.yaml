@@ -22,7 +22,7 @@
 #   version_scope   Scoped git-tag namespace for the document's own version
 #            line (git describe --match "<scope>/v*"), e.g. "docs/srs".
 
-base_url: "http://localhost:8000/"
+base_url: "http://localhost:8881/"
 
 groups:
   - id: manual

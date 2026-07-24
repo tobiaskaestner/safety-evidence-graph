@@ -1,0 +1,22 @@
+{% extends "!layout.html" %}
+
+{# Cross-document navigation (cygnus pattern): the reference_groups come from
+   documents.yaml via docrefs.nav_groups() — one sidebar section per group,
+   linking every document of the federation. #}
+{% block menu %}
+  {{ super() }}
+  {% if reference_groups %}
+  <div class="toctree-wrapper compound">
+    {% for group in reference_groups %}
+    <p class="caption" role="heading"><span class="caption-text">{{ group.title }}</span></p>
+    <ul>
+      {% for link in group.links %}
+      <li class="toctree-l1{% if link.current %} current{% endif %}">
+        <a class="reference external" href="{{ link.href }}">{{ link.label }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endfor %}
+  </div>
+  {% endif %}
+{% endblock %}
