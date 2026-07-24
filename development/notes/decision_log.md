@@ -321,6 +321,6 @@ the diff feature itself is reversible and can come later.
 1. New worktree `affirmatrix/` (branch `tool`, orphan) scaffolded from the
    firmhold skeleton + cygnus doc federation; repo-local ADR-0001 (name,
    mapping to DEC-029) and ADR-0002 (this topology, mapping to DEC-030).
-2. The Phase-B agent briefs need a path-scope revision when Phase B resumes.
+2. The Phase-B agent briefs need a path-scope revision when Phase B resumes. *(Done 2026-07-24: RE + SWE briefs revised — incl. the DEC-012/014 commitment correction the SWE brief needed — and the missing TE brief authored; all three in `development/notes/`, session-per-role mechanics.)*
 3. `seg.yaml` gains a mono-repo mapping variant once the engine lands in the
    tool repo.
