@@ -98,3 +98,80 @@ Software requirements
 
    The commitment layer shall derive each node hash solely from the content
    hashes of the spans that node covers.
+
+.. sreq:: Leaf satisfaction rule
+   :id: SEG-SREQ-006
+   :refines: SEG-SYS-002
+
+   The satisfaction evaluator shall report a leaf requirement as satisfied
+   when, and only when, it carries at least one active verifies edge, at least
+   one active implements edge, and every test specification verifying it has a
+   passing outcome.
+
+.. sreq:: Non-leaf satisfaction rule
+   :id: SEG-SREQ-007
+   :refines: SEG-SYS-002
+
+   The satisfaction evaluator shall report a non-leaf requirement as satisfied
+   when, and only when, every requirement refining it is satisfied and every
+   verifies or implements edge it carries is active.
+
+.. sreq:: Satisfaction is evaluated over the whole graph
+   :id: SEG-SREQ-008
+   :refines: SEG-SYS-002
+
+   The satisfaction evaluator shall determine satisfaction from the whole
+   graph, never from a subset of it.
+
+.. sreq:: Verdicts repeat
+   :id: SEG-SREQ-009
+   :refines: SEG-SYS-002
+
+   The satisfaction evaluator shall produce the same verdict for the same
+   graph on every evaluation.
+
+.. sreq:: Evaluation leaves the graph unchanged
+   :id: SEG-SREQ-010
+   :refines: SEG-SYS-002
+
+   The satisfaction evaluator shall leave the graph unchanged when evaluating
+   it.
+
+.. sreq:: Direct outdatedness
+   :id: SEG-SREQ-011
+   :refines: SEG-SYS-003
+
+   While an affirmed edge's endpoint content differs from the content recorded
+   at its last affirmation and every strong edge it depends on is active, the
+   suspect detector shall report that edge as directly outdated.
+
+.. sreq:: Transitive suspicion
+   :id: SEG-SREQ-012
+   :refines: SEG-SYS-003
+
+   While an affirmed edge's endpoint content matches the content recorded at
+   its last affirmation and any strong edge it depends on is not active, the
+   suspect detector shall report that edge as transitively suspect.
+
+.. sreq:: Outdated on both counts
+   :id: SEG-SREQ-013
+   :refines: SEG-SYS-003
+
+   While an affirmed edge's endpoint content differs from the content recorded
+   at its last affirmation and any strong edge it depends on is not active,
+   the suspect detector shall report that edge as doubly outdated.
+
+.. sreq:: Active edges
+   :id: SEG-SREQ-014
+   :refines: SEG-SYS-003
+
+   While an affirmed edge's endpoint content matches the content recorded at
+   its last affirmation and every strong edge it depends on is active, the
+   suspect detector shall report that edge as active.
+
+.. sreq:: State derives from a recorded and a current record source
+   :id: SEG-SREQ-015
+   :refines: SEG-SYS-003
+
+   The suspect detector shall derive each edge's state from a recorded record
+   source and a current record source alone.

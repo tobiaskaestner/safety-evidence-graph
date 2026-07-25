@@ -13,7 +13,7 @@
           "refines": {
             "contains": {
               "local": {
-                "properties": { "type": { "const": "sys" } }
+                "properties": { "type": { "enum": ["sys", "sreq"] } }
               }
             },
             "minContains": 1
