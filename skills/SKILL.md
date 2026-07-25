@@ -24,7 +24,7 @@ is always **shall**.
 
 | Pattern | Keyword | Template | SEG example |
 |---|---|---|---|
-| Ubiquitous | (none) | The `<system>` shall `<response>`. | The SEG Toolbox shall derive every node and edge hash solely from raw source bytes. |
+| Ubiquitous | (none) | The `<system>` shall `<response>`. | affirmatrix shall derive every node and edge hash solely from raw source bytes. |
 | State-driven | **While** | While `<precondition>`, the `<system>` shall `<response>`. | While any in-scope strong edge is not active, the SEG engine shall refuse to generate a proof for that scope. |
 | Event-driven | **When** | When `<trigger>`, the `<system>` shall `<response>`. | When a node's source byte span changes, the content extractor shall compute a different hash for that node. |
 | Optional feature | **Where** | Where `<feature is included>`, the `<system>` shall `<response>`. | Where a repository uses SHA-256 object IDs, the engine shall accept 64-character repo SHAs. |
@@ -58,19 +58,29 @@ genuinely won't express the requirement.
   software (leaf) requirements. IDs are permanent once issued — SWE/TE reference
   them in `:implements:` / `:verifies:` markers.
 - **Decomposition.** `refines` points **child → parent** (a software requirement
-  refines a system requirement). The `refines` graph must be **acyclic** (DEC-001).
-- **Leaves are concrete.** A `SEG-SREQ` is a leaf: it must be specific enough that
-  at least one implementation and one test can attach to it directly.
-- **System requirements are non-leaf.** A `SEG-SYS` is covered **transitively** by
-  its children (DEC-001); it carries no direct implementation or test. Keep it a
-  genuine higher-level claim, not a leaf in disguise.
-- **Subject naming (house rule).** A `SEG-SYS` requirement's subject is always
-  **the SEG Toolbox** (the system as a whole). A `SEG-SREQ` requirement's subject
-  is a specific **named software component** (e.g. the content extractor, the
-  graph builder, the proof generator), drawn from the agreed component vocabulary.
-  Naming the component is *allocation* and is fine; describing *how* it works is a
-  design leak and is not. If a requirement needs a component that isn't named yet,
-  settle the name with the design first — don't invent one ad hoc.
+  refines a system requirement). For large components the game repeats as long as
+  needed: a software requirement may itself be refined by further software
+  requirements at sub-component level. A parent typically carries **1–10**
+  refining children — the count is not a rule, coverage is. The `refines` graph
+  must be **acyclic** (DEC-001).
+- **Leaves are concrete.** A `SEG-SREQ` with no further refinement is a leaf: it
+  must be specific enough that at least one implementation and one test can
+  attach to it directly.
+- **Non-leaves are covered transitively.** A `SEG-SYS` — and any further-refined
+  `SEG-SREQ` — is covered **transitively** by its children (DEC-001); it carries
+  no direct implementation or test. Keep it a genuine higher-level claim, not a
+  leaf in disguise.
+- **Subject naming (house rule, revised 2026-07-25).** A `SEG-SYS` requirement is
+  **blackbox at the system level**: its subject is **affirmatrix**, the software
+  as a whole (DEC-029) — never a component. A `SEG-SREQ` requirement's subject is
+  a specific **named software component** *as identified by the software
+  architecture* (e.g. the content extractor, the commitment layer, the graph
+  builder), drawn from the ratified component vocabulary (the affirmatrix ADRs);
+  in recursive decomposition the child's subject is the (sub-)component at that
+  level. Naming the component is *allocation* and is fine; describing *how* it
+  works is a design leak and is not. If a requirement needs a component that
+  isn't named yet, settle the name with the design first — don't invent one ad
+  hoc.
 - **Authoring.** sphinx-needs in `doc/requirements`; the build emits a reproducible
   `needs.json`. The statement field carries the EARS sentence.
 
@@ -78,7 +88,7 @@ genuinely won't express the requirement.
 
 ```
 SEG-SYS-001  (Ubiquitous, non-leaf)
-  The SEG Toolbox shall derive every node and edge hash solely from raw source
+  affirmatrix shall derive every node and edge hash solely from raw source
   bytes, never from a parsed or normalized representation.
 
   SEG-SREQ-001  (Ubiquitous, refines SEG-SYS-001)

@@ -44,7 +44,8 @@ you renumber.
 
 ## Scope of this first slice
 
-**One system requirement plus 3–4 software requirements that refine it**, on
+**One system requirement plus the software requirements that refine it**
+(any number 1–10 per parent is fine; coverage decides, not count), on
 the **hashing + graph-build core** — the foundational behaviour (compute stable
 content hashes over raw byte spans, derive node/edge hashes and the flat-sealed
 root, build the graph from nodes and references). This is a deliberately small
@@ -63,7 +64,11 @@ later iterations.
   the SEG prefix by design — DEC-029.)
 - **Decomposition:** the slice is a `refines` tree — software requirements
   refine the system requirement (child → parent). `refines` must be acyclic
-  (DEC-001).
+  (DEC-001). **Layering criterion (FSM, 2026-07-25):** a system requirement is
+  blackbox — subject "affirmatrix", the software as a whole; a software
+  requirement names a distinct component identified by the SW architecture
+  (ADRs). For large components the decomposition repeats recursively (SREQ
+  refines SREQ) as long as needed; 1–10 children per parent.
 - **Leaf rule (DEC-001):** the software requirements are leaves; each must be
   concrete enough to be directly implemented and tested (≥1 implementation and
   ≥1 test will eventually attach). The system requirement is a non-leaf,
