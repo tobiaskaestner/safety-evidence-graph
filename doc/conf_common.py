@@ -47,6 +47,7 @@ def configure(namespace: dict, doc_dir: str | Path, project: str | None = None) 
         needs_from_toml=os.path.relpath(DOC_ROOT / "needs_config.toml", doc_dir),
         needs_schema_definitions_from_json=str(DOC_ROOT / "schemas.json"),
         needs_build_json=True,
+        needs_reproducible_json=True,
         # -- cross-document wiring, derived from the registry ------------------
         intersphinx_mapping=docrefs.intersphinx_for(registry, folder),
         needs_external_needs=docrefs.external_needs_for(registry, folder),
