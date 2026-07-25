@@ -1,0 +1,72 @@
+0006. Test-tree ownership: developer tests, verification tests, fixtures
+=========================================================================
+
+Status
+------
+
+Accepted, 2026-07-25.
+
+Context
+-------
+
+Path-based ownership (ADR-0002) gives the Software Engineer
+``src/affirmatrix/`` and the Test Engineer ``tests/``. Two instructions
+cut across that boundary. The SWE is required to work test-first, so the
+SWE necessarily authors test code; and the iteration-0 would-be store — a
+fixture the SWE hand-authors — is placed in ``tests/fixtures/``. As
+written, the SWE cannot follow the method without writing in the TE's
+path.
+
+The two kinds of test are genuinely different artifacts, not merely
+differently-authored ones. The TE's tests are **verification evidence**:
+each realizes a ``SEG-TS-nnn`` specification, carries a ``:verifies:``
+marker, and becomes a TestOutcome node in the case. The SWE's tests are
+**developer tests**: they drive the design, they are not graph
+participants, and nothing in the evidence graph refers to them.
+
+Decision
+--------
+
+The test tree is partitioned by artifact kind, one directory per owner:
+
+============================  =======  ==============================
+Path                          Owner    Holds
+============================  =======  ==============================
+``tests/unit/``               SWE      developer tests (test-first)
+``tests/fixtures/``           SWE      fixture data, incl. the
+                                       would-be store
+``tests/specification/``      TE       the verification suite
+                                       realizing ``SEG-TS-nnn``
+``tests/conftest.py``         shared   changed by proposal only
+============================  =======  ==============================
+
+A single pytest root is retained; ``testpaths = ["tests"]`` is unchanged.
+Ownership stays **directory-granular**, so the standing rule — never two
+agents in the same path — survives verbatim, one level deeper.
+
+Rejected alternatives: a separate top-level tree for developer tests
+(cleanest boundary, but two pytest roots and a layout an OSS contributor
+would not expect, against ADR-0002's clone-and-build motive); and tests
+inside ``src/affirmatrix/`` (no brief amendment needed, but it ships test
+code and fixture data in the wheel and hides the suite from contributors).
+
+Consequences
+------------
+
+- SWE brief, path scope: **Edit** gains ``tests/unit/`` and
+  ``tests/fixtures/``; the line "``tests/`` … are the Test Engineer's
+  paths" narrows to ``tests/specification/`` and
+  ``doc/test-specification/``.
+- TE brief, path scope: **Edit** narrows from ``tests/`` to
+  ``tests/specification/``; **Read** gains ``tests/unit/`` and
+  ``tests/fixtures/``.
+- ``tests/conftest.py`` follows the precedent already set for the shared
+  documentation federation config: common infrastructure, changed by
+  proposal at a checkpoint, not unilaterally.
+- The tree documents the distinction it encodes: a reader can see which
+  tests are evidence and which are development.
+- The would-be store lands at ``tests/fixtures/would_be_store/``, exactly
+  where the SWE brief says — the contradiction is removed by widening the
+  SWE's scope, not by moving the fixture.
+- ``pyproject.toml`` remains unowned by any brief; it needs an owner
+  eventually (flagged, not decided here).
