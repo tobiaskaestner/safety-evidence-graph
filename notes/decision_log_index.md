@@ -42,6 +42,7 @@ holds it. This index is the cross-cutting map.
 | 028 | research | Implementation pin folded into the contract member (`sha1` stand-in) |
 | 029 | research | Project name: **affirmatrix**; "SEG/safety evidence graph" stays the artifact term |
 | 030 | dev | Affirmatrix repo = mono-repo (orphan branch `tool`); four-branch topology demoted to conformance fixture (refines 002) |
+| 031 | research | Canonical content form — extractor-produced reproducible IRs admissible as hash substrate (refines 003 principle) |
 
 ## Supersession & cross-stream links
 
@@ -49,6 +50,8 @@ holds it. This index is the cross-cutting map.
   and refines the DEC-007 `fingerprint` facet; 013 superseded 012's v1-scope clause; 014
   supersedes 013's removal clause (v1 keeps a `flat-sealed` root).
 - **017** refines **010 + 015** and retires the `relies_on` form.
+- **031** refines **003 (principle)**: canonical content form generalizes the raw-byte-span
+  rule to admit deterministic, source-reproducible extractor exports (e.g. `needs.json`).
 - **022** resolves GAPS **G9** (builds on 010/015/017/018/019); **024** closes GAPS **G12**.
 - **Cross-stream:** **010** (research) extends **001** (development) with a third discharge
   case (satisfied-by-external-proof) — the one citation that crosses the two slices.

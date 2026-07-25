@@ -934,3 +934,31 @@ facet and DEC-012's retirement of `deep`)
    scaffold's ADR-0001 when the tool repo is created.
 4. Anyone searching working-name references (`seg`, briefs, commit history) needs
    the mental mapping `seg → affirmatrix`; this entry is that mapping.
+
+## DEC-031 — Canonical content form: extractors locate *and* canonicalize (refines DEC-003 principle)
+
+**Status:** Accepted (2026-07-25; FSM-ratified, text authored by the RE agent)
+
+**Decision.** Content hashes are computed over each node type's **canonical
+content form** — the deterministic representation of that node's authored
+content, defined and produced by the extractor that discovers the node. For
+nodes located directly in source, the canonical form remains the verbatim
+source byte span and the parser remains a locator only; for nodes whose
+authored content is published through a build, the canonical form is that
+build's export of the authored content, with derived fields — backlinks,
+layout, rendering — excluded. A representation is admissible as hash
+substrate only if it is **deterministic and reproducible from source**:
+identical sources must yield identical bytes on every run and in every
+environment. This refines DEC-003 rather than replacing it — for
+source-located nodes nothing changes, while for build-published nodes a
+re-serialization is admitted, but only one whose reproducibility makes the
+hash a function of the authored content alone. Auditability is preserved in
+both cases: a verifier recomputes a content hash from the source repository
+at a recorded commit, either by slicing the span or by re-running the
+publishing build. Extractors thereby earn their place by locating *and*
+canonicalizing, and each node type's canonical form is fixed by its type and
+stated in the requirement governing its extractor, so "what is hashed" is
+answerable per type without reading code. The admissibility constraint is
+why `needs_reproducible_json` is a precondition of the requirements form and
+not a convenience — an export carrying build timestamps is not a canonical
+form.
