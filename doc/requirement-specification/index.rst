@@ -12,9 +12,9 @@ System requirements
    :id: SEG-SYS-001
 
    affirmatrix shall build the evidence graph from node and edge records,
-   deriving every node hash, edge hash, and design root solely from the raw
-   source bytes of the nodes and the declared endpoints and types of the
-   edges, reproducibly across runs.
+   deriving every node hash, edge hash, and design root solely from the nodes'
+   declared types and their content in each type's canonical form, and from
+   the edges' declared endpoints and types, reproducibly across runs.
 
 .. sys:: Transitive requirement satisfaction
    :id: SEG-SYS-002
@@ -60,6 +60,20 @@ System requirements
    If the proof gate reports a scope as blocked, then affirmatrix shall refuse
    to generate an evidence package for that scope.
 
+.. sys:: One built-in graph vocabulary
+   :id: SEG-SYS-009
+
+   affirmatrix shall determine node kinds, edge kinds, and which edges
+   propagate suspicion from a single built-in vocabulary that no configuration
+   redefines.
+
+.. sys:: Operable from the command line
+   :id: SEG-SYS-010
+
+   affirmatrix shall make every workflow it performs operable from its command
+   line, with the outcome of each invocation distinguishable by its exit
+   status.
+
 Software requirements
 ---------------------
 
@@ -96,8 +110,9 @@ Software requirements
    :id: SEG-SREQ-005
    :refines: SEG-SYS-001
 
-   The commitment layer shall derive each node hash solely from the content
-   hashes of the spans that node covers.
+   The commitment layer shall derive each node hash solely from the node's
+   type and from each content hash paired with the name of the content it
+   covers.
 
 .. sreq:: Leaf satisfaction rule
    :id: SEG-SREQ-006
@@ -175,3 +190,17 @@ Software requirements
 
    The suspect detector shall derive each edge's state from a recorded record
    source and a current record source alone.
+
+.. sreq:: Unaffirmed edges are pending
+   :id: SEG-SREQ-016
+   :refines: SEG-SYS-001
+
+   The graph builder shall report an edge that has never been affirmed as
+   pending.
+
+.. sreq:: Edges to absent nodes are broken
+   :id: SEG-SREQ-017
+   :refines: SEG-SYS-001
+
+   The suspect detector shall report every edge touching a node that is absent
+   from the current records as broken.
