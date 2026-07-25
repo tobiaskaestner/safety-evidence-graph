@@ -74,6 +74,12 @@ System requirements
    line, with the outcome of each invocation distinguishable by its exit
    status.
 
+.. sys:: Affirmation state changes only by the operator's act
+   :id: SEG-SYS-011
+
+   affirmatrix shall change the recorded affirmation state only as the direct
+   result of an act the operator performs.
+
 Software requirements
 ---------------------
 
@@ -231,7 +237,7 @@ Software requirements
    :refines: SEG-SYS-007
 
    The affirmation store shall write every record beneath the write root it
-   was given, and nothing outside it.
+   was given, and no record outside it.
 
 .. sreq:: Records appear only when complete
    :id: SEG-SREQ-022
@@ -271,5 +277,12 @@ Software requirements
    :id: SEG-SREQ-027
    :refines: SEG-SYS-004
 
-   The affirmation recorder shall set an edge active only when that edge is
-   pending, directly outdated, or doubly outdated.
+   The affirmation recorder shall accept an affirmation only for an edge that
+   is pending, directly outdated, or doubly outdated.
+
+.. sreq:: Supplied reasons are preserved
+   :id: SEG-SREQ-028
+   :refines: SEG-SYS-004
+
+   The affirmation recorder shall record the reason supplied with an
+   affirmation in the review event without altering it.
