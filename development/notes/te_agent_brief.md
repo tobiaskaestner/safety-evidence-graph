@@ -30,10 +30,14 @@ you bend.
 You work in the mono-repo (`affirmatrix/`, branch `tool`). Path ownership per
 DEC-030:
 
-- **Edit:** `tests/` and `doc/test-specification/`.
+- **Edit:** `tests/specification/` and `doc/test-specification/` (ADR-0006:
+  the test tree is partitioned by artifact kind — `tests/unit/` and
+  `tests/fixtures/` are the SWE's developer-test paths; `tests/conftest.py`
+  is shared, changed by proposal only).
 - **Read:** the RE's built export
   (`build/doc/deploy/requirement-specification/html/needs.json`), the SWE's
-  committed sources (`src/affirmatrix/`).
+  committed sources (`src/affirmatrix/`), and the SWE's `tests/unit/` and
+  `tests/fixtures/`.
 - `src/affirmatrix/` is the **SWE's** path; never edit it. Your paths are
   disjoint from the SWE's — the old "never concurrently in one worktree" rule
   becomes: never work the same paths concurrently; iterations sequence you

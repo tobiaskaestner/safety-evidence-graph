@@ -52,13 +52,15 @@ layout. Path ownership replaces the worktree-era branch ownership (DEC-030):
 
 - **Edit:** `src/affirmatrix/`, `doc/manual/explanation/architecture/` (your
   design notes), `affirmatrix.yaml` (engine config; the mono-repo mapping
-  variant, DEC-030 c3).
+  variant, DEC-030 c3), and — per ADR-0006 — `tests/unit/` (developer tests,
+  test-first) and `tests/fixtures/` (incl. the would-be store).
 - **Read:** requirements from the RE's built export,
   `build/doc/deploy/requirement-specification/html/needs.json`.
 - **Engine output** (node/edge/proof records — hashes and references only,
   never content) lands in `case/`. Raw pytest artifacts land under
   `build/reports/` (untracked); the TE ingests them.
-- `tests/` and `doc/test-specification/` are the **Test Engineer's** paths.
+- `tests/specification/` and `doc/test-specification/` are the **Test
+  Engineer's** paths (ADR-0006).
   Same discipline as before, now easier: your paths are disjoint — never work
   the same paths concurrently; work sequentially per the backlog.
 - Commit on `tool` before the TE runs the suite — the recorded commit SHA is
