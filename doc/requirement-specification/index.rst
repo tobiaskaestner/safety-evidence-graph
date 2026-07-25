@@ -286,3 +286,45 @@ Software requirements
 
    The affirmation recorder shall record the reason supplied with an
    affirmation in the review event without altering it.
+
+.. sreq:: The built-in kind set is closed
+   :id: SEG-SREQ-029
+   :refines: SEG-SYS-009
+
+   The taxonomy provider shall declare exactly the node kinds and edge kinds
+   of the built-in safety-evidence graph type.
+
+.. sreq:: Exactly three edge kinds propagate
+   :id: SEG-SREQ-030
+   :refines: SEG-SYS-009
+
+   The taxonomy provider shall mark exactly the refines, verifies, and
+   implements edge kinds as propagating suspicion.
+
+.. sreq:: Unrecognized kinds are rejected
+   :id: SEG-SREQ-031
+   :refines: SEG-SYS-009
+
+   If a record declares a kind the taxonomy provider does not declare, then
+   the graph builder shall reject that record.
+
+.. sreq:: Each node kind declares its content hashes
+   :id: SEG-SREQ-032
+   :refines: SEG-SYS-009
+
+   The taxonomy provider shall declare, for each node kind, the names of the
+   content hashes that kind carries.
+
+.. sreq:: Persisted affirmations change only on request
+   :id: SEG-SREQ-033
+   :refines: SEG-SYS-011
+
+   The affirmation store shall change a persisted affirmation record only when
+   that change is requested.
+
+.. sreq:: Derivation leaves affirmations untouched
+   :id: SEG-SREQ-034
+   :refines: SEG-SYS-011
+
+   The suspect detector shall leave recorded affirmations unchanged when it
+   derives edge states.
