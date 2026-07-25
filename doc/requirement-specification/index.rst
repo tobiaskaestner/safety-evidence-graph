@@ -204,3 +204,72 @@ Software requirements
 
    The suspect detector shall report every edge touching a node that is absent
    from the current records as broken.
+
+.. sreq:: Covered content is never persisted
+   :id: SEG-SREQ-018
+   :refines: SEG-SYS-007
+
+   The affirmation store shall never persist the content that a hash it
+   stores covers.
+
+.. sreq:: Only valid records are written
+   :id: SEG-SREQ-019
+   :refines: SEG-SYS-007
+
+   If a record does not validate against its schema, then the affirmation
+   store shall reject it instead of writing it.
+
+.. sreq:: Records read back as written
+   :id: SEG-SREQ-020
+   :refines: SEG-SYS-007
+
+   The affirmation store shall reproduce each record it has written unchanged
+   when that record is read back.
+
+.. sreq:: Writes stay under the write root
+   :id: SEG-SREQ-021
+   :refines: SEG-SYS-007
+
+   The affirmation store shall write every record beneath the write root it
+   was given, and nothing outside it.
+
+.. sreq:: Records appear only when complete
+   :id: SEG-SREQ-022
+   :refines: SEG-SYS-007
+
+   The affirmation store shall make a record readable only once it has been
+   written completely.
+
+.. sreq:: Deletion is explicit
+   :id: SEG-SREQ-023
+   :refines: SEG-SYS-007
+
+   The affirmation store shall remove a persisted record only when removal of
+   that record is requested.
+
+.. sreq:: Affirmations bind both endpoints
+   :id: SEG-SREQ-024
+   :refines: SEG-SYS-004
+
+   The affirmation recorder shall record each affirmation as a review event
+   carrying the content hashes of both endpoints of the affirmed edge.
+
+.. sreq:: Affirmations carry their source anchor
+   :id: SEG-SREQ-025
+   :refines: SEG-SYS-004
+
+   The affirmation recorder shall record in every review event the source
+   commit of each endpoint at the moment of affirmation.
+
+.. sreq:: The recorder originates nothing
+   :id: SEG-SREQ-026
+   :refines: SEG-SYS-004
+
+   The affirmation recorder shall originate no affirmation of its own.
+
+.. sreq:: Only unaffirmed or outdated edges are affirmable
+   :id: SEG-SREQ-027
+   :refines: SEG-SYS-004
+
+   The affirmation recorder shall set an edge active only when that edge is
+   pending, directly outdated, or doubly outdated.
