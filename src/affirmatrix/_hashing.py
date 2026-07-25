@@ -1,17 +1,20 @@
-"""Shared internal — the hash encoding of ADR-0005.
+"""Shared internal — the byte-level encoding of ADR-0005.
 
 Not a component and never a requirement subject: this module is the single
-implementation site for the framing (``LP``, ``SEQ``, ``U``), the three domain
-tags, and the four hash functions (content, node, edge, design root). The
-components that own the *requirements* for those hashes — the commitment layer
-and the content extractor — call in here and carry the ``:implements:``
-markers; nothing here is marked, because a marker asserts that a *component*
-realizes a requirement and this module is not one.
+implementation site for the framing (``LP``, ``SEQ``, ``U``) and for the bare
+content hash. The *derivations* built on top of it — node hash, edge hash,
+design root — belong to the commitment layer, which is the component the
+requirements name (ADR-0003, ADR-0004).
+
+The split follows use, not taste. The framing and the content hash are needed
+on both sides of the record-source boundary: producers hash content
+(``sources.*`` may import this module), while the derivations sit above them
+and are reached only through the commitment layer.
 
 Two rules are enforced by ``tests/unit/test_import_layering.py``:
 
 * this is the only module in the engine that imports ``hashlib``;
-* nothing in the engine below the commitment layer depends on it.
+* only the commitment layer and the record sources depend on it.
 
 SHA-256 is fixed, not injected (AC-013). Agility, if it is ever needed,
 arrives as a new domain-tag version through a superseding ADR.
@@ -27,13 +30,7 @@ from __future__ import annotations
 
 import hashlib
 import struct
-from collections.abc import Iterable, Mapping
-
-#: Domain tags. The ``v1`` segment is the encoding version: a change to the
-#: layout mints new tags rather than silently re-hashing the same inputs.
-NODE_TAG = "affirmatrix/v1/node"
-EDGE_TAG = "affirmatrix/v1/edge"
-ROOT_TAG = "affirmatrix/v1/root"
+from collections.abc import Iterable
 
 DIGEST_BYTES = 32
 
@@ -88,92 +85,12 @@ def content_hash(canonical_form: bytes) -> bytes:
     return hashlib.sha256(canonical_form).digest()
 
 
-def node_hash(node_type: str, content_hashes: Mapping[str, bytes]) -> bytes:
-    """Fold a node's content hashes into its node hash.
-
-    Binds the local type token and the content-hash field names, not only the
-    digests, so a Requirement and a Waiver covering byte-identical content
-    differ. Pairs are ordered by field name, which makes the result
-    reproducible from the record's own pairs without consulting the taxonomy
-    provider's declaration order.
-
-    The fold is uniform: a single-span node is a sequence of one, never its own
-    content hash passed through.
-    """
-    if not content_hashes:
-        raise ValueError(f"node type {node_type!r} needs at least one content hash")
-    fields = [
-        length_prefixed(utf8(name)) + length_prefixed(_raw_digest(digest, name))
-        for name, digest in sorted(content_hashes.items(), key=lambda pair: utf8(pair[0]))
-    ]
-    return hashlib.sha256(
-        length_prefixed(utf8(NODE_TAG))
-        + length_prefixed(utf8(node_type))
-        + counted_sequence(fields)
-    ).digest()
+def digest_of(preimage: bytes) -> bytes:
+    """SHA-256 of an already-assembled preimage."""
+    return hashlib.sha256(preimage).digest()
 
 
-def edge_tuple(from_id: str, to_id: str, edge_type: str) -> bytes:
-    """``⟨from, to, type⟩`` framed — an edge's contribution to the design root.
-
-    Identifiers are case-local stable identifiers and the type is a local token
-    (ADR-0007); no IRI enters a preimage, which is what keeps the namespace
-    base revisable.
-    """
-    return (
-        length_prefixed(utf8(from_id))
-        + length_prefixed(utf8(to_id))
-        + length_prefixed(utf8(edge_type))
-    )
-
-
-def edge_hash(
-    from_id: str,
-    to_id: str,
-    edge_type: str,
-    from_node_hash: bytes,
-    to_node_hash: bytes,
-) -> bytes:
-    """Bind an edge to the content of both its endpoints.
-
-    Two-sided by construction: either endpoint moving changes the hash, which
-    is what lets recomputation detect that an affirmation no longer covers what
-    it was made against.
-    """
-    return hashlib.sha256(
-        length_prefixed(utf8(EDGE_TAG))
-        + edge_tuple(from_id, to_id, edge_type)
-        + length_prefixed(_raw_digest(from_node_hash, "from_node_hash"))
-        + length_prefixed(_raw_digest(to_node_hash, "to_node_hash"))
-    ).digest()
-
-
-def design_root(
-    metadata: bytes,
-    node_hashes: Iterable[bytes],
-    edges: Iterable[tuple[str, str, str]],
-) -> bytes:
-    """Seal a design set under one flat root.
-
-    One canonical sort and one hash — no per-node aggregation and no traversal
-    (DEC-012/014). ``metadata`` is opaque: the caller supplies it already
-    canonical, and this function frames and hashes it without parsing.
-
-    Sorting never deduplicates. Two same-type nodes covering identical content
-    share a node hash, and both must count, or a graph would seal identically
-    to a smaller graph that merely resembles it.
-    """
-    sorted_nodes = sorted(_raw_digest(digest, "node hash") for digest in node_hashes)
-    sorted_edges = sorted(edge_tuple(*edge) for edge in edges)
-    return hashlib.sha256(
-        length_prefixed(utf8(ROOT_TAG))
-        + length_prefixed(metadata)
-        + counted_sequence(sorted_nodes)
-        + counted_sequence(sorted_edges)
-    ).digest()
-
-
-def _raw_digest(digest: bytes, label: str) -> bytes:
+def checked_digest(digest: bytes, label: str) -> bytes:
     """Reject anything that is not a raw 32-byte digest.
 
     The realistic mistake is a hex string: 64 bytes that frame and hash
