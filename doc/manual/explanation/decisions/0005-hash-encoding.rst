@@ -21,15 +21,16 @@ These choices are irreversible in a way ordinary implementation choices are
 not: a computed hash is affirmed by a human and recorded in a ReviewEvent,
 and every stored edge hash and every sealed root is invalidated if the
 encoding changes afterwards. They must therefore be fixed before the first
-hash is computed, and they are integrity mechanics, which AC-013 places
-outside configuration.
+hash is computed. They are integrity mechanics, and integrity mechanics are
+not configurable: the vocabulary a graph declares may vary, the way its
+hashes are constructed may not.
 
 This ADR fixes only the layout of bytes. Two neighbouring questions are
 settled elsewhere and slot in without reopening it. *What* bytes a content
 hash covers is each node type's **canonical content form** — for Python
 source, the verbatim byte span; for requirements, a form derived from the
-needs export — which is a refinement of DEC-003 logged at the
-design-of-record level (DEC-031). *Which strings* identify nodes and edges
+needs export. That generalization of the raw-byte rule is settled in the
+design record, not here. *Which strings* identify nodes and edges
 is ADR-0007; this ADR fixes how such strings are encoded, not what they
 are.
 
@@ -101,12 +102,14 @@ record's own pairs alone, without consulting the taxonomy provider's
 declaration order. This is the same instinct as the untagged content hash:
 a verifier should need as little of our machinery as possible.
 
-The **taxonomy provider (AC-001) owns the type token and the field-name
-set**; it no longer needs to own an ordering. Because both are now hashed,
-the vocabulary's *spelling* is integrity-relevant: renaming a node type or
-a content-hash field changes every affected node hash. That is precisely
-AC-013's "parameterized only by the declared vocabulary", and it means
-vocabulary spelling changes are affirmation events, not refactors.
+The **taxonomy provider owns the type token and the field-name set**
+(SEG-SREQ-029, SEG-SREQ-032); it no longer needs to own an ordering.
+Because both are now hashed, the vocabulary's *spelling* is
+integrity-relevant: renaming a node kind or a content-hash field changes
+every affected node hash. The hashes are parameterized by the declared
+vocabulary and by nothing else, which is what makes them fixed mechanics
+rather than configuration — and it means vocabulary spelling changes are
+affirmation events, not refactors.
 
 **(iv) Digests enter preimages as raw 32 bytes; hex is a serialization
 concern.** One canonical internal form removes case and encoding questions
@@ -147,15 +150,15 @@ pictures it.
   content, which is arbitrary but fixed.
 - ``metadata`` is the caller-supplied opaque byte string of ADR-0003. The
   commitment layer length-prefixes it and hashes it; it does not
-  canonicalize, parse, or validate it. Metadata leads the preimage, as in
-  the design summary §7.3.
+  canonicalize, parse, or validate it. Metadata leads the preimage.
 - ``E`` and ``N`` are the design set only — ``refines``, ``verifies``,
-  ``implements`` and the nodes they connect (DEC-012/014).
+  ``implements`` and the nodes they connect. The root is flat and sealed
+  over that set: no per-node aggregate, no fold up the refines graph.
 
 **(vi) SHA-256 is fixed, not injected.** There is no algorithm parameter,
 no pluggable hasher, and no configuration reaching any function in this
-ADR (AC-013). Cryptographic agility, if ever needed, arrives as a new
-domain-tag version through a superseding ADR — never as a runtime option.
+ADR. Cryptographic agility, if ever needed, arrives as a new domain-tag
+version through a superseding ADR — never as a runtime option.
 
 **Identifier encoding.** Identifiers and type tokens enter preimages as
 ``U(·)``: UTF-8 bytes **exactly as recorded, with no normalization**.
@@ -170,10 +173,11 @@ Consequences
   hash functions above and is the only module in the engine that calls
   ``hashlib``. An import rule enforces this.
 - Every hash here is reproducible from this specification alone, with no
-  reference to affirmatrix's source — what AC-016's
-  independent-verifiability invariant requires of the root.
-- SEG-SREQ-005's "solely from the content hashes" is amended by the
-  Requirements Engineer to admit the node type and the field names. The
+  reference to affirmatrix's source. That is what a package's design root
+  must satisfy: an auditor recomputes it from the package's own contents,
+  using this document and nothing of ours.
+- SEG-SREQ-005's "solely from the content hashes" was amended to admit the
+  node type and the field names. The
   domain tag and the framing remain constants of the derivation function
   rather than inputs to it.
 - Node-type and content-hash-field names are now part of the integrity

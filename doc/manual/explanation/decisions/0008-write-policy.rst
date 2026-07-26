@@ -10,16 +10,16 @@ Context
 -------
 
 ADR-0004 named an unresolved tension and deliberately left it open. The
-design summary §9 and the CLI reference make proof generation a pure
-computation that writes four files to an ``--output-dir`` with no git
-operations, after which the FSM places them under ``proofs/{snapshotId}/``
-and commits. Affirmation pulls the other way: recording a ReviewEvent and
-setting an edge active is naturally an edit to the working ``case/`` that
-the FSM then reviews and commits. Two workflows, two default destinations,
-one component now owning both.
+design record makes proof generation a pure computation that writes four
+files to an ``--output-dir`` with no git operations, after which the
+maintainer places them under ``proofs/{snapshotId}/`` and commits.
+Affirmation pulls the other way: recording a ReviewEvent and setting an
+edge active is naturally an edit to the working ``case/`` that the
+maintainer then reviews and commits. Two workflows, two default
+destinations, one component now owning both.
 
 *The decision below was drafted as the coordinator's interpretation of the
-FSM's "no staging root" ruling and confirmed by the FSM at ratification.*
+maintainer's "no staging root" ruling and confirmed at ratification.*
 
 Decision
 --------
@@ -30,19 +30,19 @@ packages alike. There is no staging root and no copy step.
 
 **The tool never runs git.** No add, no commit, no branch, no
 status-dependent behaviour, no reading of the index. The review surface is
-the dirty working tree: the FSM inspects it with ordinary git tooling and
-commits. This is the same governance-plus-fingerprint posture the design
-takes elsewhere — the repo-G commit under the Authorised Committer List is
-the control, not a tool-enforced workflow.
+the dirty working tree: the maintainer inspects it with ordinary git
+tooling and commits. This is the same governance-plus-fingerprint posture
+the design takes elsewhere — the commit, made by someone on the authorised
+committer list, is the control, not a tool-enforced workflow.
 
 **``--output-dir`` remains available** as an explicit override that
 relocates the whole write root, for dry runs, comparisons and CI
-inspection. It is the mechanism the design summary §9 and the CLI reference
-describe; this ADR demotes it from default to option.
+inspection. It is the mechanism the design record and the command-line
+reference describe; this ADR demotes it from default to option.
 
 **The affirmation store is the only writer.** It owns the layout
 (``nodes/``, ``edges/``, ``events/``, ``proofs/{snapshotId}/``), the file
-naming, and schema validation on write (AC-008). No other component opens a
+naming, and schema validation on write. No other component opens a
 file under the write root.
 
 **Writes are atomic per file** — written to a temporary file in the same
@@ -57,14 +57,14 @@ silently prune the case.
 Consequences
 ------------
 
-- Affirmation and proof generation share one mental model, and the FSM's
-  review surface is ``git status`` / ``git diff`` for both.
-- §9's "no git side effects" is preserved **literally**: the engine runs no
-  git. What this ADR changes is the default destination of the bytes, not
-  the side-effect rule.
-- AC-006 is unaffected: the affirmation store provides the write
-  capability; the FSM operates it and decides what to commit. Nothing
-  auto-affirms and nothing auto-commits.
+- Affirmation and proof generation share one mental model, and the
+  maintainer's review surface is ``git status`` / ``git diff`` for both.
+- The design record's "no git side effects" is preserved **literally**: the
+  engine runs no git. What this ADR changes is the default destination of
+  the bytes, not the side-effect rule.
+- The authority boundary is unaffected: the affirmation store provides the
+  write capability; the maintainer operates it and decides what to commit.
+  Nothing auto-affirms and nothing auto-commits.
 - **Risk, named:** writing proofs in place means a failed or aborted
   generation can leave partial artifacts in a tracked directory. Two
   mitigations are load-bearing rather than optional — per-file atomicity

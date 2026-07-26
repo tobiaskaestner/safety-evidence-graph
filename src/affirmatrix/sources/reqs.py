@@ -2,8 +2,8 @@
 
 Turns the requirement specification's reproducible export into Requirement
 records: the need ID verbatim as the case-local identifier (ADR-0007), the
-canonical content form as the hash input (DEC-031), and the ``refines``
-declarations as edges.
+canonical content form as the hash input, and the ``refines`` declarations as
+edges.
 
 Two disciplines it must carry:
 

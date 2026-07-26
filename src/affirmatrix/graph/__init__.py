@@ -8,7 +8,8 @@ default. Deriving current state from content is the suspect detector's job —
 the builder assembles, the detector derives (ADR-0004).
 
 Local identifiers must be unique within a case; a duplicate is a graph-level
-error (ADR-0007).
+error (ADR-0007). A record whose kind the taxonomy provider does not declare is
+rejected (SEG-SREQ-031).
 
-Iteration 0, backlog items B7 (build) and B8 (cycles).
+Iteration-0 backlog items B7 (build) and B8 (cycles).
 """

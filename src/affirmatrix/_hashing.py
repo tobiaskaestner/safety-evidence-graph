@@ -16,14 +16,15 @@ Two rules are enforced by ``tests/unit/test_import_layering.py``:
 * this is the only module in the engine that imports ``hashlib``;
 * only the commitment layer and the record sources depend on it.
 
-SHA-256 is fixed, not injected (AC-013). Agility, if it is ever needed,
-arrives as a new domain-tag version through a superseding ADR.
+SHA-256 is fixed, not injected: the algorithm is not a configuration point.
+Agility, if it is ever needed, arrives as a new domain-tag version through a
+superseding decision record.
 
 Every function here is pure: no I/O, no clock, no configuration. Digests are
 raw 32-byte values throughout; hex is a serialization form and belongs to
 ``records`` (ADR-0005 iv).
 
-Iteration 0, backlog item B1.
+Iteration-0 backlog item B1.
 """
 
 from __future__ import annotations
@@ -75,7 +76,7 @@ def counted_sequence(items: Iterable[bytes]) -> bytes:
 
 
 def content_hash(canonical_form: bytes) -> bytes:
-    """The bare SHA-256 of a node type's canonical content form (DEC-031).
+    """The bare SHA-256 of a node kind's canonical content form.
 
     Deliberately untagged and unframed, so an auditor can reproduce it with
     ``sha256sum`` over the extracted form and no knowledge of this module.

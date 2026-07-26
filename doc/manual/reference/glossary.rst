@@ -27,7 +27,7 @@ Glossary
       it: for Python source it is the verbatim source byte span; for a
       requirement it is derived from the needs export. Hashing a canonical
       form rather than whatever a tool happens to emit is what makes a
-      content hash reproducible by a third party (DEC-031, refining DEC-003).
+      content hash reproducible by a third party.
 
       A *representation*, not an ordering — contrast :term:`canonical sort`.
 

@@ -61,7 +61,10 @@ ALLOWED_IMPORTS: dict[str, frozenset[str]] = {
     "commitment": frozenset({"_hashing"}),
     # Identifier minting and the persisted vocabulary.
     "identity": frozenset({"config"}),
-    "records": frozenset({"diagnostics", "taxonomy"}),
+    # Records validate digest shape at construction — a hex digest caught where
+    # the record is built, rather than where it is finally hashed, names the
+    # producer that supplied it.
+    "records": frozenset({"_hashing", "diagnostics", "taxonomy"}),
     # Record sources and persistence sit BELOW the graph (ADR-0004).
     "sources": frozenset({"_hashing", "config", "diagnostics", "identity", "records", "taxonomy"}),
     "case": frozenset({"config", "diagnostics", "identity", "records", "taxonomy"}),
@@ -70,7 +73,7 @@ ALLOWED_IMPORTS: dict[str, frozenset[str]] = {
     # Derivations over the graph.
     "satisfaction": frozenset({"diagnostics", "graph", "records", "taxonomy"}),
     "drift": frozenset({"commitment", "diagnostics", "graph", "records", "taxonomy"}),
-    # The components the FSM operates.
+    # The components an operator drives.
     "gates": frozenset({"diagnostics", "drift", "graph", "records", "satisfaction", "taxonomy"}),
     "proof": frozenset(
         {
@@ -90,7 +93,7 @@ ALLOWED_IMPORTS: dict[str, frozenset[str]] = {
     "affirmation": frozenset(
         {"case", "commitment", "diagnostics", "graph", "identity", "records", "taxonomy"}
     ),
-    # The thin CLI (AC-014) may reach anything; nothing may reach it.
+    # The thin CLI may reach anything; nothing may reach it.
     "cli": COMPONENTS - {"cli"},
 }
 
@@ -239,12 +242,12 @@ def test_identity_never_reaches_the_commitment_layer(edges: dict[str, set[str]])
 def test_record_sources_and_persistence_stay_below_the_graph(
     edges: dict[str, set[str]],
 ) -> None:
-    """ADR-0004: the AC-003 adapters and the store sit under the graph builder."""
+    """ADR-0004: the record-source adapters and the store sit under the builder."""
     assert "graph" not in edges["sources"]
     assert "graph" not in edges["case"]
 
 
 def test_nothing_imports_the_cli(edges: dict[str, set[str]]) -> None:
-    """AC-014: the CLI is a presentation layer, never a dependency."""
+    """The CLI is a presentation layer, never a dependency."""
     importers = sorted(component for component, imported in edges.items() if "cli" in imported)
     assert importers == []

@@ -51,7 +51,7 @@ B16  Scope collection and the partial-vs-total signal           proof generator 
 B17  The four proof documents                                   proof generator         SEG-SYS-005
 B18  Refuse to generate for a blocked scope                     proof generator         SEG-SYS-008
 B19  Minimal CLI over the three workflows                       command-line interface  (SYS home pending)
-B20  Iteration architecture note; notes to the RE               —                       —
+B20  Iteration architecture note; requirement gaps raised       —                       —
 ===  =========================================================  ======================  ======================
 
 Sequencing
@@ -65,10 +65,10 @@ explicitly:
 - **B11 gates B13.** Drift detection compares two record streams — the
   *recorded* one from the affirmation store and the *current* one from a
   producer — so read-back must exist before suspicion can be derived.
-- **The FSM affirms between B14 and B15.** A faithfully bootstrapped store
-  starts every edge ``pending``, and ``pending`` blocks proof, so the proof
-  gate has nothing to show until a bulk affirmation has been operated by the
-  FSM at a checkpoint. Agents never affirm.
+- **An operator affirms between B14 and B15.** A faithfully bootstrapped store
+  starts every edge pending, and a pending edge blocks a package, so the gate
+  has nothing to show until someone has run a bulk affirmation at a
+  checkpoint. The tool never affirms on its own behalf.
 
 Deferred out of iteration 0
 ---------------------------
@@ -77,23 +77,26 @@ Deferred out of iteration 0
   the outcome extractor. Only the span-hashing primitive lands early. This is
   the first self-hosting slice: it replaces the would-be store and retires the
   manual translation.
-- **Gate 1 (commit) and Gate 3 (release).** Gate 1's conditions are all
-  extractor conditions, and record production is deferred; Gate 3 needs a
-  sealed package and release tags.
+- **The commit gate and the release gate.** The commit gate's conditions are
+  all extraction conditions, and record production is deferred; the release
+  gate needs a sealed package and a release to check.
 - **Implementation node identity**, which blocks the self-hosting slice rather
   than this one.
-- **Composition and exchange** — contract vectors, SPDX projection,
-  ``flat-openable``, assessor certificates. Not v1 at all; only the
-  composition-enabling invariants (AC-016) constrain what is built here.
-- **The graph-type meta-model and configurable satisfaction.** v1 has a fixed
-  vocabulary and fixed satisfaction; AC-001 and AC-002 keep them behind seams
-  so the meta-model plugs in later rather than forcing a rewrite.
+- **Composing cases across suppliers** — contract vectors, exchange formats,
+  selectively openable commitments, third-party attestation. Out of scope
+  entirely. Two invariants still constrain what is built here, because
+  retrofitting them later would be a rewrite: a package must be verifiable by
+  recomputation from its own contents, and it must publish its scope.
+- **A user-definable graph vocabulary and user-definable satisfaction rules.**
+  This version fixes both. They stay behind single interfaces — the taxonomy
+  provider and the satisfaction evaluator — so that making them definable
+  later is a substitution rather than a rewrite.
 
 Decisions this backlog rests on
 -------------------------------
 
-ADR-0003 (commitment layer), ADR-0004 (component map), ADR-0005 (hash
-encoding), ADR-0006 (test-tree ownership), ADR-0007 (identifiers), ADR-0008
-(write policy); DEC-001 (satisfaction), DEC-003 and DEC-031 (canonical content
-form), DEC-005 (derived suspicion), DEC-006 (affirmation anchor), DEC-012 and
-DEC-014 (flat-sealed root), DEC-016 (outcome validity), DEC-030 (mono-repo).
+ADR-0002 (mono-repo and the federated document set), ADR-0003 (the commitment
+layer owns hash derivation), ADR-0004 (the component map), ADR-0005 (hash
+encoding and domain separation), ADR-0006 (test-tree ownership), ADR-0007
+(identifiers), ADR-0008 (write policy), and ADR-0009 (the store as a sidecar
+commit lineage, proposed).

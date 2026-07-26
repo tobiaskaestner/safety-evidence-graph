@@ -1,16 +1,17 @@
 Decision records
 ================
 
-Repo-local architecture decision records. The research-stage decision log
-(DEC-001…030) remains the record of the *design*; ADRs here record decisions
-about *this repository*.
+Repo-local architecture decision records: decisions about *this
+repository* — component names and boundaries, module decomposition, API
+shapes, build and documentation choices.
 
-**Horizon rule (ratified 2026-07-25):** implementation-horizon design
-decisions — component names and boundaries, module decomposition, API
-shapes, build/infra/doc choices — land here as ADRs, *not* in the DEC log.
-New DEC numbers are reserved for design-of-record-level decisions (concept,
-invariants, direction). ADRs cite DECs one-way; the DEC index does not
-accumulate pointers back.
+**Horizon rule.** These records hold implementation-horizon decisions.
+Decisions at the level of the design itself — concepts, invariants,
+direction — belong to the project's design record, which lives in the
+research workspace this tool grew out of and is not carried here. An ADR
+may describe what that record establishes, in its own words; it should not
+cite it by number, because a reader of this repository cannot follow the
+pointer.
 
 .. toctree::
    :maxdepth: 1

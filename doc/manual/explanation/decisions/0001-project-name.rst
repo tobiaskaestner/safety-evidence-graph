@@ -23,13 +23,14 @@ firmhold. **"Safety evidence graph" (SEG) remains the artifact term**:
 affirmatrix manages safety evidence graphs. Name verified free on PyPI, npm,
 and GitHub at decision time.
 
-The full naming path (rejected candidates and collision sweep) is recorded
-as DEC-029 in the research decision log.
+The full naming path — rejected candidates and the collision sweep — is
+recorded in the research workspace this project grew out of, not here.
 
 Consequences
 ------------
 
-- Code, imports, and CLI entry points use ``affirmatrix``; research-era
-  references to ``seg`` map via DEC-029.
+- Code, imports, and CLI entry points use ``affirmatrix``; ``seg`` survives
+  only as the artifact term and in identifier prefixes (``SEG-SYS-nnn``,
+  ``SEG-SREQ-nnn``, the ``seg:`` vocabulary namespace).
 - The "daily affirmations" wellness echo in web search is an accepted,
   fading risk.

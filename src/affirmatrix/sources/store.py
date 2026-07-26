@@ -10,5 +10,5 @@ real extractors and the requirements reader land. It is the "would-be store" —
 it holds content and is deliberately not schema-validated, unlike the
 affirmation store, which holds hashes and references and always is.
 
-Iteration 0, backlog item B9.
+Iteration-0 backlog item B9.
 """

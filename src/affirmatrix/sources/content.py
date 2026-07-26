@@ -8,8 +8,9 @@ edges.
 
 **The parser is a locator only.** Its output never enters a hash; span
 boundaries are defined parser-independently, and the canonical content form for
-Python is the verbatim source byte span (DEC-003, refined by DEC-031). Never
-hash ``ast.get_docstring(clean=True)`` — it normalizes indentation.
+Python source is the verbatim byte span. Never hash
+``ast.get_docstring(clean=True)`` — it normalizes indentation, and a hash over
+normalized text no longer answers for the bytes on disk.
 
 Because the marker lives inside the hashed docstring, re-pointing it changes
 the intent hash and correctly trips the edge suspect.

@@ -7,15 +7,17 @@ no configuration (ADR-0003). The proof generator *calls* the root primitive and
 supplies the snapshot metadata; the metadata is an opaque byte string this
 layer length-prefixes and hashes without parsing.
 
-There is no per-node ``merkleHash`` and no deep aggregation — that design is
-retired (DEC-012/014). ``flat-openable`` is Phase C.
+There is no per-node aggregate hash and no recursive fold up the refines
+graph: the root is flat and sealed, one canonical sort and one hash. A
+selectively openable commitment — a Merkle tree over the same set — is a later
+concern and is not built here.
 
 **This package is a leaf.** It imports ``_hashing`` — the byte-level framing it
 shares with the record sources — and nothing else in the engine, so ADR-0003's
 boundary is mechanically checkable rather than merely conventional. Byte layout
 is ADR-0005.
 
-Iteration 0, backlog items B2 (node hash), B3 (edge hash), B4 (design root).
+Iteration-0 backlog items B2 (node hash), B3 (edge hash), B4 (design root).
 """
 
 from __future__ import annotations
@@ -124,8 +126,8 @@ def design_root(
 
     :implements: SEG-SREQ-003
 
-    One canonical sort and one hash — no per-node aggregation and no traversal
-    (DEC-012/014). ``metadata`` is opaque: the caller supplies it already
+    One canonical sort and one hash — no per-node aggregation and no
+    traversal. ``metadata`` is opaque: the caller supplies it already
     canonical, and this function frames and hashes it without parsing, which is
     what keeps snapshot semantics out of the commitment layer (ADR-0003).
 

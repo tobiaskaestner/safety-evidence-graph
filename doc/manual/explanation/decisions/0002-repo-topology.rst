@@ -9,10 +9,11 @@ Accepted, 2026-07-24.
 Context
 -------
 
-The Phase-B research workspace models the four-stream trust topology as four
-branches-as-worktrees (DEC-002): requirements, implementation, results, and
-graph evolve under different owners. An OSS repository, by contrast, must be
-clone-and-build for contributors.
+The research workspace this tool grew out of models the four-stream trust
+topology as four branches checked out as worktrees: requirements,
+implementation, results, and graph evolve under different owners, and the
+separation is what makes the trust boundary between them visible. An OSS
+repository, by contrast, must be clone-and-build for contributors.
 
 Decision
 --------
@@ -27,9 +28,8 @@ versionable — the cygnus multi-document pattern. Build orchestration is a
 first-party ``python -m doc`` driver (two-stage index/build); no CMake.
 
 The four-stream topology is **retained as a supported configuration and
-conformance fixture**, exercised by integration tests against the Phase-B
-workspace layout. Recorded as DEC-030 (refining DEC-002) in the research
-decision log.
+conformance fixture**, exercised by integration tests against the
+four-worktree layout it came from.
 
 Consequences
 ------------

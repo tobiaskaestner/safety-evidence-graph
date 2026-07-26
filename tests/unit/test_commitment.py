@@ -271,7 +271,7 @@ def test_every_derivation_returns_thirty_two_raw_bytes() -> None:
 
 
 def test_the_same_inputs_always_produce_the_same_hashes() -> None:
-    """AC-007: same inputs, same hashes, across runs and environments."""
+    """SEG-SYS-001: reproducibly across runs, so across environments too."""
     fields = {"apiHash": D1, "bodyHash": D2}
     edges = [("a", "b", "Refines")]
     assert commitment.node_hash("Implementation", fields) == commitment.node_hash(
