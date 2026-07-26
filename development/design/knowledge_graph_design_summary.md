@@ -942,6 +942,31 @@ DEC-001, DEC-002).
   the same "IRI of a TestSpecification" relation — `seg:specId` on the
   TestOutcome node, `seg:testSpecId` in CoverageReport gap lists. Harmless
   but a candidate for consolidation to a single term in a future schema pass.
+- **The boundary of content-drift detection (raised 2026-07-26, from the
+  affirmatrix commitment-layer build).** A content hash covers the byte span
+  of a *marked* function, so drift is detected only where a marker sits. A
+  marked implementation whose own body is unchanged but whose **unmarked
+  callee** changed keeps its `implements` edge active while its behaviour has
+  moved: nothing trips. `calls` exists in the relationship matrix (§4.1) and
+  carries no propagation (§4.2, "reserved for future use"), so suspicion does
+  not follow the call graph.
+  Two halves, different severities. *Substrate drift is loud, not silent* — a
+  change to a shared encoding primitive changes every recomputed hash, so
+  every affirmed strong edge goes directly outdated at once; the graph
+  notices but cannot **attribute**, presenting a one-line encoding edit as
+  "all content everywhere moved". That half wants an attribution mechanism,
+  not propagation. *Behavioural drift in an unmarked callee is genuinely
+  invisible*, and is the actual hole.
+  Three candidate resolutions, each a design decision before it is a
+  requirement, and each amending ratified requirement text: activate `calls`
+  propagation (touches the propagating-kind set); require transitive marking
+  of everything an implementation depends on; or declare an explicit
+  **trusted kernel** whose correctness rests on the test suite rather than on
+  the graph, and record that limitation honestly. Deferred past the first
+  engine iteration; the requirements follow the decision in one amendment
+  rather than three.
+  Interim: the affirmatrix manual states the boundary plainly, so that a green
+  case is not read as "nothing behind these functions changed".
 ---
  
 ## 15. TSF — hypothesis resolved (2026-07)
