@@ -1,0 +1,47 @@
+Satisfaction Evaluator
+======================
+
+The satisfaction evaluator answers one question about every requirement in
+the graph: is it satisfied? Its requirements give the two rules that answer it
+— one for a requirement nothing refines, one for a requirement something
+refines — together with the properties that make the answer worth having. It
+reads the whole graph rather than a scope, it repeats, and it changes
+nothing.
+
+.. sreq:: Leaf satisfaction rule
+   :id: SEG-SREQ-006
+   :refines: SEG-SYS-002
+
+   The satisfaction evaluator shall report a leaf requirement as satisfied
+   when, and only when, it carries at least one active verifies edge, at least
+   one active implements edge, and every test specification verifying it has a
+   passing outcome.
+
+.. sreq:: Non-leaf satisfaction rule
+   :id: SEG-SREQ-007
+   :refines: SEG-SYS-002
+
+   The satisfaction evaluator shall report a non-leaf requirement as satisfied
+   when, and only when, every requirement refining it is satisfied and every
+   verifies or implements edge it carries is active.
+
+.. sreq:: Satisfaction is evaluated over the whole graph
+   :id: SEG-SREQ-008
+   :refines: SEG-SYS-002
+
+   The satisfaction evaluator shall determine satisfaction from the whole
+   graph, never from a subset of it.
+
+.. sreq:: Verdicts repeat
+   :id: SEG-SREQ-009
+   :refines: SEG-SYS-002
+
+   The satisfaction evaluator shall produce the same verdict for the same
+   graph on every evaluation.
+
+.. sreq:: Evaluation leaves the graph unchanged
+   :id: SEG-SREQ-010
+   :refines: SEG-SYS-002
+
+   The satisfaction evaluator shall leave the graph unchanged when evaluating
+   it.

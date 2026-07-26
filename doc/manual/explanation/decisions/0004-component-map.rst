@@ -62,26 +62,26 @@ into requirement text. Components are therefore direct children of
 requirements, owning one module or package. "It." marks the iteration in
 which the module first carries behaviour.
 
-=============================  =================================  ====================  ===
-Component                      Module                             Seam                  It.
-=============================  =================================  ====================  ===
-the taxonomy provider          ``affirmatrix.taxonomy``           taxonomy              0
-the record source              ``affirmatrix.records``            input                 0
-the store loader               ``affirmatrix.sources.store``      input adapter         0
-the requirements reader        ``affirmatrix.sources.reqs``       input adapter         1
-the content extractor          ``affirmatrix.sources.content``    input adapter         1
-the outcome extractor          ``affirmatrix.sources.outcomes``   input adapter         1
-the commitment layer           ``affirmatrix.commitment``         —                     0
-the graph builder              ``affirmatrix.graph``              —                     0
-the satisfaction evaluator     ``affirmatrix.satisfaction``       satisfaction          0
-the suspect detector           ``affirmatrix.drift``              —                     0
-the affirmation recorder       ``affirmatrix.affirmation``        —                     0
-the gate evaluator             ``affirmatrix.gates``              —                     0
-the proof generator            ``affirmatrix.proof``              verifiable packages   0
-the affirmation store          ``affirmatrix.case``               input, hashes, schema 0
-the configuration loader       ``affirmatrix.config``             topology              0
-the command-line interface     ``affirmatrix.cli``                thin interface        0
-=============================  =================================  ====================  ===
+=============================  =================================  =====================  ===
+Component                      Module                             Seam                   It.
+=============================  =================================  =====================  ===
+the taxonomy provider          ``affirmatrix.taxonomy``           taxonomy               0
+the record source              ``affirmatrix.records``            input                  0
+the store loader               ``affirmatrix.sources.store``      input adapter          0
+the requirements reader        ``affirmatrix.sources.reqs``       input adapter          1
+the content extractor          ``affirmatrix.sources.content``    input adapter          1
+the outcome extractor          ``affirmatrix.sources.outcomes``   input adapter          1
+the commitment layer           ``affirmatrix.commitment``         —                      0
+the graph builder              ``affirmatrix.graph``              —                      0
+the satisfaction evaluator     ``affirmatrix.satisfaction``       satisfaction           0
+the suspect detector           ``affirmatrix.drift``              —                      0
+the affirmation recorder       ``affirmatrix.affirmation``        —                      0
+the gate evaluator             ``affirmatrix.gates``              —                      0
+the proof generator            ``affirmatrix.proof``              verifiable packages    0
+the affirmation store          ``affirmatrix.case``               input, hashes, schema  0
+the configuration loader       ``affirmatrix.config``             topology               0
+the command-line interface     ``affirmatrix.cli``                thin interface         0
+=============================  =================================  =====================  ===
 
 Module names denote the *domain artifact* a package owns; component names
 denote the *actor* that acts on it. The map therefore does not require the
