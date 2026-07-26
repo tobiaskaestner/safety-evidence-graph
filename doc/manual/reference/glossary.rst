@@ -45,6 +45,31 @@ Glossary
       The recomputable commitment over the whole graph (per-edge hashes plus
       one flat-sealed root). Verification is recomputation.
 
+   execution coverage record
+      The part of an evidence package that records what actually ran: for
+      each test specification in scope, the outcome confirming it and the
+      implementation state that outcome was witnessed against. It is the
+      package's positive half — evidence that the declared chain was
+      executed. It carries only outcomes admitted to the package; anything
+      excluded as stale never appears in it.
+
+      What *passed* — contrast :term:`coverage report`, which is where
+      anything short of that is recorded.
+
+   coverage report
+      The part of an evidence package that records what stands in the way:
+      requirements whose coverage is missing, strong edges that are not
+      active, outcomes discarded as stale, and the readiness verdict for the
+      scope. It is the package's negative half — what a reader needs in
+      order to judge what the package does *not* establish. The gate
+      evaluator produces it, and it travels both inside a generated package
+      and alongside a refusal.
+
+      What is *missing, suspect, stale or blocking* — contrast
+      :term:`execution coverage record`. A package offering the first
+      without the second would be an unfalsifiable claim: all the passes,
+      none of the gaps they leave.
+
    Safety BOM
       The lossy exchange projection of a safety case: the contract vector
       (guarantee, assumption down-closure, implementation pin) under a
