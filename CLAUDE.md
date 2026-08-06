@@ -104,7 +104,9 @@ Core graph:
   interfaces, repo topology (AC-001/002/003/014/015) — so the meta-model (DEC-007)
   and future interfaces (DEC-008 REST) plug in rather than force a rewrite.
 - IDs: `SEG-SYS-nnn` (system), `SEG-SREQ-nnn` (software), `SEG-TS-nnn` (test spec).
-  Markers are docstring fields `:implements:` / `:verifies:` (no runtime behaviour).
+  Markers are docstring fields `:implements:` / `:verifies:` — both targeting a
+  requirement — plus `:test-id:`, which states the `SEG-TS-nnn` a test realizes
+  (DEC-032). No runtime behaviour.
 
 Composability & exchange:
 - A contract opens to **`(G, A, I)`** — guarantee, assumption down-closure, and

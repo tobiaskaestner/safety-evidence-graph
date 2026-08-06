@@ -43,6 +43,7 @@ holds it. This index is the cross-cutting map.
 | 029 | research | Project name: **affirmatrix**; "SEG/safety evidence graph" stays the artifact term |
 | 030 | dev | Affirmatrix repo = mono-repo (orphan branch `tool`); four-branch topology demoted to conformance fixture (refines 002) |
 | 031 | research | Canonical content form — extractor-produced reproducible IRs admissible as hash substrate (refines 003 principle) |
+| 032 | dev | Test markers split identity from relation: `:test-id: SEG-TS-nnn` beside `:verifies: SEG-SREQ-nnn` (refines 003 Python binding) |
 
 ## Supersession & cross-stream links
 
@@ -52,6 +53,9 @@ holds it. This index is the cross-cutting map.
 - **017** refines **010 + 015** and retires the `relies_on` form.
 - **031** refines **003 (principle)**: canonical content form generalizes the raw-byte-span
   rule to admit deterministic, source-reproducible extractor exports (e.g. `needs.json`).
+- **032** refines **003 (Python binding)**: adds `:test-id:` so a test states the
+  specification it realizes, and restores `:verifies:` to the requirement target DEC-003
+  named — the agent briefs had drifted to `:verifies: SEG-TS-nnn`.
 - **022** resolves GAPS **G9** (builds on 010/015/017/018/019); **024** closes GAPS **G12**.
 - **Cross-stream:** **010** (research) extends **001** (development) with a third discharge
   case (satisfied-by-external-proof) — the one citation that crosses the two slices.

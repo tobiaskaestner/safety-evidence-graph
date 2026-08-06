@@ -324,3 +324,57 @@ the diff feature itself is reversible and can come later.
 2. The Phase-B agent briefs need a path-scope revision when Phase B resumes. *(Done 2026-07-24: RE + SWE briefs revised — incl. the DEC-012/014 commitment correction the SWE brief needed — and the missing TE brief authored; all three in `development/notes/`, session-per-role mechanics.)*
 3. `seg.yaml` gains a mono-repo mapping variant once the engine lands in the
    tool repo.
+
+## DEC-032 — Test markers state identity separately from relation: `:test-id:` beside `:verifies:` (refines DEC-003 Python binding)
+
+**Status:** Accepted (2026-08-06)
+
+**Decision.** A pytest test realizing a test specification carries **two**
+docstring fields, and they answer different questions:
+
+- `:verifies: SEG-SREQ-nnn` — the **relation**. Its target is the requirement,
+  matching the `Verifies` edge in the graph, which runs TestSpecification →
+  Requirement.
+- `:test-id: SEG-TS-nnn` — the **identity**. It names the test-specification
+  node this function realizes.
+
+`:implements: SEG-SREQ-nnn` on an implementation function is unchanged and
+remains a single field.
+
+**Rationale.** DEC-003 already gave `:verifies:` a requirement as its target,
+and it already fixed test identity as "a stable manual `TS-id`, independent of
+name and location". What it never said was *how* an extractor learns that
+`TS-id` from the code. That gap is the whole of this entry: implementation
+identity needs no marker because the dotted path supplies it, whereas test
+identity is deliberately *not* derivable from the function name or the file
+path — so for tests, and only for tests, identity has to be stated.
+
+Left unstated, the gap got filled by overloading the field that was already
+there, and the agent briefs came to specify `:verifies: SEG-TS-nnn` — pointing
+the relation at the specification instead of the requirement. That reading
+makes the word `verifies` mean one thing in a docstring and another in the
+graph, and an extractor honouring it would emit a `SEG-TS-nnn → SEG-TS-nnn`
+self-loop, which the taxonomy has no rule for. So this refines DEC-003 by
+addition, and simultaneously restores the target DEC-003 named all along; the
+briefs were the drift, not the decision.
+
+Both fields live inside the hashed docstring, so DEC-003's suspect semantics
+carry over unchanged to each: re-pointing either one changes the intent hash
+and correctly trips the edge suspect. Splitting them makes that property
+sharper rather than weaker — re-pointing a test at a different requirement and
+renumbering which specification it realizes become distinct, separately
+visible edits.
+
+**Consequences.**
+1. The SWE and TE briefs are corrected at the two places that specified
+   `:verifies: SEG-TS-nnn` (`development/notes/swe_agent_brief.md`,
+   `development/notes/te_agent_brief.md`). *(Done 2026-08-06.)*
+2. The would-be store's nine test-specification `implHash` content files carry
+   the two-field form. Applied before the fixture's first commit and before any
+   affirmation, so no content hash in the affirmation store moves. *(Done
+   2026-08-06.)*
+3. ADR-0006 in the tool repo says a verification test "carries a `:verifies:`
+   marker"; it names both fields. *(Done 2026-08-06.)*
+4. The content extractor reads `:test-id:` as the identity of a
+   TestSpecification node — the marker set now declares identity *and* edges,
+   where DEC-003's declared only edges. Deferred with the extractor itself.

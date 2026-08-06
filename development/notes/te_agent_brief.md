@@ -66,11 +66,14 @@ production code.
   demonstrates (`SEG-SREQ-nnn`; cross-document links use native IDs). One spec
   = one demonstrable claim: state the setup, the action, and the observable
   pass criterion — implementation-aware but not implementation-coupled.
-- **Marker discipline (DEC-003):** every pytest test realizing a spec carries
-  the `:verifies: SEG-TS-nnn` docstring-field marker — no runtime behaviour;
-  the extractor reads it, and because it lives in the hashed docstring,
-  re-pointing it trips the edge suspect. Untagged tests are invisible to the
-  graph.
+- **Marker discipline (DEC-003, DEC-032):** every pytest test realizing a spec
+  carries two docstring-field markers — `:verifies: SEG-SREQ-nnn` for the
+  requirement it demonstrates, matching the `Verifies` edge direction, and
+  `:test-id: SEG-TS-nnn` for the specification it realizes. Identity is stated
+  rather than derived precisely because `SEG-TS-nnn` is independent of function
+  name and location. No runtime behaviour; the extractor reads them, and
+  because they live in the hashed docstring, re-pointing either trips the edge
+  suspect. Untagged tests are invisible to the graph.
 - **Coverage direction:** every leaf requirement in the active slice ends the
   iteration with ≥1 spec and ≥1 passing test; report any leaf you cannot cover
   as an RE note rather than a weakened spec.

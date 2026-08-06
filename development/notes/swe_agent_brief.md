@@ -188,15 +188,18 @@ same markers it will later extract from any project. Build this in from the
 start:
 
 - **Ship the marker support** — docstring-field markers
-  (`:implements: SEG-SREQ-nnn` on implementation functions,
-  `:verifies: SEG-TS-nnn` context on tests) as a documented convention with
-  **no runtime behaviour**; they're just docstring fields the extractor reads
-  (DEC-003).
+  (`:implements: SEG-SREQ-nnn` on implementation functions;
+  `:verifies: SEG-SREQ-nnn` plus `:test-id: SEG-TS-nnn` on tests) as a
+  documented convention with **no runtime behaviour**; they're just docstring
+  fields the extractor reads (DEC-003, DEC-032).
 - **Tag as you implement** — every implementation function realising a
-  requirement carries `:implements:`; every test carries `:verifies:`. Untagged
-  code is invisible to the graph.
+  requirement carries `:implements:`; every test carries `:verifies:` and
+  `:test-id:`. Untagged code is invisible to the graph.
 - **One marker, two jobs** — discovery (this is a graph node) and relationship
-  (the edge target). Living in the hashed docstring, re-pointing it correctly
+  (the edge target). For an implementation one field does both, because the
+  dotted path is the identity; a test needs two, because `SEG-TS-nnn` is manual
+  and deliberately not derivable from the function name or file path (DEC-032).
+  Living in the hashed docstring, re-pointing it correctly
   trips the edge suspect (DEC-003).
 - **Stable identity** — test identity is the manual `SEG-TS-nnn`, independent
   of function name and file location, so moving or renaming a test changes
