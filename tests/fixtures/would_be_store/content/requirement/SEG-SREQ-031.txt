@@ -1,0 +1,2 @@
+If a record declares a kind the taxonomy provider does not declare, then
+the graph builder shall reject that record.

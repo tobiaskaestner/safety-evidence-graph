@@ -1,0 +1,3 @@
+The commitment layer shall derive each node hash solely from the node's
+type and from each content hash paired with the name of the content it
+covers.

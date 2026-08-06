@@ -1,0 +1,2 @@
+The proof generator shall include in a package's scope every node reachable
+from the requested requirements through strong edges.

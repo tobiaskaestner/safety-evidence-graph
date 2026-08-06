@@ -1,0 +1,2 @@
+The affirmation store shall remove a persisted record only when removal of
+that record is requested.

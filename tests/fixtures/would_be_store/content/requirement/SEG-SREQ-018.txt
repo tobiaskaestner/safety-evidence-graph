@@ -1,0 +1,2 @@
+The affirmation store shall never persist the content that a hash it
+stores covers.

@@ -1,0 +1,2 @@
+affirmatrix shall record each affirmation as a human judgement bound to the
+content of both edge endpoints at the moment the judgement was made.

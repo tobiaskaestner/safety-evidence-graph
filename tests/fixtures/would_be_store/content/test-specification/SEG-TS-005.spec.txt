@@ -1,0 +1,2 @@
+An edge that carries no hash it was affirmed against is reported as pending,
+whatever state its record claims.

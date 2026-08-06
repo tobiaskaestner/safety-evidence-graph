@@ -1,0 +1,2 @@
+affirmatrix shall change the recorded affirmation state only as the direct
+result of an act the operator performs.

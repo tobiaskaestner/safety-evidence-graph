@@ -1,0 +1,2 @@
+The affirmation recorder shall record in every review event the source
+commit of each endpoint at the moment of affirmation.

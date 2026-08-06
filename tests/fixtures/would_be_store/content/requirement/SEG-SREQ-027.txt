@@ -1,0 +1,2 @@
+The affirmation recorder shall accept an affirmation only for an edge that
+is pending, directly outdated, or doubly outdated.

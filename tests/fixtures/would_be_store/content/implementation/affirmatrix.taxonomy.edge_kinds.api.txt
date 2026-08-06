@@ -1,0 +1,5 @@
+def edge_kinds() -> frozenset[str]:
+    """The edge kinds of the built-in safety-evidence graph type.
+
+    :implements: SEG-SREQ-029
+    """

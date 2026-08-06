@@ -1,0 +1,2 @@
+The affirmation store shall make a record readable only once it has been
+written completely.

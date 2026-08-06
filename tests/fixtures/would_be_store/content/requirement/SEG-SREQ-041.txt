@@ -1,0 +1,2 @@
+The proof generator shall leave node, edge and affirmation state unchanged
+when it generates an evidence package.

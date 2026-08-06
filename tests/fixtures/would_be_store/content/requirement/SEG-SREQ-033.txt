@@ -1,0 +1,2 @@
+The affirmation store shall change a persisted affirmation record only when
+that change is requested.

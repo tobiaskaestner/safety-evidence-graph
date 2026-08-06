@@ -1,0 +1,60 @@
+# The hand-authored edges: what implements, verifies, confirms and witnesses
+# what. Every edge is pending, like every other edge in this store.
+#
+# The slice is deliberately uneven. The taxonomy provider's four requirements
+# are covered completely, so SEG-SYS-009 has a satisfied subtree; the
+# commitment layer's and graph builder's requirements are covered in part,
+# because two of SEG-SYS-001's children belong to components that iteration 0
+# does not build; and everything else is uncovered. A store where everything
+# were covered would tell the coverage report nothing.
+
+[edges]
+Implements = [
+    ["affirmatrix.commitment.node_hash", "SEG-SREQ-005"],
+    ["affirmatrix.commitment.edge_hash", "SEG-SREQ-002"],
+    ["affirmatrix.commitment.design_root", "SEG-SREQ-003"],
+    ["affirmatrix.graph.build", "SEG-SREQ-004"],
+    ["affirmatrix.graph.build", "SEG-SREQ-016"],
+    ["affirmatrix.graph.build", "SEG-SREQ-031"],
+    ["affirmatrix.taxonomy.node_kinds", "SEG-SREQ-029"],
+    ["affirmatrix.taxonomy.edge_kinds", "SEG-SREQ-029"],
+    ["affirmatrix.taxonomy.propagates", "SEG-SREQ-030"],
+    ["affirmatrix.taxonomy.content_hash_names", "SEG-SREQ-032"],
+]
+
+Verifies = [
+    ["SEG-TS-001", "SEG-SREQ-005"],
+    ["SEG-TS-002", "SEG-SREQ-002"],
+    ["SEG-TS-003", "SEG-SREQ-003"],
+    ["SEG-TS-004", "SEG-SREQ-004"],
+    ["SEG-TS-005", "SEG-SREQ-016"],
+    ["SEG-TS-006", "SEG-SREQ-031"],
+    ["SEG-TS-007", "SEG-SREQ-029"],
+    ["SEG-TS-008", "SEG-SREQ-030"],
+    ["SEG-TS-009", "SEG-SREQ-032"],
+]
+
+Confirms = [
+    ["run-0001/SEG-TS-001", "SEG-TS-001"],
+    ["run-0001/SEG-TS-002", "SEG-TS-002"],
+    ["run-0001/SEG-TS-004", "SEG-TS-004"],
+    ["run-0001/SEG-TS-005", "SEG-TS-005"],
+    ["run-0001/SEG-TS-006", "SEG-TS-006"],
+    ["run-0001/SEG-TS-007", "SEG-TS-007"],
+    ["run-0001/SEG-TS-008", "SEG-TS-008"],
+    ["run-0001/SEG-TS-009", "SEG-TS-009"],
+]
+
+# An outcome is evidence only if it both confirms a specification and witnesses
+# the implementation the run exercised, so every outcome above appears here too.
+Witnesses = [
+    ["run-0001/SEG-TS-001", "affirmatrix.commitment.node_hash"],
+    ["run-0001/SEG-TS-002", "affirmatrix.commitment.edge_hash"],
+    ["run-0001/SEG-TS-004", "affirmatrix.graph.build"],
+    ["run-0001/SEG-TS-005", "affirmatrix.graph.build"],
+    ["run-0001/SEG-TS-006", "affirmatrix.graph.build"],
+    ["run-0001/SEG-TS-007", "affirmatrix.taxonomy.node_kinds"],
+    ["run-0001/SEG-TS-007", "affirmatrix.taxonomy.edge_kinds"],
+    ["run-0001/SEG-TS-008", "affirmatrix.taxonomy.propagates"],
+    ["run-0001/SEG-TS-009", "affirmatrix.taxonomy.content_hash_names"],
+]

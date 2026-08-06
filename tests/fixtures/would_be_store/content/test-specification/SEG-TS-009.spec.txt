@@ -1,0 +1,2 @@
+Each node kind declares the names of the content hashes it carries, and a node
+carrying names its kind does not declare is refused by the builder.

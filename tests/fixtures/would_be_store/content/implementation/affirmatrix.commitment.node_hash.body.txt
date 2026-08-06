@@ -1,0 +1,9 @@
+    fields = [
+        length_prefixed(utf8(name)) + length_prefixed(digest)
+        for name, digest in sorted(content_hashes.items())
+    ]
+    return digest_of(
+        length_prefixed(utf8(NODE_TAG))
+        + length_prefixed(utf8(node_type))
+        + counted_sequence(fields)
+    )

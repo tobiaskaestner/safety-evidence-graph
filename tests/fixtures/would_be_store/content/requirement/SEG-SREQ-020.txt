@@ -1,0 +1,2 @@
+The affirmation store shall reproduce each record it has written unchanged
+when that record is read back.

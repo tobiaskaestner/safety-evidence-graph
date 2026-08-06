@@ -1,0 +1,2 @@
+The suspect detector shall derive each edge's state from a recorded record
+source and a current record source alone.

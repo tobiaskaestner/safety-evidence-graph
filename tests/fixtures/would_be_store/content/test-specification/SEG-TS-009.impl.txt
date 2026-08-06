@@ -1,0 +1,8 @@
+def test_each_kind_declares_its_content_hashes() -> None:
+    """
+    :verifies: SEG-SREQ-032
+    :test-id: SEG-TS-009
+    """
+    assert content_hash_names("Implementation") == frozenset({"apiHash", "bodyHash"})
+    with pytest.raises(ValueError):
+        content_hash_names("Speculation")

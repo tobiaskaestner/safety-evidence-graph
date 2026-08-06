@@ -1,0 +1,5 @@
+def propagates(edge_kind: str) -> bool:
+    """Whether suspicion travels along an edge of this kind.
+
+    :implements: SEG-SREQ-030
+    """

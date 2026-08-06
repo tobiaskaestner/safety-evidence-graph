@@ -1,0 +1,3 @@
+affirmatrix shall determine node kinds, edge kinds, and which edges
+propagate suspicion from a single built-in vocabulary that no configuration
+redefines.

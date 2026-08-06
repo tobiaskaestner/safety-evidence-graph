@@ -1,0 +1,7 @@
+def test_a_refines_cycle_is_a_graph_level_error() -> None:
+    """
+    :verifies: SEG-SREQ-004
+    :test-id: SEG-TS-004
+    """
+    with pytest.raises(GraphError, match="cycle"):
+        build(Source([requirement("a")], [refines("a", "a")]))

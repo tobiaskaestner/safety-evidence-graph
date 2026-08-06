@@ -1,0 +1,8 @@
+    sorted_nodes = sorted(node_hashes)
+    sorted_edges = sorted(edge_tuple(*edge) for edge in edges)
+    return digest_of(
+        length_prefixed(utf8(ROOT_TAG))
+        + length_prefixed(metadata)
+        + counted_sequence(sorted_nodes)
+        + counted_sequence(sorted_edges)
+    )

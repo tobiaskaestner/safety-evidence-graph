@@ -1,0 +1,5 @@
+def node_kinds() -> frozenset[str]:
+    """The node kinds of the built-in safety-evidence graph type.
+
+    :implements: SEG-SREQ-029
+    """

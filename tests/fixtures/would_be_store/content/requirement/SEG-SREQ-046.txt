@@ -1,0 +1,2 @@
+If the proof gate reports a scope as blocked, then the proof generator
+shall produce no part of an evidence package for that scope.

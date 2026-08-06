@@ -1,0 +1,2 @@
+If the refines edges form a cycle or a self-loop, then the graph builder
+shall report a graph-level error.

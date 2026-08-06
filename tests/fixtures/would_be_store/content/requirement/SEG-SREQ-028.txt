@@ -1,0 +1,2 @@
+The affirmation recorder shall record the reason supplied with an
+affirmation in the review event without altering it.

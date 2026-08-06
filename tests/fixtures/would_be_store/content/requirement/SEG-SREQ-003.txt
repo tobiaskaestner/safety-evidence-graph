@@ -1,0 +1,3 @@
+The commitment layer shall compute the design root as one hash over the
+canonically sorted node hashes of the design set, the canonically sorted
+endpoints and types of its edges, and the metadata supplied by its caller.

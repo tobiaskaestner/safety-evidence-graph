@@ -1,0 +1,3 @@
+The gate evaluator shall treat a condition reported as an error or a
+warning as blocking, and a condition reported as information as not
+blocking.

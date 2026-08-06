@@ -1,0 +1,2 @@
+The content extractor shall compute each content hash as the SHA-256 of
+the verbatim source byte span it covers.

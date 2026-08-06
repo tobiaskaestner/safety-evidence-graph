@@ -1,0 +1,2 @@
+A refines relation containing a cycle or a self-loop is refused as a
+graph-level error that names the cycle, and a diamond is not a cycle.

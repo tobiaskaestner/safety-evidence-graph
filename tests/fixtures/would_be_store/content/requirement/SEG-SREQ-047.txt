@@ -1,0 +1,2 @@
+The proof generator shall accompany every refusal with the gate's report
+for the refused scope.

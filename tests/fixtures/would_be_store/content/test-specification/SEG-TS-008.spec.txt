@@ -1,0 +1,2 @@
+Exactly the refines, verifies and implements kinds propagate suspicion; an
+undeclared kind raises rather than answering that it does not propagate.

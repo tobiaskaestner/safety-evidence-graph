@@ -1,0 +1,5 @@
+def node_hash(node_type: str, content_hashes: Mapping[str, bytes]) -> bytes:
+    """Derive a node hash from the node's type and its named content hashes.
+
+    :implements: SEG-SREQ-005
+    """

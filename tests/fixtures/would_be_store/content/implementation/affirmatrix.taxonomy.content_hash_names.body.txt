@@ -1,0 +1,4 @@
+    try:
+        return _CONTENT_HASH_NAMES[node_kind]
+    except KeyError:
+        raise ValueError(f"{node_kind!r} is not a declared node kind") from None

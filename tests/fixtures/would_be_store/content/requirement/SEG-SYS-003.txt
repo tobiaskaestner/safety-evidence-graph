@@ -1,0 +1,3 @@
+affirmatrix shall derive whether each strong edge is active or suspect from
+its endpoints' current content measured against the content it was affirmed
+against, and from the states of the strong edges it depends on.

@@ -1,0 +1,4 @@
+affirmatrix shall build the evidence graph from node and edge records,
+deriving every node hash, edge hash, and design root solely from the nodes'
+declared types and their content in each type's canonical form, and from
+the edges' declared endpoints and types, reproducibly across runs.

@@ -1,0 +1,8 @@
+def test_exactly_three_edge_kinds_propagate() -> None:
+    """
+    :verifies: SEG-SREQ-030
+    :test-id: SEG-TS-008
+    """
+    assert propagating_edge_kinds() == frozenset({"Refines", "Verifies", "Implements"})
+    with pytest.raises(ValueError):
+        propagates("Resembles")

@@ -1,0 +1,2 @@
+The proof generator shall record in every evidence package the node hashes
+needed to recompute that package's design root.

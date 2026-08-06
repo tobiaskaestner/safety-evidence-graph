@@ -1,0 +1,4 @@
+The satisfaction evaluator shall report a leaf requirement as satisfied
+when, and only when, it carries at least one active verifies edge, at least
+one active implements edge, and every test specification verifying it has a
+passing outcome.

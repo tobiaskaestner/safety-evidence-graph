@@ -1,0 +1,3 @@
+affirmatrix shall make every workflow it performs operable from its command
+line, with the outcome of each invocation distinguishable by its exit
+status.

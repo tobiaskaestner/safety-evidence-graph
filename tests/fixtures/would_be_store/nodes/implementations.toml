@@ -1,0 +1,19 @@
+# Implementation nodes — hand-authored. Nothing extracts these yet, so both
+# their identities and their content are authored here rather than located in
+# source. See ../README.md for what that means for reading them.
+#
+# The identity is the dotted path of the function the entry stands for. That is
+# a fixture convention, not a ruling: implementation identity is undecided and
+# blocks the record-production slice, not this one.
+
+kind = "Implementation"
+
+[nodes]
+"affirmatrix.commitment.node_hash" = { apiHash = "implementation/affirmatrix.commitment.node_hash.api.txt", bodyHash = "implementation/affirmatrix.commitment.node_hash.body.txt" }
+"affirmatrix.commitment.edge_hash" = { apiHash = "implementation/affirmatrix.commitment.edge_hash.api.txt", bodyHash = "implementation/affirmatrix.commitment.edge_hash.body.txt" }
+"affirmatrix.commitment.design_root" = { apiHash = "implementation/affirmatrix.commitment.design_root.api.txt", bodyHash = "implementation/affirmatrix.commitment.design_root.body.txt" }
+"affirmatrix.graph.build" = { apiHash = "implementation/affirmatrix.graph.build.api.txt", bodyHash = "implementation/affirmatrix.graph.build.body.txt" }
+"affirmatrix.taxonomy.node_kinds" = { apiHash = "implementation/affirmatrix.taxonomy.node_kinds.api.txt", bodyHash = "implementation/affirmatrix.taxonomy.node_kinds.body.txt" }
+"affirmatrix.taxonomy.edge_kinds" = { apiHash = "implementation/affirmatrix.taxonomy.edge_kinds.api.txt", bodyHash = "implementation/affirmatrix.taxonomy.edge_kinds.body.txt" }
+"affirmatrix.taxonomy.propagates" = { apiHash = "implementation/affirmatrix.taxonomy.propagates.api.txt", bodyHash = "implementation/affirmatrix.taxonomy.propagates.body.txt" }
+"affirmatrix.taxonomy.content_hash_names" = { apiHash = "implementation/affirmatrix.taxonomy.content_hash_names.api.txt", bodyHash = "implementation/affirmatrix.taxonomy.content_hash_names.body.txt" }

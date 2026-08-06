@@ -1,0 +1,3 @@
+The design root is one hash over the canonically sorted node hashes, the
+canonically sorted edge tuples, and the caller's metadata; reordering the
+inputs does not change it, and repeating a node hash does.

@@ -1,0 +1,8 @@
+def test_an_edge_with_no_affirmed_hash_is_pending() -> None:
+    """
+    :verifies: SEG-SREQ-016
+    :test-id: SEG-TS-005
+    """
+    claimed = EdgeRecord("a", "b", "Refines", LinkState.DIRECTLY_OUTDATED)
+    built = build(Source([requirement("a"), requirement("b")], [claimed]))
+    assert built.edges[0].state is LinkState.PENDING

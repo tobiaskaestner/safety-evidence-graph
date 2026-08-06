@@ -1,0 +1,5 @@
+def content_hash_names(node_kind: str) -> frozenset[str]:
+    """The names of the content hashes a node of this kind carries.
+
+    :implements: SEG-SREQ-032
+    """

@@ -1,0 +1,2 @@
+If the proof gate reports a scope as blocked, then affirmatrix shall refuse
+to generate an evidence package for that scope.

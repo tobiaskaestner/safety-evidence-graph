@@ -1,0 +1,2 @@
+The vocabulary offers exactly five node kinds and seven edge kinds, and the
+sets it returns cannot be mutated by a caller.

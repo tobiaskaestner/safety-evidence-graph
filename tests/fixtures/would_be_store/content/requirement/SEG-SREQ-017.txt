@@ -1,0 +1,2 @@
+The suspect detector shall report every edge touching a node that is absent
+from the current records as broken.

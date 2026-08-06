@@ -1,0 +1,7 @@
+def test_an_undeclared_kind_stops_the_build() -> None:
+    """
+    :verifies: SEG-SREQ-031
+    :test-id: SEG-TS-006
+    """
+    with pytest.raises(GraphError, match="Speculation"):
+        build(Source([NodeRecord("x", "Speculation", {"contentHash": D1})]))

@@ -1,0 +1,2 @@
+A node or edge record declaring a kind the vocabulary does not contain stops
+the build rather than being skipped.

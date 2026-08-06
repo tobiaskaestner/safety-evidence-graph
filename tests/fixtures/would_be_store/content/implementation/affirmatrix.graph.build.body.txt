@@ -1,0 +1,9 @@
+    nodes = _collect_nodes(source.nodes())
+    edges = tuple(_admit_edge(record) for record in source.edges())
+    _reject_refines_cycles(edges)
+    return Graph(
+        _nodes=MappingProxyType(nodes),
+        edges=edges,
+        _incoming=_index(edges, lambda edge: edge.to_id),
+        _outgoing=_index(edges, lambda edge: edge.from_id),
+    )

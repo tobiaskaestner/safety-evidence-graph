@@ -1,0 +1,3 @@
+A node hash changes when any content digest changes, when a content-hash field
+name changes, and when the node type changes; a node with one content hash
+hashes as a sequence of one rather than as the digest itself.

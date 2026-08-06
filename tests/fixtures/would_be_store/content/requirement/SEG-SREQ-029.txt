@@ -1,0 +1,2 @@
+The taxonomy provider shall declare exactly the node kinds and edge kinds
+of the built-in safety-evidence graph type.

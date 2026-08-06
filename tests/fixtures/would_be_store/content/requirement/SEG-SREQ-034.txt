@@ -1,0 +1,2 @@
+The suspect detector shall leave recorded affirmations unchanged when it
+derives edge states.

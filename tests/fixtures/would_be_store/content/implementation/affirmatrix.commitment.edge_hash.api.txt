@@ -1,0 +1,11 @@
+def edge_hash(
+    from_id: str,
+    to_id: str,
+    edge_type: str,
+    from_node_hash: bytes,
+    to_node_hash: bytes,
+) -> bytes:
+    """Compute a strong edge's hash from its endpoints, type, and node hashes.
+
+    :implements: SEG-SREQ-002
+    """

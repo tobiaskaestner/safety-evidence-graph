@@ -1,0 +1,7 @@
+def build(source: RecordSource) -> Graph:
+    """Turn a record source into a graph, refusing anything that cannot be one.
+
+    :implements: SEG-SREQ-004
+    :implements: SEG-SREQ-016
+    :implements: SEG-SREQ-031
+    """

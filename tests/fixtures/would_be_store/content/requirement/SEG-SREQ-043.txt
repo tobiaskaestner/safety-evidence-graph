@@ -1,0 +1,2 @@
+The gate evaluator shall list in its report every strong edge in scope that
+is not active.

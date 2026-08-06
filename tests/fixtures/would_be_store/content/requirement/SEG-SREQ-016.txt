@@ -1,0 +1,2 @@
+The graph builder shall report an edge that has never been affirmed as
+pending.

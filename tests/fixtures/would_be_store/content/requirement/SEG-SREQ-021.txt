@@ -1,0 +1,2 @@
+The affirmation store shall write every record beneath the write root it
+was given, and no record outside it.

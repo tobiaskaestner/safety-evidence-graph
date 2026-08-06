@@ -1,0 +1,3 @@
+While an affirmed edge's endpoint content differs from the content recorded
+at its last affirmation and any strong edge it depends on is not active,
+the suspect detector shall report that edge as doubly outdated.

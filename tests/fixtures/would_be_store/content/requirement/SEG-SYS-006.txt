@@ -1,0 +1,2 @@
+While any condition of a gate is unmet, affirmatrix shall report the action
+that gate guards as blocked.

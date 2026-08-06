@@ -1,0 +1,7 @@
+def test_the_design_root_sorts_but_never_deduplicates() -> None:
+    """
+    :verifies: SEG-SREQ-003
+    :test-id: SEG-TS-003
+    """
+    assert design_root(b"m", [D1, D2], []) == design_root(b"m", [D2, D1], [])
+    assert design_root(b"m", [D1, D1], []) != design_root(b"m", [D1], [])

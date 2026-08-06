@@ -1,0 +1,2 @@
+The satisfaction evaluator shall determine satisfaction from the whole
+graph, never from a subset of it.

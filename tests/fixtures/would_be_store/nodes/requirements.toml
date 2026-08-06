@@ -1,0 +1,66 @@
+# Requirement nodes — hand-translated from the requirement specification's
+# needs export: the entry id becomes the local identifier, its statement
+# becomes the stored content. See ../README.md for the format.
+
+kind = "Requirement"
+
+[nodes]
+"SEG-SYS-001" = { contentHash = "requirement/SEG-SYS-001.txt" }
+"SEG-SYS-002" = { contentHash = "requirement/SEG-SYS-002.txt" }
+"SEG-SYS-003" = { contentHash = "requirement/SEG-SYS-003.txt" }
+"SEG-SYS-004" = { contentHash = "requirement/SEG-SYS-004.txt" }
+"SEG-SYS-005" = { contentHash = "requirement/SEG-SYS-005.txt" }
+"SEG-SYS-006" = { contentHash = "requirement/SEG-SYS-006.txt" }
+"SEG-SYS-007" = { contentHash = "requirement/SEG-SYS-007.txt" }
+"SEG-SYS-008" = { contentHash = "requirement/SEG-SYS-008.txt" }
+"SEG-SYS-009" = { contentHash = "requirement/SEG-SYS-009.txt" }
+"SEG-SYS-010" = { contentHash = "requirement/SEG-SYS-010.txt" }
+"SEG-SYS-011" = { contentHash = "requirement/SEG-SYS-011.txt" }
+"SEG-SREQ-001" = { contentHash = "requirement/SEG-SREQ-001.txt" }
+"SEG-SREQ-002" = { contentHash = "requirement/SEG-SREQ-002.txt" }
+"SEG-SREQ-003" = { contentHash = "requirement/SEG-SREQ-003.txt" }
+"SEG-SREQ-004" = { contentHash = "requirement/SEG-SREQ-004.txt" }
+"SEG-SREQ-005" = { contentHash = "requirement/SEG-SREQ-005.txt" }
+"SEG-SREQ-006" = { contentHash = "requirement/SEG-SREQ-006.txt" }
+"SEG-SREQ-007" = { contentHash = "requirement/SEG-SREQ-007.txt" }
+"SEG-SREQ-008" = { contentHash = "requirement/SEG-SREQ-008.txt" }
+"SEG-SREQ-009" = { contentHash = "requirement/SEG-SREQ-009.txt" }
+"SEG-SREQ-010" = { contentHash = "requirement/SEG-SREQ-010.txt" }
+"SEG-SREQ-011" = { contentHash = "requirement/SEG-SREQ-011.txt" }
+"SEG-SREQ-012" = { contentHash = "requirement/SEG-SREQ-012.txt" }
+"SEG-SREQ-013" = { contentHash = "requirement/SEG-SREQ-013.txt" }
+"SEG-SREQ-014" = { contentHash = "requirement/SEG-SREQ-014.txt" }
+"SEG-SREQ-015" = { contentHash = "requirement/SEG-SREQ-015.txt" }
+"SEG-SREQ-016" = { contentHash = "requirement/SEG-SREQ-016.txt" }
+"SEG-SREQ-017" = { contentHash = "requirement/SEG-SREQ-017.txt" }
+"SEG-SREQ-018" = { contentHash = "requirement/SEG-SREQ-018.txt" }
+"SEG-SREQ-019" = { contentHash = "requirement/SEG-SREQ-019.txt" }
+"SEG-SREQ-020" = { contentHash = "requirement/SEG-SREQ-020.txt" }
+"SEG-SREQ-021" = { contentHash = "requirement/SEG-SREQ-021.txt" }
+"SEG-SREQ-022" = { contentHash = "requirement/SEG-SREQ-022.txt" }
+"SEG-SREQ-023" = { contentHash = "requirement/SEG-SREQ-023.txt" }
+"SEG-SREQ-024" = { contentHash = "requirement/SEG-SREQ-024.txt" }
+"SEG-SREQ-025" = { contentHash = "requirement/SEG-SREQ-025.txt" }
+"SEG-SREQ-026" = { contentHash = "requirement/SEG-SREQ-026.txt" }
+"SEG-SREQ-027" = { contentHash = "requirement/SEG-SREQ-027.txt" }
+"SEG-SREQ-028" = { contentHash = "requirement/SEG-SREQ-028.txt" }
+"SEG-SREQ-029" = { contentHash = "requirement/SEG-SREQ-029.txt" }
+"SEG-SREQ-030" = { contentHash = "requirement/SEG-SREQ-030.txt" }
+"SEG-SREQ-031" = { contentHash = "requirement/SEG-SREQ-031.txt" }
+"SEG-SREQ-032" = { contentHash = "requirement/SEG-SREQ-032.txt" }
+"SEG-SREQ-033" = { contentHash = "requirement/SEG-SREQ-033.txt" }
+"SEG-SREQ-034" = { contentHash = "requirement/SEG-SREQ-034.txt" }
+"SEG-SREQ-035" = { contentHash = "requirement/SEG-SREQ-035.txt" }
+"SEG-SREQ-036" = { contentHash = "requirement/SEG-SREQ-036.txt" }
+"SEG-SREQ-037" = { contentHash = "requirement/SEG-SREQ-037.txt" }
+"SEG-SREQ-038" = { contentHash = "requirement/SEG-SREQ-038.txt" }
+"SEG-SREQ-039" = { contentHash = "requirement/SEG-SREQ-039.txt" }
+"SEG-SREQ-040" = { contentHash = "requirement/SEG-SREQ-040.txt" }
+"SEG-SREQ-041" = { contentHash = "requirement/SEG-SREQ-041.txt" }
+"SEG-SREQ-042" = { contentHash = "requirement/SEG-SREQ-042.txt" }
+"SEG-SREQ-043" = { contentHash = "requirement/SEG-SREQ-043.txt" }
+"SEG-SREQ-044" = { contentHash = "requirement/SEG-SREQ-044.txt" }
+"SEG-SREQ-045" = { contentHash = "requirement/SEG-SREQ-045.txt" }
+"SEG-SREQ-046" = { contentHash = "requirement/SEG-SREQ-046.txt" }
+"SEG-SREQ-047" = { contentHash = "requirement/SEG-SREQ-047.txt" }
+"SEG-SREQ-048" = { contentHash = "requirement/SEG-SREQ-048.txt" }

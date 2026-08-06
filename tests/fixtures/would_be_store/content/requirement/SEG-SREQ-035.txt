@@ -1,0 +1,3 @@
+The proof generator shall assemble every evidence package from a design
+consistency proof, an execution coverage record, a coverage report, and an
+evidence manifest.

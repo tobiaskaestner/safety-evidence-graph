@@ -1,0 +1,2 @@
+If a scope's design set is empty, then the gate evaluator shall report that
+scope as blocked.

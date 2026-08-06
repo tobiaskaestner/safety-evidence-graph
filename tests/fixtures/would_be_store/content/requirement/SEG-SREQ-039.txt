@@ -1,0 +1,3 @@
+The proof generator shall report in every evidence package whether that
+package's scope includes every requirement that refines no other
+requirement.

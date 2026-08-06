@@ -1,0 +1,2 @@
+The proof generator shall record in every evidence package the scope for
+which it was generated.

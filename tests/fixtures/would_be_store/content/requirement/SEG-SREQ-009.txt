@@ -1,0 +1,2 @@
+The satisfaction evaluator shall produce the same verdict for the same
+graph on every evaluation.

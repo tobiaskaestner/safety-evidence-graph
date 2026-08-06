@@ -1,0 +1,2 @@
+affirmatrix shall persist the evidence graph as hashes and references,
+never as the content those hashes cover.

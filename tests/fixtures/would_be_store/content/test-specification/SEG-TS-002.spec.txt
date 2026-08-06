@@ -1,0 +1,2 @@
+An edge hash changes when either endpoint's node hash changes, when either
+endpoint identifier changes, and when the edge type changes.

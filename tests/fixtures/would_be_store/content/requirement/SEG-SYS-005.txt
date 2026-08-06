@@ -1,0 +1,3 @@
+affirmatrix shall generate, for a defined scope and without altering the
+graph, an evidence package whose claims are verifiable by recomputation
+from the package's own contents.

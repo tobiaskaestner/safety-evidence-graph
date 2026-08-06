@@ -1,0 +1,2 @@
+The proof generator shall refuse only those scopes the proof gate reports
+as blocked.

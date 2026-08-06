@@ -1,0 +1,9 @@
+def design_root(
+    metadata: bytes,
+    node_hashes: Iterable[bytes],
+    edges: Iterable[tuple[str, str, str]],
+) -> bytes:
+    """Seal a design set under one flat root, with caller-supplied metadata.
+
+    :implements: SEG-SREQ-003
+    """

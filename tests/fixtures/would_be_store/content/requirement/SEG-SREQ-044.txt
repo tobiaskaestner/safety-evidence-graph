@@ -1,0 +1,2 @@
+The gate evaluator shall report a coverage gap at the requirement that
+lacks coverage, never at a requirement that it refines.

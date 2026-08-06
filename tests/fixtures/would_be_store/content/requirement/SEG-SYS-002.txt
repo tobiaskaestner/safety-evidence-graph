@@ -1,0 +1,2 @@
+affirmatrix shall determine the satisfaction of every requirement in the
+graph by transitive closure over the refines relation.

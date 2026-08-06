@@ -1,0 +1,2 @@
+The satisfaction evaluator shall leave the graph unchanged when evaluating
+it.

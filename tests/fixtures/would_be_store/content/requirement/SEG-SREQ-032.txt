@@ -1,0 +1,2 @@
+The taxonomy provider shall declare, for each node kind, the names of the
+content hashes that kind carries.

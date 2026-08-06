@@ -1,0 +1,2 @@
+If a record does not validate against its schema, then the affirmation
+store shall reject it instead of writing it.

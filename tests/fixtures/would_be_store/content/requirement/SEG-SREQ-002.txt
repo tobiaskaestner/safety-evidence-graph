@@ -1,0 +1,2 @@
+The commitment layer shall compute each strong edge's hash from the edge's
+endpoint identifiers, the edge type, and the node hashes of both endpoints.

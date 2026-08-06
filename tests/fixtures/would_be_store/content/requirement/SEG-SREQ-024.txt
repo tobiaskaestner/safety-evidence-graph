@@ -1,0 +1,2 @@
+The affirmation recorder shall record each affirmation as a review event
+carrying the content hashes of both endpoints of the affirmed edge.

@@ -1,0 +1,3 @@
+    if edge_kind not in _EDGE_KINDS:
+        raise ValueError(f"{edge_kind!r} is not a declared edge kind")
+    return edge_kind in _PROPAGATING_EDGE_KINDS

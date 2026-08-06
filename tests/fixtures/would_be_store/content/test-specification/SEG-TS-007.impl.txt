@@ -1,0 +1,9 @@
+def test_the_built_in_kind_set_is_closed() -> None:
+    """
+    :verifies: SEG-SREQ-029
+    :test-id: SEG-TS-007
+    """
+    assert node_kinds() == frozenset(
+        {"Requirement", "Implementation", "TestSpecification", "TestOutcome", "Waiver"}
+    )
+    assert len(edge_kinds()) == 7
