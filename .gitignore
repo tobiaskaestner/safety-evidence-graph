@@ -17,3 +17,7 @@ dist/
 
 # Doc build output (python -m doc builds into build/)
 doc/**/_build/
+
+# The affirmation store lineage (ADR-0009): case/ is a worktree of the
+# orphan case branch, never content of this branch.
+/case/

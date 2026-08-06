@@ -15,4 +15,5 @@ currently in scope to build.
    :maxdepth: 1
 
    guarantee-boundary
+   case-store
    iteration-0-backlog
