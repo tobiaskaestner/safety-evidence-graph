@@ -19,8 +19,10 @@ path.
 
 The two kinds of test are genuinely different artifacts, not merely
 differently-authored ones. The TE's tests are **verification evidence**:
-each realizes a ``SEG-TS-nnn`` specification, carries a ``:verifies:``
-marker, and becomes a TestOutcome node in the case. The SWE's tests are
+each realizes a ``SEG-TS-nnn`` specification, states that specification in
+a ``:test-id:`` marker and the requirement it demonstrates in a
+``:verifies:`` marker, and becomes a TestOutcome node in the case. The
+SWE's tests are
 **developer tests**: they drive the design, they are not graph
 participants, and nothing in the evidence graph refers to them.
 
