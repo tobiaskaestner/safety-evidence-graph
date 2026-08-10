@@ -38,7 +38,9 @@ from enum import StrEnum
 from types import MappingProxyType
 from typing import Protocol, runtime_checkable
 
-from affirmatrix._hashing import checked_digest
+from affirmatrix._hashing import DIGEST_BYTES, checked_digest
+
+_HEX_DIGITS = frozenset("0123456789abcdef")
 
 
 class LinkState(StrEnum):
@@ -170,6 +172,30 @@ class ReviewEvent:
         checked_digest(self.to_node_hash, f"{self.to_id} node hash")
 
 
+def hex_digest(digest: bytes) -> str:
+    """The lowercase hex spelling of a raw digest, for serialization.
+
+    Hex belongs here rather than beside the hashing primitives (ADR-0005 iv):
+    internally a digest is 32 raw bytes and nothing else, and the one place the
+    other spelling is needed is where a record is written.
+    """
+    return checked_digest(digest, "digest").hex()
+
+
+def digest_from_hex(text: str) -> bytes:
+    """The raw digest a lowercase hex spelling denotes.
+
+    Uppercase is refused rather than folded. Two spellings of one digest would
+    read back as two different serializations of the same record, and the point
+    of a single canonical form is that there is nothing to fold.
+    """
+    if len(text) != DIGEST_BYTES * 2 or any(character not in _HEX_DIGITS for character in text):
+        raise ValueError(
+            f"{text!r} is not a digest: expected {DIGEST_BYTES * 2} lowercase hex characters"
+        )
+    return bytes.fromhex(text)
+
+
 @runtime_checkable
 class RecordSource(Protocol):
     """Everything the engine consumes arrives through this.
@@ -196,4 +222,6 @@ __all__ = [
     "RecordSource",
     "ReviewEvent",
     "SourceRole",
+    "digest_from_hex",
+    "hex_digest",
 ]

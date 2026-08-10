@@ -18,6 +18,15 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Topic :: Software Development :: Quality Assurance",
 ]
+# The affirmation store validates every record against its schema before
+# writing it (SEG-SREQ-019), and the edge schemas compose by relative $ref, so
+# the validator must resolve a local schema set offline. ``jsonschema`` is the
+# reference implementation an auditor is most likely to reach for, which is the
+# point: the tool and the auditor must arrive at the same verdict.
+dependencies = [
+    "jsonschema>=4.23",
+    "referencing>=0.35",
+]
 
 [dependency-groups]
 dev = [

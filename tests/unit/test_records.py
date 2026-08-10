@@ -205,6 +205,36 @@ def test_no_record_type_offers_a_field_for_content() -> None:
         assert actual == expected, f"{record_type.__name__} grew a field"
 
 
+# ── Hex is a serialization form ─────────────────────────────────────────────
+
+
+def test_a_digest_serializes_as_lowercase_hex() -> None:
+    """One canonical written form, so two spellings of a digest cannot exist."""
+    assert records.hex_digest(D1) == D1.hex()
+    assert records.hex_digest(D1) == records.hex_digest(D1).lower()
+
+
+def test_a_hex_digest_parses_back_to_the_same_bytes() -> None:
+    assert records.digest_from_hex(records.hex_digest(D1)) == D1
+
+
+def test_an_uppercase_digest_is_refused_rather_than_folded() -> None:
+    """Folding would admit a second spelling of a record that must have one."""
+    with pytest.raises(ValueError, match="lowercase"):
+        records.digest_from_hex(D1.hex().upper())
+
+
+def test_a_string_that_is_not_a_digest_is_refused() -> None:
+    with pytest.raises(ValueError):
+        records.digest_from_hex("cafe")
+
+
+def test_serializing_something_that_is_not_a_digest_is_refused() -> None:
+    """The realistic mistake is hex that has already been converted once."""
+    with pytest.raises(ValueError):
+        records.hex_digest(D1.hex().encode("ascii"))
+
+
 # ── The record source protocol and its two roles ────────────────────────────
 
 

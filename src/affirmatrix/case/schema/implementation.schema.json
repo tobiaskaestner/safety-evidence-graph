@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://affirmatrix.dev/case/schema/implementation.schema.json",
+  "title": "A Implementation node record",
+  "description": "An Implementation node record. The two digests separate intent from execution: a changed apiHash asks whether the thing still satisfies its requirement, a changed bodyHash asks whether it needs running again.",
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "seg:localId",
+    "seg:apiHash",
+    "seg:bodyHash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^https?://",
+      "description": "An absolute IRI minted at serialization time. Opaque: its parts are never split back out, because a part may itself contain the separator (ADR-0007)."
+    },
+    "type": {
+      "const": "seg:Implementation"
+    },
+    "seg:localId": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The case-local stable identifier — the string that enters a hash preimage. The id above is its serialization, not a second identity."
+    },
+    "seg:apiHash": {
+      "$ref": "#/$defs/sha256"
+    },
+    "seg:bodyHash": {
+      "$ref": "#/$defs/sha256"
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "A SHA-256 digest, lowercase hex, exactly 64 characters. SHA-256 is fixed for the whole graph, so the digest needs no algorithm beside it (ADR-0005)."
+    }
+  }
+}
