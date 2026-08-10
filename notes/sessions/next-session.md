@@ -1,59 +1,63 @@
 # Next session — pick up here
 
 Rolling handoff for the Phase-B iteration-0 build. Overwrite it at the end of a
-session; it describes **one** state, not a history. Last written **2026-08-06**,
-end of session `6a5cb5f0-d771-4892-9d48-10c6e0988e98`.
+session; it describes **one** state, not a history. Last written **2026-08-10**,
+end of session `479dabc0-9d72-4866-ba1c-8fbed01cfc32`.
 
 Read this, then the root `CLAUDE.md`, then `research/CLAUDE.md`, then the brief
 for whichever role you are working as.
 
 ## Where the code stands
 
-`affirmatrix` branch `tool` at **817e2af**. Working tree clean. **146 tests
+`affirmatrix` branch `tool` at **ba34c5c**. Working tree clean. **210 tests
 pass, ruff clean, all four documents build.**
 
-Iteration-0 backlog **B0–B9 are done** (`doc/manual/explanation/architecture/iteration-0-backlog.rst`):
+Iteration-0 backlog **B0–B10 are done** (`doc/manual/explanation/architecture/iteration-0-backlog.rst`):
 
 | Landed | Module | Backlog |
 |---|---|---|
 | canonical byte encoding, SHA-256 | `_hashing.py` | B1 |
 | node hash, two-sided edge hash, flat-sealed design root | `commitment/` | B2–B4 |
-| record vocabulary, record-source protocol | `records/` | B5 |
+| record vocabulary, record-source protocol, hex conversion | `records/` | B5 |
 | built-in graph type | `taxonomy/` | B6 |
 | assembly, refusals, refines-acyclicity gate | `graph/` | B7–B8 |
 | would-be store + loader | `sources/store.py`, `tests/fixtures/would_be_store/` | B9 |
+| affirmation store **write face**, schemas, context, IRI minting | `case/`, `identity.py` | B10 |
 
-Everything else in `src/affirmatrix/` is a docstring-only stub —
-`affirmation/`, `case/`, `cli/`, `config/`, `drift/`, `gates/`, `proof/`,
-`satisfaction/`, `sources/{content,outcomes,reqs}.py`, `identity.py`,
+The project now has its **first runtime dependencies**: `jsonschema` +
+`referencing` (schema validation on write, SEG-SREQ-019). Installed with
+`uv pip install --python .venv` — the repo carries no `uv.lock`, deliberately
+not introduced in passing.
+
+Still docstring-only stubs: `affirmation/`, `cli/`, `config/`, `drift/`,
+`gates/`, `proof/`, `satisfaction/`, `sources/{content,outcomes,reqs}.py`,
 `diagnostics.py`. The docstrings are binding design; read the stub before
 implementing it.
 
-## Start here: B10
+## Start here: B11
 
-**Persist nodes, edges, events, proofs; validate on write** — affirmation store,
-SEG-SYS-007. Two sequencing facts from the backlog's own *Sequencing* section:
+**Read-back as a record source** — the affirmation store's read face,
+SEG-SYS-007, and the pass that verifies SEG-SREQ-020 (records read back as
+written). The read face conforms to the `records.RecordSource` protocol with
+role **recorded** (ADR-0004): persisted edge records re-enter the engine
+carrying their stored edge hash and link state, so drift detection (B13) can
+compare them against a *current* stream. Sequencing: **B10 → B11 → B13**, and
+an operator affirms between B14 and B15.
 
-- **B10 → B11 → B13.** Drift detection compares the *recorded* stream from the
-  affirmation store against the *current* stream from a producer, so read-back
-  (B11) must exist before suspicion can be derived (B13).
-- **An operator affirms between B14 and B15.** A faithfully bootstrapped store
-  starts every edge pending, and a pending edge blocks a package, so the gate
-  has nothing to show until a bulk affirmation has happened at a checkpoint.
+What B11 inherits from B10, already decided and built:
 
-B9's loader is the *current*-side producer B13 will compare against, and it is
-deliberately retired later by record production — do not build on it as if it
-were permanent.
-
-**Where B10's output goes:** `affirmatrix/case/`, a worktree of the orphan
-`case` branch (ADR-0009). It is at `acc8ebf` and **empty** — the lineage is
-initialised, no store files yet. `/case/` is gitignored on `tool`, so store
-files can never show up as changes to the code branch. Commits there are store
-acts: **human-enacted only, no co-author trailers.** Stage 1 of ADR-0009 is in
-force — the tool writes files and knows nothing of git.
-
-Unlike the would-be store, the affirmation store **is** schema-validated: it
-holds hashes and references, never content.
+- Per-kind JSON-LD collection documents (`{"@context": "../context.jsonld",
+  "@graph": [...]}`), entries sorted by `id`, absolute IRIs minted by
+  `identity`, digests as bare lowercase hex (`records.digest_from_hex` exists
+  and is tested).
+- The case validates against **its own** `{root}/schema/` copy; the packaged
+  copy only seeds an empty root and never overwrites.
+- A review event's source revisions live under `seg:fromRevision` /
+  `seg:toRevision` — distinct from the identifier-valued `seg:from`/`seg:to`
+  terms; a suite invariant test enforces that identifier-valued terms only
+  ever hold IRIs.
+- `AffirmationStore` is the write face in `case/__init__.py`; the read face
+  joins it there (the stub docstring already binds both).
 
 ## Verify with these exact commands
 
@@ -72,92 +76,71 @@ $ .venv/bin/python -m doc build          # serve: … -m doc serve -p 8881
 
 | Worktree | At | Note |
 |---|---|---|
-| `affirmatrix` (`tool`) | 817e2af | **ahead 4, behind 1** of `origin/tool` |
-| `research` | ffd5e9d | ahead 1 of `origin/research` |
-| `affirmatrix/case` | acc8ebf | empty, awaiting B10 |
+| `affirmatrix` (`tool`) | ba34c5c | **ahead 5, behind 1** of `origin/tool` |
+| `research` | (this commit) | ahead of `origin/research` |
+| `affirmatrix/case` | acc8ebf | still empty — B10 tests use tmp roots only; the real case waits for an FSM-operated bootstrap |
 | `tutorials` | b0b4dc2 | **needs rebase**, see below |
 
-Two snags to hand to the human rather than fix:
+Two snags to hand to the human rather than fix (unchanged since 2026-08-06):
 
 1. **`tool` has diverged, not merely advanced.** Local `554b5e8` and remote
    `4f46c4a` carry the same commit message — the remote holds a version that
-   was rewritten locally. That is the "behind 1". It needs resolving at push
-   time.
+   was rewritten locally. Resolve at push time.
 2. **`tutorials` is no longer a fast-forward.** `b0b4dc2` branched off
-   `56fe007`, and `tool` has since gained `9e57e79` and `817e2af`, so
-   `b0b4dc2` is not an ancestor of `tool`. Per the root `CLAUDE.md` it wants
-   rebase-then-fast-forward while no role agent is mid-edit, then the worktree
-   is removed.
+   `56fe007`; `tool` has since moved. Rebase-then-fast-forward while no role
+   agent is mid-edit, then remove the worktree.
 
 The four-stream conformance-fixture branches (`reqs impl results graph`) remain
-in the bare repo, unmounted, nothing exercising them. Remount with
-`git worktree add <dir> <branch>` when integration tests need the topology.
+in the bare repo, unmounted.
 
 ## What this session did
 
-Resumed session `8442f2d0…`, which a host OOM killed. B9 survived uncommitted
-on disk, which was lucky: it meant the fixture could land already correct
-instead of being committed wrong and patched after, so **no content hash in the
-store has ever moved.**
+B10, coordinator-driven: work order drafted and FSM-ratified
+(`development/notes/b10_swe_work_order.md` — three rulings: schemas live in
+`case/schema/` seeded from package data; per-kind collection documents are the
+atomicity unit; `context.jsonld` ships with the store, the config files do
+not). An SWE subagent ran report → ratify → apply; the FSM's code review
+caught one defect (revision strings under identifier-valued JSON-LD terms),
+fixed as `seg:fromRevision`/`seg:toRevision` before commit. Landed as
+`ba34c5c` on `tool`: `case/` write face (five modules), 14 draft-2020-12
+schemas + shared context as package data, `identity` IRI minting, `records`
+hex conversion, 64 new tests, architecture note
+(`affirmation-store-write-face.rst`).
 
-Then the marker correction the human spotted while reading the fixture's
-test-specification docstrings. **DEC-032** (`development/notes/decision_log.md`),
-refining DEC-003's Python binding:
-
-- `:verifies: SEG-SREQ-nnn` — the **relation**, matching the `Verifies` edge,
-  which runs TestSpecification → Requirement.
-- `:test-id: SEG-TS-nnn` — the **identity**, the specification a test realizes.
-- `:implements: SEG-SREQ-nnn` unchanged, still a single field.
-
-DEC-003 had already given `:verifies:` a requirement as its target; the SWE and
-TE briefs had drifted to `:verifies: SEG-TS-nnn` and the fixture inherited the
-drift. So DEC-032 restores DEC-003's target and adds the field DEC-003 lacked:
-it fixed test identity as a manual `SEG-TS-nnn` "independent of name and
-location" but never said how an extractor *learns* it from the code. Tests need
-two fields precisely because their identity is not derivable; implementations
-need one because the dotted path supplies it.
-
-Commits: `9e57e79` (convention — extractor docstring, ADR-0006), `817e2af`
-(B9 — loader, fixture, 29 tests) on `tool`; `ffd5e9d` (DEC-032, index
-cross-links, both briefs, `research/CLAUDE.md`) on `research`.
-
-`test_every_realization_marks_the_requirement_its_specification_verifies` in
-`tests/unit/test_store_loader.py` holds the nine fixture markers to
-`edges/coverage.toml`. It is mutation-checked: restoring the old
-`:verifies: SEG-TS-004` fails it. The nine targets were *derived* from
-`coverage.toml`, not hand-copied.
+Five requirement gaps surfaced and parked per cardinal rule 3 —
+**`development/notes/re_notes_from_b10.md`** is the RE's next work-order
+input. Notable: G15 (per-content-hash source location in `NodeRecord`)
+carries an FSM ruling already; G9 (a current stream handed to `write_edges`
+would silently reset every affirmation) is the sharpest.
 
 ## Open, and not this session's to close
 
-- **DEC-032 consequence 4** is deferred: the content extractor must read
-  `:test-id:` as TestSpecification identity. Lands with the extractor, past
-  iteration 0.
-- **`pyproject.toml` has no owner** in any brief — flagged in ADR-0006's
-  consequences, still undecided.
-- **`SEG-TS-nnn` in the fixture is fixture-local.** The identifiers do not
-  correspond to entries in a test specification document, because that document
-  does not exist yet. When it does, either the two agree or record production
-  has already retired the fixture.
-- **Test-specification identity for the real suite** — ADR-0006 gives
-  `tests/specification/` to the TE and says those tests carry both markers, but
-  no such test exists yet. The verification suite is unstarted.
+- **The RE notes above** — G3 (ReviewEvent role), G6 (identifier-base /
+  `config.json` vs `affirmatrix.yaml`), G8 (snapshotId colons vs Windows),
+  G9 (bulk-reset guard), G15 (source location per content hash, ruled).
+- **`pyproject.toml` ownership** — now live, not theoretical: B10 edited it
+  under one-time FSM authorization.
+- **DEC-032 consequence 4** deferred: the content extractor reads `:test-id:`;
+  lands with the extractor, past iteration 0.
+- **`SEG-TS-nnn` in the fixture is fixture-local**; the real test-specification
+  document and the TE's verification suite (`tests/specification/`) remain
+  unstarted.
 
 ## Rules that catch people out
 
 From the root `CLAUDE.md` — the full set is there, these are the ones that bite:
 
 - **One editor at a time.** At most one role agent in a file-editing phase;
-  everyone else is report-only until the editing pass is committed. Path
-  ownership prevents edit conflicts, not working-tree collisions. Sequence:
-  ratify → one agent applies → verify → commit → next agent.
+  everyone else is report-only until the editing pass is committed.
 - **Self-contained history.** Commit messages and code comments in
   `affirmatrix/` must tell their story from that repository alone — no role
-  acronyms, no `DEC-nnn`/`AC-nnn` (those live here, in the research
-  workspace), no conversational shorthand. In-repo anchors (`ADR-000N`,
-  `SEG-SYS`/`SREQ`/`TS` IDs) are fine. This is why DEC-032 is cited in *this*
-  file and in the decision log, but nowhere in `affirmatrix`.
+  acronyms, no `DEC-nnn`/`AC-nnn`/`G-nn` (those live here, in the research
+  workspace). In-repo anchors (`ADR-000N`, `SEG-SYS`/`SREQ`/`TS` IDs) are fine.
 - **Affirmation and proof generation are the human's alone.** Agents never
   affirm a pending or suspect edge.
 - **Checkpoint discipline.** One step, then ⏸ and wait.
 - **Don't invent design.** Derive from the binding docs and the stub
   docstrings; ask when unclear. Gaps become requirements, not ad-hoc code.
+- **Never write to `affirmatrix/case/`** from code or tests — store files
+  reach it only through an FSM-operated run; commits there are store acts,
+  human-enacted, no co-author trailers.

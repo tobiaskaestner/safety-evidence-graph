@@ -26,7 +26,8 @@
 | Publication — paper-seed reconciliation, two-paper plan (Prague prio); grew into tool landscape WP-1…WP-6 | `e0e116bc-e0f8-49f5-b4a4-e384a3a1d206` | archived (lost, ended clean at 2ff42a4) | 2026-07-04 | _none yet_ |
 | Tool landscape/comparison continuation (WP-4 BASIL + consolidation) | `3e8350d4-079d-4a43-8331-2f9ad88d017c` | active | 2026-07-06 | _none yet_ |
 | Affirmatrix graph-builder pass — DFS cycle-check fix (OOM leak), memory-capped pytest convention, commits bc1c014/554b5e8 | `8442f2d0-994d-4033-b624-bf5fd4915767` | archived (lost to host OOM; work survived uncommitted, resumed below) | 2026-08-06 | _none yet_ |
-| Would-be store + loader (B9); DEC-032 marker split, commits 9e57e79/817e2af | `6a5cb5f0-d771-4892-9d48-10c6e0988e98` | active | 2026-08-06 | [next-session.md](next-session.md) |
+| Would-be store + loader (B9); DEC-032 marker split, commits 9e57e79/817e2af | `6a5cb5f0-d771-4892-9d48-10c6e0988e98` | archived | 2026-08-06 | _superseded by next-session.md_ |
+| B10 affirmation store write face, coordinator-driven SWE subagent; commit ba34c5c; RE notes G3/G6/G8/G9/G15 | `479dabc0-9d72-4866-ba1c-8fbed01cfc32` | active | 2026-08-10 | [next-session.md](next-session.md) |
 
 ## Conventions
 
